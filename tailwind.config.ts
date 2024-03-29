@@ -14,7 +14,9 @@ const config: Config = {
         darkMode: '#323232',
         darkModeGlass: "rgba(50,50,50,0.9)",
         darkModeBgColor: "#202020",
-        darkBlue: "#00080D"
+        darkBlue: "#00080D",
+        infoTrackBlue: "#2F9FDD",
+        infoBlue: "#B7E5FF"
       },
       boxShadowColor: {
         blueShadow: '#489EDC',
