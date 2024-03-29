@@ -62,8 +62,25 @@ function EditSchool({ showForm, setShowForm }: EditPropType) {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col justify-start px-5 mt-9"
         >
-          
-          
+          <button
+            type="submit"
+            className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+          >
+            Enviar
+          </button>
+          <button
+            type="submit"
+            className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+          >
+            Enviar
+          </button>
+          <button
+            type="submit"
+            className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+          >
+            Enviar
+          </button>
+
           <button
             type="submit"
             className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
