@@ -46,7 +46,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
     shifts: (string | Shift)[]
   }
 
-  //essa função servira como estado inicial das escolas selecionadas as quais seram as que o usuário já participa
+  //essa função servirá como estado inicial das escolas selecionadas as quais seram as que o usuário já participa
   const initSelectedState: NewSchoolType[] = (() => {
     if (user && user.school) {
       return user.school.map((s) => ({

@@ -80,7 +80,7 @@ export type EventType = {
 export type SchoolType = {
   id: string;
   name: string;
-  shift: Shift[];
+  shift: Shift[] | string[];
   principal?: string;
   coordinator_morning?: string;
   coordinator_evening?: string;

@@ -26,7 +26,7 @@ function UserProvider({ children }: ChildrenPropsType) {
     const getUser = async (): Promise<UserType | null> => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/users?id=67ngfwo90vjqw6nf824jbhnfowe`
+          `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/users?id=hr639gr7nfz42fdh`
         );
           
         if (response.ok) {

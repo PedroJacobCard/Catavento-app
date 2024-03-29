@@ -37,6 +37,7 @@ export default function Home() {
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
 
   //funcionalidade para aparecer o formulário de edição da escola
+  const [editSchoolIndex, setEditSchoolIndex] = useState<number | null>(null);
   const [showForm, setShowForm] = useState<boolean>(false);
 
   return (
@@ -92,7 +93,10 @@ export default function Home() {
                     height={25}
                     priority={true}
                     className="absolute left-[90%] lg:left-[95%] cursor-pointer"
-                    onClick={() => setShowForm(prev => !prev)}
+                    onClick={() => {
+                      setEditSchoolIndex(index);
+                      setShowForm(prev => !prev);
+                    }}
                   />
                 ) : (
                   ""
@@ -137,10 +141,12 @@ export default function Home() {
               <div className="mx-5">
                 <GoogleMaps address={school.address} />
               </div>
+              <EditSchool
+                showForm={editSchoolIndex === index && showForm} 
+                setShowForm={setShowForm} 
+                schoolName={school.name} />
             </section>
           ))}
-
-        <EditSchool showForm={showForm} setShowForm={setShowForm} />
 
         <Footer />
       </div>
