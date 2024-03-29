@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+*::-webkit-scrollbar {
+  @apply w-1 h-1;
+}
+
+*::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+  @apply dark:bg-darkBlue bg-secondaryBlue rounded-xl
+}
+
+.title {
+  @apply font-bold text-xl md:text-3xl ;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 190, 190, 190;
+    --background-start-rgb: 30, 30, 30;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: var(--background-end-rgb)
+    rgb(var(--background-start-rgb));
+}
+
+.opacity-effect h2 {
+  opacity: 0;
+  transition: opacity .6s ease-in-out;
+}
+.opacity-effect:hover h2 {
+  opacity: 1;
+}
+.opacity-effect:hover .first-logo {
+  display: none;
+}
+.opacity-effect:hover .second-logo {
+  display: block;
+}
+
+.opacity-effect-themes {
+  opacity: 0;
+  transition: opacity .6s ease-in-out;
+}
+.opacity-effect-themes:hover {
+  opacity: 1;
+}
+
+input[type="checkbox"] {
+  @apply w-5 h-5 rounded-sm appearance-none border border-black bg-white hover:bg-slate-300 outline-none duration-300 relative;
+}
+input[type="checkbox"]:checked {
+  @apply bg-lime-200;
+}
+input[type="checkbox"]::before {
+  @apply content-["\2713"];
+  font-size: 16px; 
+  @apply dark:text-slate-500 text-black; 
+  position: absolute; 
+  top: -15%;
+  left: 20%;
+  visibility: hidden;
+}
+input[type="checkbox"]:checked::before {
+  visibility: visible;
+}
+
+.page-title {
+  @apply mt-[4rem] md:mt-0;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
