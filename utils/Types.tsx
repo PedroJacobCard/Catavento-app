@@ -12,7 +12,6 @@ export type SessionType = {
 };
 
 export type UserType = {
-  [x: string]: any;
   user: any;
   id: string;
   name: string;
@@ -127,11 +126,22 @@ export type RememberType = {
   updatedAt: string;
 };
 
+//children pops comum para provedores de contextos
 export type ChildrenPropsType = {
   children: ReactNode;
 };
 
+//props dos formulários de edição para fazer o toggle do formulário
 export type EditPropType = {
   showForm: boolean;
   setShowForm: Dispatch<SetStateAction<boolean>>;
+};
+
+//types de contextos
+export type UseUserContextType = {
+  user: UserType | null;
+};
+
+export type UseUsersContextType = {
+  users: UserType[] | null;
 };

@@ -3,6 +3,7 @@ import { PT_Sans } from "next/font/google";
 import "./globals.css";
 import UserProvider from "./context/UserProvider";
 import SchoolProvider from "./context/SchoolProvider";
+import UsersProvider from "./context/UsersProvider";
 
 const ptSans = PT_Sans({weight: "400", style: "normal", subsets: ["cyrillic"]});
 
@@ -21,7 +22,9 @@ export default function RootLayout({
       <body className={ptSans.className}>
         <UserProvider>
         <SchoolProvider>
+        <UsersProvider>
           {children}
+        </UsersProvider>
         </SchoolProvider>
         </UserProvider>
       </body>

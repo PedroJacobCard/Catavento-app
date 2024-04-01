@@ -7,6 +7,7 @@ import Link from "next/link";
 import Logo from "@/public/Logo-principal.svg";
 import Plane from "@/public/Plane.svg";
 import Marker from "@/public/Marker.svg";
+import User from '@/public/User.svg';
 
 //import components
 import Navbar from "@/app/components/Navbar";
@@ -66,13 +67,24 @@ function UserArea() {
           {user && (
             <>
               <div className="flex justify-center items-center gap-3  mx-5 py-5 relative">
-                <Image
-                  src={user.image}
-                  alt="User foto"
-                  width={100}
-                  height={100}
-                  className="h-[10vw] w-[7.2vh] md:h-[7vh] object-cover rounded-full"
-                />
+                {user.image ? (
+                  <Image
+                    src={user.image}
+                    alt="User foto"
+                    width={100}
+                    height={100}
+                    className="h-[10vw] w-[7.2vh] md:h-[7vh] object-cover rounded-full"
+                  />
+                ) : (
+                  <Image
+                    src={User}
+                    alt="Usuário"
+                    width={35}
+                    height={100}
+                    priority={true}
+                  />
+                )}
+
                 {user?.name}
                 <Image
                   src={Marker}
