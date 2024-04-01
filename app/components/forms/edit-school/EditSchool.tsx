@@ -145,26 +145,7 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col justify-start px-5 mt-9 overflow-y-scroll"
         >
-<<<<<<< HEAD
-          <button
-            type="submit"
-            className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
-          >
-            Enviar
-          </button>
-          <button
-            type="submit"
-            className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
-          >
-            Enviar
-          </button>
-          <button
-            type="submit"
-            className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
-          >
-            Enviar
-          </button>
-=======
+
           <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mb-3 relative">
             <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
             <Image
@@ -396,7 +377,6 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
               />
             </div>
           </div>
->>>>>>> weiter
 
           <button
             type="submit"
