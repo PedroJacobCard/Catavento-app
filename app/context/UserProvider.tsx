@@ -2,14 +2,10 @@
 import { createContext, useEffect, useState } from "react";
 
 //import types
-import { UserType, ChildrenPropsType } from "@/utils/Types";
+import { UserType, ChildrenPropsType, UseUserContextType } from "@/utils/Types";
 
 
 const initState: UserType | null = null;
-
-export type UseUserContextType = {
-  user: UserType | null
-}
 
 const initContextState: UseUserContextType = {
   user: null,
@@ -26,7 +22,7 @@ function UserProvider({ children }: ChildrenPropsType) {
     const getUser = async (): Promise<UserType | null> => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/users?id=hr639gr7nfz42fdh`
+          `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/users?id=b285jfjfur2875dns9`
         );
           
         if (response.ok) {
