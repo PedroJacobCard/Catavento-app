@@ -4,6 +4,7 @@ import "./globals.css";
 import UserProvider from "./context/UserProvider";
 import SchoolProvider from "./context/SchoolProvider";
 import UsersProvider from "./context/UsersProvider";
+import RememberProvider from "./context/RememberProvider";
 
 const ptSans = PT_Sans({weight: "400", style: "normal", subsets: ["cyrillic"]});
 
@@ -23,7 +24,9 @@ export default function RootLayout({
         <UserProvider>
         <SchoolProvider>
         <UsersProvider>
+        <RememberProvider>
           {children}
+        </RememberProvider>
         </UsersProvider>
         </SchoolProvider>
         </UserProvider>

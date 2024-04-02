@@ -1,5 +1,5 @@
 'use client'
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import Image from 'next/image';
 
 //import Imask
