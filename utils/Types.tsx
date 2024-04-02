@@ -121,7 +121,7 @@ export type RememberType = {
   authorName: string;
   content: string;
   schoolName: string;
-  shift: Shift;
+  shift: Shift | string;
   createdAt: string;
   updatedAt: string;
 };
@@ -145,3 +145,7 @@ export type UseUserContextType = {
 export type UseUsersContextType = {
   users: UserType[] | null;
 };
+
+export type UseRemeberContextType = {
+  remembers: RememberType[] | null;
+}
