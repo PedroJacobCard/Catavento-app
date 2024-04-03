@@ -18,6 +18,7 @@ import { RememberType } from "@/utils/Types";
 
 //import components
 import EditRemember from "./forms/edit-remember/EditRemember";
+import CreateRemember from "./forms/create-remember/CreateRemember";
 
 type RememberFieldPropsType = {
   isRememberOpen: boolean;
@@ -169,21 +170,8 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
           ))
         }
       </section>
-
-      <div className="w-full flex justify-center items-center px-4 py-4 dark:bg-darkModeBgColor bg-secondaryBlue shadow-upShadow absolute top-[90vh]">
-        <input
-          type="text"
-          name="remember"
-          placeholder="escrever lembrete..."
-          className="w-full md:w-[8rem] lg:w-[11rem] h-9 pl-4 dark:bg-darkMode rounded-l-full outline-none md:text-sm text-base"
-        />
-        <button
-          type="button"
-          className="dark:bg-darkMode bg-white w-10 py-[.5rem] px-2 rounded-r-full hover:shadow-md dark:hover:shadow-black duration-300"
-        >
-          <Image src={Plane} alt="Enviar" width={20} priority={true} />
-        </button>
-      </div>
+      
+      <CreateRemember />
     </div>
   );
 }

@@ -12,7 +12,7 @@ import Info from '@/public/Info.svg';
 //import enums
 import { Shift } from '@/utils/Enums';
 
-//import schema validação e react-hook-form
+//import schema de validação e react-hook-form
 import { schema, FieldValuesEditSchool } from "./ValidationSchemaEditSchool";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

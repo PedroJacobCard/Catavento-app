@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
 
 //import icons
-import Info from "@/public/Info.svg";
+import Bin from "@/public/Bin.svg";
 import Close from '@/public/Cancel.svg';
 
 //import schema validação e react-hook-form
@@ -59,6 +59,19 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
             className="cursor-pointer"
             onClick={() => setShowForm(!showForm)}
           />
+          <button
+            type="button"
+            className="w-[7rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
+          >
+            <Image
+              src={Bin}
+              alt="Fechar form"
+              width={20}
+              height={20}
+              priority={true}
+            />
+            Deletar
+          </button>
         </div>
 
         <form
@@ -69,8 +82,8 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
             name="content"
             control={control}
             render={({ field }) => (
-              <input
-                type="text"
+              <textarea
+                rows={4}
                 {...field}
                 className="px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
               />
