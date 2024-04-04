@@ -16,7 +16,9 @@ const config: Config = {
         darkModeBgColor: "#202020",
         darkBlue: "#00080D",
         infoTrackBlue: "#2F9FDD",
-        infoBlue: "#B7E5FF"
+        infoBlue: "#B7E5FF",
+        cautionTrackYellow: "#FFC645",
+        cautionYellow: "#FFFAD0",
       },
       boxShadowColor: {
         blueShadow: '#489EDC',

@@ -149,3 +149,7 @@ export type UseUsersContextType = {
 export type UseRemeberContextType = {
   remembers: RememberType[] | null;
 }
+
+export type UseEventContextType = {
+  events: EventType[] | null;
+}

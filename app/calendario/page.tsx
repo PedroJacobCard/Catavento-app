@@ -15,9 +15,15 @@ import Footer from "../components/Footer";
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
 
+//import costume hooks
+import useEvent from "../hooks/useEvent";
+
 function Calendario() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
+
+  //importar event dados
+  const { events } = useEvent();
   
   return (
     <>
@@ -50,6 +56,11 @@ function Calendario() {
         <ShowShadow>
           <h1 className="title mx-2 md:ml-[2rem] pb-3">Calendário</h1>
         </ShowShadow>
+
+        {
+          
+        }
+
         <Footer />
       </div>
     </>

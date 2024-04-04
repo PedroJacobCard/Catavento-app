@@ -8,6 +8,7 @@ import { IMaskInput } from 'react-imask';
 //import icons
 import Close from '@/public/Cancel.svg';
 import Info from '@/public/Info.svg';
+import Bin from '@/public/Bin.svg';
 
 //import enums
 import { Shift } from '@/utils/Enums';
@@ -139,13 +140,25 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
             className="cursor-pointer"
             onClick={() => setShowForm(!showForm)}
           />
+          <button
+            type="button"
+            className="w-[11rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
+          >
+            <Image
+              src={Bin}
+              alt="Fechar form"
+              width={20}
+              height={20}
+              priority={true}
+            />
+            Deletar Escola
+          </button>
         </div>
 
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col justify-start px-5 mt-9 overflow-y-scroll"
         >
-
           <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mb-3 relative">
             <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
             <Image

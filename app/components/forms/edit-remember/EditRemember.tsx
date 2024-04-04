@@ -61,7 +61,7 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
           />
           <button
             type="button"
-            className="w-[7rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
+            className="w-[11rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
           >
             <Image
               src={Bin}
@@ -70,7 +70,7 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
               height={20}
               priority={true}
             />
-            Deletar
+            Deletar Lembrete
           </button>
         </div>
 

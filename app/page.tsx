@@ -7,6 +7,7 @@ import Logo from "@/public/Logo-principal.svg";
 import Plane from "@/public/Plane.svg";
 import Link from "next/link";
 import Marker from "@/public/Marker.svg";
+import Plus from "@/public/Plus.svg";
 
 //import components
 import Navbar from "./components/Navbar";
@@ -21,6 +22,7 @@ import useSchool from "./hooks/useSchool";
 import useUser from "./hooks/useUser";
 import GoogleMaps from "@/lib/GoogleMaps";
 import EditSchool from "./components/forms/edit-school/EditSchool";
+import CreateSchool from "./components/forms/create-school/CreateSchool";
 
 export default function Home() {
   //import school data
@@ -39,6 +41,8 @@ export default function Home() {
   //funcionalidade para aparecer o formulário de edição da escola
   const [editSchoolIndex, setEditSchoolIndex] = useState<number | null>(null);
   const [showForm, setShowForm] = useState<boolean>(false);
+
+  const [showCreateSchoolForm, setShowCreateSchoolForm] = useState<boolean>(false);
 
   return (
     <>
@@ -95,7 +99,7 @@ export default function Home() {
                     className="absolute left-[90%] lg:left-[95%] cursor-pointer"
                     onClick={() => {
                       setEditSchoolIndex(index);
-                      setShowForm(prev => !prev);
+                      setShowForm((prev) => !prev);
                     }}
                   />
                 ) : (
@@ -106,7 +110,7 @@ export default function Home() {
               <div className="flex flex-col justify-start mx-5 mb-5">
                 <p className="mb-1">
                   <span className="font-bold mr-3">Turnos de atuação:</span>
-                  {school.shift.join('; ')}
+                  {school.shift.join("; ")}
                 </p>
                 <p className="mb-1">
                   <span className="font-bold mr-3">Diretor(a):</span>
@@ -142,11 +146,43 @@ export default function Home() {
                 <GoogleMaps address={school.address} />
               </div>
               <EditSchool
-                showForm={editSchoolIndex === index && showForm} 
-                setShowForm={setShowForm} 
-                schoolName={school.name} />
+                showForm={editSchoolIndex === index && showForm}
+                setShowForm={setShowForm}
+                schoolName={school.name}
+              />
             </section>
           ))}
+
+        {
+          user?.role === "COORDENADOR(A)" ||
+          user?.role === "SECRETARIO(A)" ? (
+            <button
+              type="button"
+              className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+              onClick={() => setShowCreateSchoolForm(!showCreateSchoolForm)}
+            >
+              <Image
+                src={Plus}
+                width={15}
+                height={15}
+                alt=""
+                onClick={() => setShowCreateSchoolForm(!showCreateSchoolForm)}
+              />
+              Criar Escola
+            </button>
+        ) : (
+          ""
+        )}
+
+        {user?.role === "COORDENADOR(A)" ||
+        (user?.role === "SECRETARIO(A)" && showCreateSchoolForm) ? (
+          <CreateSchool
+            showCreateSchoolForm={showCreateSchoolForm}
+            setShowCreateSchoolForm={setShowCreateSchoolForm}
+          />
+        ) : (
+          ""
+        )}
 
         <Footer />
       </div>
