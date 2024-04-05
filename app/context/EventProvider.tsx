@@ -36,7 +36,6 @@ function EventProvider({ children }: ChildrenPropsType) {
           const userSchools = user?.school.map(({ schoolName }) => ({ schoolName }))
           const filteredData = data.filter((event: EventType) => userSchools?.some(s => s.schoolName === event.organizerSchool));
           setEvents(filteredData);
-          console.log(filteredData);
           return filteredData;
         }
       } catch (error) {
