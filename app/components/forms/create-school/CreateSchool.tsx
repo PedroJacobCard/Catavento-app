@@ -96,7 +96,7 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
 
   return (
     <div
-      className={`w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-50`}
+      className={`${showCreateSchoolForm ? 'block' : 'hidden'} w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-50`}
     >
       <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[55vw] lg:w-[35vw] h-[50vh] mx-2 lg:mx-[20rem] rounded-md pt-5 pb-5 overflow-y-scroll fixed top-[20vh] left-[0vw] md:left-[13vw] lg:left-[0vw]">
         <div className="flex justify-between items-center px-5">

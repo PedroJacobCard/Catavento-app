@@ -157,7 +157,6 @@ function Navbar() {
                         : "transparent"
                     }`}
                   >
-
                     {renderShiftIcon(shift)}
 
                     <h2 className="hidden sm:block font-bold text-xl my-auto mx-auto">
@@ -166,7 +165,6 @@ function Navbar() {
                   </div>
                 </Link>
               ))}
-
             </div>
           )}
         </div>
