@@ -7,6 +7,7 @@ import Link from "next/link";
 import Logo from "@/public/Logo-principal.svg";
 import Plane from "@/public/Plane.svg";
 import Marker from '@/public/Marker.svg';
+import Plus from '@/public/Plus.svg';
 
 //import components
 import Navbar from "@/app/components/Navbar";
@@ -35,7 +36,7 @@ function Calendario() {
   const [showForm, setShowForm] = useState<boolean>(false);
 
   //funcionalidades para aparecer o formulário de criação de eventos
-  const [showCreateEventForm, setShowCreateEventForm] = useState<boolean>(true);
+  const [showCreateEventForm, setShowCreateEventForm] = useState<boolean>(false);
 
   
   return (
@@ -85,8 +86,7 @@ function Calendario() {
                 <h1 className="max-w-[300px] lg:max-w-[350px] pb-5 pl-5 lg:pl-0 font-bold">
                   {event.organizerSchool}
                 </h1>
-                {user?.role === "COORDENADOR(A)" ||
-                user?.role === "SECRETARIO(A)" ? (
+                {user?.role !== "VOLUNTARIO(A)" ? (
                   <Image
                     src={Marker}
                     alt="Icon para editar"
@@ -122,15 +122,28 @@ function Calendario() {
             </section>
           ))}
 
-        {user?.role === "COORDENADOR(A)" ||
-        (user?.role === "SECRETARIO(A)" && showCreateEventForm) ? (
-          <CreateEvent
-            showCreateEventForm={showCreateEventForm}
-            setShowCreateEventForm={setShowCreateEventForm}
-          />
+        {user?.role !== "VOLUNTARIO(A)" ? (
+          <button
+            type="button"
+            className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+            onClick={() => setShowCreateEventForm(prev => !prev)}
+          >
+            <Image
+              src={Plus}
+              width={15}
+              height={15}
+              alt="Adicionar"
+            />
+            Criar Evento
+          </button>
         ) : (
           ""
         )}
+
+        <CreateEvent
+          showCreateEventForm={showCreateEventForm}
+          setShowCreateEventForm={setShowCreateEventForm}
+        />
 
         <Footer />
       </div>
