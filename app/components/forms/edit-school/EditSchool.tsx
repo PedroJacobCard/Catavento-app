@@ -22,6 +22,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import useUser from '@/app/hooks/useUser';
 import useSchool from '@/app/hooks/useSchool';
 
+//import toaster
+import toast from 'react-hot-toast';
+
 //funcionalidade para transformar Shift em array
 let shiftArray: string[] = [];
 for (const key in Shift) {
@@ -80,7 +83,7 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
   const addressToSimpleString = streetValue
     .concat(
       ", ",
-      numberValue <= 0 ? "" : numberValue.toString(),
+      numberValue < 0 ? "S/n" : numberValue.toString(),
       ", ",
       districtValue,
       ", ",
@@ -121,6 +124,8 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
           address: addressToSimpleString,
       };
     console.log(form);
+    setShowForm(!showForm);
+    toast.success("Escola editada com sucesso!")
   }
 
   return (
@@ -353,6 +358,22 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
                 className="px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
               />
 
+              <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mb-3 relative">
+                <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
+                <Image
+                  src={Info}
+                  alt="informativo"
+                  width={24}
+                  height={24}
+                  className="ml-4"
+                />
+                <p className="text-sm flex flex-col">
+                  Se não houver número, por favor escreva um número abaixo de zero.
+                  <span className="text-infoTrackBlue">
+                    Ex.: -1.
+                  </span>
+                </p>
+              </div>
               <label htmlFor="Endereço">Número do Prédio:</label>
               <input
                 type="number"

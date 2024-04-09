@@ -18,6 +18,9 @@ import { IMaskInput } from "react-imask";
 //import enums
 import { Shift } from "@/utils/Enums";
 
+//import toaster
+import toast from "react-hot-toast";
+
 //funcionalidade para transformar Shift em array
 let shiftArray: string[] = [];
 for (const key in Shift) {
@@ -26,6 +29,7 @@ for (const key in Shift) {
   }
 }
 
+//props type
 type CreateSchoolPropsType = {
   showCreateSchoolForm: boolean,
   setShowCreateSchoolForm: Dispatch<SetStateAction<boolean>>
@@ -60,7 +64,7 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
   const addressToSimpleString = streetValue
     .concat(
       ", ",
-      numberValue <= 0 ? "" : numberValue.toString(),
+      numberValue < 0 ? "S/n" : numberValue.toString(),
       ", ",
       districtValue,
       ", ",
@@ -92,11 +96,15 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
     };
     console.log(form);
     reset();
+    setShowCreateSchoolForm(!showCreateSchoolForm);
+    toast.success("Escola criada com sucesso!")
   };
 
   return (
     <div
-      className={`${showCreateSchoolForm ? 'block' : 'hidden'} w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-50`}
+      className={`${
+        showCreateSchoolForm ? "block" : "hidden"
+      } w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-50`}
     >
       <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[55vw] lg:w-[35vw] h-[50vh] mx-2 lg:mx-[20rem] rounded-md pt-5 pb-5 overflow-y-scroll fixed top-[20vh] left-[0vw] md:left-[13vw] lg:left-[0vw]">
         <div className="flex justify-between items-center px-5">
@@ -328,6 +336,21 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
                 className="px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
               />
 
+              <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mb-3 relative">
+                <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
+                <Image
+                  src={Info}
+                  alt="informativo"
+                  width={24}
+                  height={24}
+                  className="ml-4"
+                />
+                <p className="text-sm flex flex-col">
+                  Se não houver número, por favor escreva um número abaixo de
+                  zero.
+                  <span className="text-infoTrackBlue">Ex.: -1.</span>
+                </p>
+              </div>
               <label htmlFor="Endereço">Número do Prédio:</label>
               <input
                 type="number"

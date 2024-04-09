@@ -14,6 +14,7 @@ import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "../components/Footer";
 import CreateEvent from "../components/forms/create-event/CreateEvent";
+import EditEvent from "../components/forms/edit-event/EditEvent";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -34,6 +35,7 @@ function Calendario() {
 
   //funcionalidades para aparecer o formulário de edição de eventos
   const [showForm, setShowForm] = useState<boolean>(false);
+  const [editEventIndex, setEditEventIndex] = useState<number>(0);
 
   //funcionalidades para aparecer o formulário de criação de eventos
   const [showCreateEventForm, setShowCreateEventForm] = useState<boolean>(false);
@@ -79,14 +81,14 @@ function Calendario() {
                 eventIndex === 0 ? "mt-[9rem] md:mt-[5rem]" : "mt-5"
               } mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md`}
             >
-              <div className="flex items-center justify-start lg:justify-center relative">
-                <p className="absolute left-5 top-[3.5rem] lg:top-0 text-xl font-bold">
+              <div className="flex items-center justify-start lg:justify-center gap-8 relative">
+                <p className="absolute left-5 top-[80%] lg:top-0 text-xl font-bold">
                   {event.date}
                 </p>
                 <h1 className="max-w-[300px] lg:max-w-[350px] pb-5 pl-5 lg:pl-0 font-bold">
                   {event.organizerSchool}
                 </h1>
-                {user?.role !== "VOLUNTARIO(A)" ? (
+                {user?.role !== "VOLUNTARIO(A)" && event.organizerId === user?.id ? (
                   <Image
                     src={Marker}
                     alt="Icon para editar"
@@ -95,8 +97,8 @@ function Calendario() {
                     priority={true}
                     className="absolute left-[90%] lg:left-[95%] top-0 cursor-pointer"
                     onClick={() => {
-                      //setEditSchoolIndex(index);
-                      //setShowForm((prev) => !prev);
+                      setEditEventIndex(eventIndex);
+                      setShowForm((prev) => !prev);
                     }}
                   />
                 ) : (
@@ -119,6 +121,7 @@ function Calendario() {
                   <span className="font-normal">{`${event.startTime} - ${event.endTime}`}</span>
                 </p>
               </div>
+              <EditEvent showForm={editEventIndex === eventIndex && showForm} setShowForm={setShowForm} eventId={event.id} />
             </section>
           ))}
 

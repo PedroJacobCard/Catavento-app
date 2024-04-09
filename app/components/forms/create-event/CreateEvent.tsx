@@ -13,6 +13,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 //import costume hooks
 import useUser from "@/app/hooks/useUser";
 
+//import toaster
+import toast from "react-hot-toast";
+
+//props type
 type CreateEventPropsType = {
   showCreateEventForm: boolean,
   setShowCreateEventForm: Dispatch<SetStateAction<boolean>>
@@ -46,6 +50,9 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
 
   const onSubmit: SubmitHandler<FieldValidationCreateEvent> = (data) => {
     console.log(data)
+    reset();
+    setShowCreateEventForm(!showCreateEventForm);
+    toast.success("Evento criado com sucesso!")
   }
 
   return (
@@ -209,10 +216,10 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
             render={({ field }) => (
               <>
                 <label
-                  htmlFor="Horário Final"
+                  htmlFor="Horário de término"
                   className="m-auto font-bold mb-1"
                 >
-                  Horário Final:
+                  Horário de Término:
                 </label>
                 <input
                   type="time"

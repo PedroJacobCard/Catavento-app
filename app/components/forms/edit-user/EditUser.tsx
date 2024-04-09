@@ -21,6 +21,9 @@ import { schema, FieldValuesEditUser } from "./ValidationSchemaEditUser";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+//import toaster
+import toast from "react-hot-toast";
+
 //funcionalidade para transformar Role em array
 let roleArray: string[] = [];
 for (const key in Role) {
@@ -126,6 +129,8 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
       }),
     }
     console.log(formData);
+    setShowForm(!showForm);
+    toast.success("Perfil editado com sucesso!")
   }
   
   return (
