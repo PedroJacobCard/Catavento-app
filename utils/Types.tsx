@@ -153,3 +153,7 @@ export type UseRemeberContextType = {
 export type UseEventContextType = {
   events: EventType[] | null;
 }
+
+export type UseReportContextType = {
+  reports: ReportType[] | null;
+}

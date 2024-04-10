@@ -88,7 +88,7 @@ function Calendario() {
                 <h1 className="max-w-[300px] lg:max-w-[350px] pb-5 pl-5 lg:pl-0 font-bold">
                   {event.organizerSchool}
                 </h1>
-                {user?.role !== "VOLUNTARIO(A)" && event.organizerId === user?.id ? (
+                {user?.role !== "VOLUNTARIO(A)" && user?.school.some(s => s.schoolName ===event.organizerSchool) ? (
                   <Image
                     src={Marker}
                     alt="Icon para editar"
