@@ -51,7 +51,7 @@ export type ReportType = {
   id: string;
   authorName: string;
   schoolName: string;
-  shift: Shift;
+  classAndShift: string;
   theme: Theme;
   activitiesDone: Activities[];
   coworkers: number;

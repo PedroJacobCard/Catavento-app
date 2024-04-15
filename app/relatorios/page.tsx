@@ -18,12 +18,44 @@ import ShowShadow from "@/lib/ShowShadow";
 //import costume hooks
 import useReport from "../hooks/useReport";
 
-export default function Home() {
+//import types
+import { ReportType } from "@/utils/Types";
+
+function Report() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
 
   //importar relatórios
   const { reports } = useReport();
+
+  //funcionalidades para baixar os relatórios
+  const handleDownload = async (report: ReportType) => {
+    try {
+      const response = await fetch(`/api/downloadReport`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(report),
+      })
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", "relatório.pdf");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        console.log(response)
+        throw new Error('Não foi possível realizar o download');
+      }
+    } catch (error) {
+      console.error('Falha ao fazer o download', error)
+    }
+  }
 
   return (
     <>
@@ -81,12 +113,12 @@ export default function Home() {
                     </span>
                   </p>
                   <p className="font-bold">
-                    Tema:{" "}
+                    Tema:
                     <span className="font-normal ml-3">{report.theme}</span>
                   </p>
                   <p className="font-bold">
-                    Turno:
-                    <span className="font-normal ml-3">{report.shift}</span>
+                    Classe e turno:
+                    <span className="font-normal ml-3">{report.classAndShift}</span>
                   </p>
                   <p className="font-bold flex flex-wrap">
                     Etapas realizadas nesta temática:
@@ -130,8 +162,9 @@ export default function Home() {
               <button
                 type="button"
                 className="mx-2 md:mx-8 p-2 flex items-center w-[20vw] gap-3 m-auto py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+                onClick={() => handleDownload(report)}
               >
-                Baixar como documento word
+                Baixar como documento Word
               </button>
             </>
           ))}
@@ -141,3 +174,5 @@ export default function Home() {
     </>
   );
 }
+
+export default Report;

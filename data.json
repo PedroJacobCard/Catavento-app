@@ -179,7 +179,7 @@
           "id": "bhf83hbfdal9i783rhq9d23d56h",
           "authorName": "Luíz Almeida",
           "schoolName": "Colégio Estadual Lyceu, Goiânia-GO",
-          "shift": "MATUTINO",
+          "classAndShift": "6A, MATUTINO",
           "theme": "RESPEITO",
           "activitiesDone": [
             "RODA_DE_CONVERSA",
@@ -252,7 +252,7 @@
           "id": "jf8u4bf93bnd02dkjhq8934",
           "authorName": "Silvia Andrade",
           "schoolName": "Escola Municipal Professor fernandes, Goiânia-GO",
-          "shift": "NOTURNO",
+          "classAndShift": "6A, NOTURNO",
           "theme": "RESPEITO",
           "activitiesDone": [
             "RODA_DE_CONVERSA",
@@ -310,7 +310,7 @@
           "id": "fsnc94bf9swnj4bfa903kna",
           "authorName": "Letícia Alves",
           "schoolName": "Escola Municipal Professor fernandes, Goiânia-GO",
-          "shift": "VESPERTINO",
+          "classAndShift": "6A, VESPERTINO",
           "theme": "RESPEITO",
           "activitiesDone": [
             "RODA_DE_CONVERSA",
@@ -383,7 +383,7 @@
           "id": "hf74b2kfufmn59023fuh294rjf",
           "authorName": "Joanna Coelho",
           "schoolName": "Colégio Estadual Polivalent, Goiânia-GO",
-          "shift": "VESPERTINO",
+          "classAndShift": "6A, VESPERTINO",
           "theme": "RESPEITO",
           "activitiesDone": [
             "RODA_DE_CONVERSA",
@@ -723,7 +723,7 @@
           "id": "bhf83hbfdal9i783rhq9d23d56h",
           "authorName": "Luíz Almeida",
           "schoolName": "Colégio Estadual Lyceu, Goiânia-GO",
-          "shift": "MATUTINO",
+          "classAndShift": "6A, MATUTINO",
           "theme": "RESPEITO",
           "activitiesDone": [
             "RODA_DE_CONVERSA",
@@ -948,7 +948,7 @@
           "id": "fsnc94bf9swnj4bfa903kna",
           "authorName": "Letícia Alves",
           "schoolName": "Escola Municipal Professor fernandes, Goiânia-GO",
-          "shift": "VESPERTINO",
+          "classAndShift": "6A, VESPERTINO",
           "theme": "RESPEITO",
           "activitiesDone": [
             "RODA_DE_CONVERSA",
@@ -1127,7 +1127,7 @@
           "id": "hf74b2kfufmn59023fuh294rjf",
           "authorName": "Joanna Coelho",
           "schoolName": "Colégio Estadual Polivalent, Goiânia-GO",
-          "shift": "VESPERTINO",
+          "classAndShift": "6A, VESPERTINO",
           "theme": "RESPEITO",
           "activitiesDone": [
             "RODA_DE_CONVERSA",
@@ -1570,7 +1570,7 @@
       "id": "bhf83hbfdal9i783rhq9d23d56h",
       "authorName": "Luíz Almeida",
       "schoolName": "Colégio Estadual Lyceu, Goiânia-GO",
-      "shift": "MATUTINO",
+      "classAndShift": "6A, MATUTINO",
       "theme": "RESPEITO",
       "activitiesDone": [
         "RODA_DE_CONVERSA",
@@ -1592,7 +1592,7 @@
       "id": "fsnc94bf9swnj4bfa903kna",
       "authorName": "Letícia Alves",
       "schoolName": "Escola Municipal Professor fernandes, Goiânia-GO",
-      "shift": "VESPERTINO",
+      "classAndShift": "6A, VESPERTINO",
       "theme": "RESPEITO",
       "activitiesDone": [
         "RODA_DE_CONVERSA",
@@ -1614,7 +1614,7 @@
       "id": "jf8u4bf93bnd02dkjhq8934",
       "authorName": "Silvia Andrade",
       "schoolName": "Escola Municipal Professor fernandes, Goiânia-GO",
-      "shift": "NOTURNO",
+      "classAndShift": "6A, NOTURNO",
       "theme": "RESPEITO",
       "activitiesDone": [
         "RODA_DE_CONVERSA",
@@ -1636,7 +1636,7 @@
       "id": "hf74b2kfufmn59023fuh294rjf",
       "authorName": "Joanna Coelho",
       "schoolName": "Colégio Estadual Polivalent, Goiânia-GO",
-      "shift": "VESPERTINO",
+      "classAndShift": "6A, VESPERTINO",
       "theme": "RESPEITO",
       "activitiesDone": [
         "RODA_DE_CONVERSA",
