@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect, createRef, RefObject } from "react";
 import Image from "next/image";
 
 //import icons
@@ -33,10 +33,11 @@ function Report() {
   const { reports } = useReport();
 
   //funcionalidades para baixar os relatórios
-  const  downloadLink = useRef(null);
+  const downloadLinks = useRef<RefObject<HTMLDivElement>[]>([]);
+  const [, setForceUpdate] = useState(Date.now());
 
-  const handleDownload = async () => {
-    const inputData = downloadLink.current;
+  const handleDownload = async (reportIndex: number) => {
+    const inputData = downloadLinks.current[reportIndex].current;
     
     try {
       if (!inputData) throw new Error("Não foi possível acessar o link");
@@ -65,6 +66,14 @@ function Report() {
       console.error('Falha ao fazer o download', error)
     }
   }
+
+  useEffect(() => {
+    // Ensure downloadLinks.current is an array before //assigning new refs
+    if (Array.isArray(downloadLinks.current)) {
+      downloadLinks.current = reports!.map(() => createRef<HTMLDivElement>());
+    }
+    setForceUpdate(Date.now())
+  }, [reports]);
 
   return (
     <>
@@ -100,19 +109,19 @@ function Report() {
 
         {reports &&
           reports.map((report, reportIndex) => (
-            <>
-              <div ref={downloadLink}>
+            <div key={reportIndex}>
+              <div ref={downloadLinks.current[reportIndex]}>
                 <DownloadReport report={report} reportIndex={reportIndex} />
               </div>
 
               <button
                 type="button"
                 className="mx-2 md:mx-8 p-2 flex items-center w-[20vw] gap-3 m-auto py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
-                onClick={handleDownload}
+                onClick={() => handleDownload(reportIndex)}
               >
                 Baixar como documento Word
               </button>
-            </>
+            </div>
           ))}
 
         <Footer />
