@@ -4,7 +4,6 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
 //import icons
-import Plane from '@/public/Plane.svg';
 import Popup from '@/public/Popup.svg';
 import Close from '@/public/Cancel.svg';
 import Marker from '@/public/Marker.svg';

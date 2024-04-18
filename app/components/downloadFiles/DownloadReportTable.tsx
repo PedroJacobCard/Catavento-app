@@ -1,7 +1,6 @@
 //import types
 import { ReportType } from "@/utils/Types";
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 
 //props type
 type DownloadReportPropsType = {
@@ -47,21 +46,22 @@ function DownloadReport({ report }: DownloadReportPropsType) {
 
     questions.forEach((question, index) => {
       doc.setFont('helvetica');
-      doc.text(question, startX, startY + (index + 1) * rowHeight);
       doc.setFontSize(12);
-      doc.setFillColor(2, 2, 2);
+      doc.text(question, startX, startY + (index + 1) * rowHeight);
     });
-
+    
     answers.forEach((answer, index) => {
       const splitAnswers = doc.splitTextToSize(answer, columnWidth);
       let y = startX + (index + 1);
-
+      
       if (index === answers.length - 1) {
         splitAnswers.forEach((line: string) => {
-          doc.text(line, startX + 5, (y + doc.internal.pageSize.getHeight() - 160));
+          doc.setTextColor("blue");
+          doc.text(line, startX + 5, (y + doc.internal.pageSize.getHeight() - 170));
           y += 6;
         })
       } else {
+        doc.setTextColor("blue");
         doc.text(answer, startX + 5, startY + index * rowHeight + 19);
       }
 
@@ -73,7 +73,7 @@ function DownloadReport({ report }: DownloadReportPropsType) {
   return (
     <button
       type="button"
-      className="mx-2 md:mx-8 p-2 flex items-center w-[20vw] gap-3 m-auto py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+      className="mx-2 md:mx-8 p-2 flex items-center w-[9rem] gap-3 m-auto py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
       onClick={handleGeneratePDF}
     >
       Baixar como PDF

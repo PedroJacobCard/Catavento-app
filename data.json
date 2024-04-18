@@ -27,7 +27,11 @@
         }
       ],
       "report": [],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -125,7 +129,11 @@
         }
       ],
       "report": [],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -198,7 +206,11 @@
           "createdAt":"20/04/2023 17:40"
         }
       ],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -271,7 +283,11 @@
           "createdAt":"20/04/2023 17:40"
         }
       ],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -329,7 +345,11 @@
           "createdAt":"20/04/2023 17:40"
         }
       ],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -402,7 +422,11 @@
           "createdAt":"20/04/2023 17:40"
         }
       ],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -437,7 +461,11 @@
       ],
       "event": [],
       "report": [],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
 
@@ -474,7 +502,11 @@
       ],
       "event": [],
       "report": [],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -509,7 +541,11 @@
       ],
       "event": [],
       "report": [],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -544,7 +580,11 @@
       ],
       "event": [],
       "report": [],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     },
     {
@@ -579,7 +619,11 @@
       ],
       "event": [],
       "report": [],
-      "accounts": [],
+      "accounts": [
+        {
+          "access_token": ""
+        }
+      ],
       "sessions": []
     }
   ],

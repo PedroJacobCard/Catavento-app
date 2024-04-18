@@ -21,8 +21,8 @@ export enum Theme {
   "CORAGEM",
   "FE",
   "HUMILDADE",
-  "RESPONSAB",
-  "DOMINIO_P",
+  "RESPONSABILIDADE",
+  "DOMINIO_PROPRIO",
   "AMOR",
 }
 

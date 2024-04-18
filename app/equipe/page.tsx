@@ -31,9 +31,6 @@ function Equipe() {
   //importar dados do usuário logado
   const { user } = useUser();
 
-  //funcionalidades para estrair apenas escolas e seus turnos do objeto usuário
-  const schoolsAndShifts = user?.school.map(({ schoolName, shifts }) => ({ schoolName, shifts }));
-
   return (
     <>
       <Navbar />
@@ -72,7 +69,7 @@ function Equipe() {
               <section
                 key={index}
                 className={`dark:bg-darkMode bg-primaryBlue ${
-                  index === 0 ? "mt-[9rem] md:mt-[5rem]" : "mt-5"
+                  index === 0 ? "mt-[8rem] md:mt-[5rem]" : "mt-5"
                 } mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md`}
               >
                 <div className="flex flex-col items-center justify-center">
@@ -119,7 +116,11 @@ function Equipe() {
                   </div>
                 ))}
               </section>
-              <DownloadUsersTable school={school} />
+              {
+                user.role === "COORDENADOR(A)_GERAL" ? (
+                  <DownloadUsersTable school={school} />
+                ) : ("")
+              }
             </div>
           ))}
 
