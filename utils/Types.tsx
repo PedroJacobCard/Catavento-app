@@ -109,7 +109,7 @@ export type ClassType = {
   students: number;
   theme: Theme;
   schoolName: string;
-  shift: Shift;
+  shift: Shift | string;
   done: boolean;
   createdAt: string;
   updatedAt: string;
@@ -157,3 +157,7 @@ export type UseEventContextType = {
 export type UseReportContextType = {
   reports: ReportType[] | null;
 }
+
+export type UseClassContextTypes = {
+  classes: ClassType[] | null;
+};

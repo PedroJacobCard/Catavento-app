@@ -58,10 +58,10 @@ function DownloadUsersTable({ school }: DownloadUsersTablePropsType) {
       toast.error('Ops... Não deu pra achar os usuários...')
     }
   }
-  return ( 
-    <div>
-      <button type="button" onClick={generate}>Baixar tabela</button>
-    </div>
+  return (
+      <button type="button" className="mx-2 md:mx-8 p-2 flex items-center w-[9rem] gap-3 m-auto py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300" onClick={generate}>
+        Baixar em PDF
+      </button>
    );
 }
 

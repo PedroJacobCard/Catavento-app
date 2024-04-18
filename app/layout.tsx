@@ -14,6 +14,7 @@ import RememberProvider from "./context/RememberProvider";
 import { Toaster } from "react-hot-toast";
 import EventProvider from "./context/EventProvider";
 import ReportProvider from "./context/ReportProvider";
+import ClassProvider from "./context/ClassProvider";
 
 const ptSans = PT_Sans({weight: "400", style: "normal", subsets: ["cyrillic"]});
 
@@ -36,8 +37,10 @@ export default function RootLayout({
         <RememberProvider>
         <EventProvider>
         <ReportProvider>
+        <ClassProvider>
           <Toaster />
           {children}
+        </ClassProvider>
         </ReportProvider>
         </EventProvider>
         </RememberProvider>
