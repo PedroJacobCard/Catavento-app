@@ -17,20 +17,35 @@ import ShowShadow from "@/lib/ShowShadow";
 
 //import costume hooks
 import useClass from "@/app/hooks/useClass";
+import useSchool from "@/app/hooks/useSchool";
 
 //import enums
 import { Theme } from "@/utils/Enums";
-import useSchool from "@/app/hooks/useSchool";
+import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
 
 function Matutino() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
 
   //funcionalidades para transformar temas em array
-  let themeArray = [];
+  let themeArray: string[] = [];
   for (let key in Theme) {
     if (isNaN(Number(Theme[key]))) {
-      themeArray.push(Theme[key]);
+      switch (Theme[key]) {
+        case "SUPERACAO": themeArray.push("Superação");
+        break;
+        case "ESPERANCA": themeArray.push("Esperança");
+        break;
+        case "GRATIDAO": themeArray.push("Gratidão");
+        break;
+        case "COMPAIXAO": themeArray.push("Compaixão");
+        break;
+        case "FE": themeArray.push("Fé");
+        break;
+        case "DOMINIO_PROPRIO": themeArray.push("Dominio Próprio");
+        break;
+        default: themeArray.push(Theme[key].charAt(0).toUpperCase() + Theme[key].slice(1).toLowerCase());
+      }
     }
   }
 
@@ -80,26 +95,37 @@ function Matutino() {
 
         {filteredSchools.map((school, schoolIndex) => (
           <div key={schoolIndex}>
-            <div className={`${
-              schoolIndex === 0 ? "mt-[8rem] md:mt-[5rem]" : "mt-5"
+            <div
+              className={`${
+                schoolIndex === 0 ? "mt-[8rem] md:mt-[5rem]" : "mt-5"
               } flex flex-col items-start mx-2 md:ml-[2rem] gap-3 lg:flex-row lg:justify-between lg:items-top`}
             >
               <h1 className="font-bold text-xl">{school.name}</h1>
             </div>
             {themeArray?.map((theme, themeIndex) => (
-                <section key={themeIndex} className="dark:bg-darkMode bg-primaryBlue mt-5 mx-2 md:mx-[2rem] rounded-md  overflow-hidden py-5  shadow-md">
-                  <div className="flex flex-col items-start mx-5 gap-3 lg:flex-row lg:justify-between lg:items-top">
-                    <h1 className="max-w-[300px] md:max-w-[350px] font-bold text-xl">
-                      {theme}
-                    </h1>
-                  </div>
+              <section
+                key={themeIndex}
+                className={`${
+                themeIndex === 0 ? "mt-2" : "mt-5"
+              } dark:bg-darkMode bg-primaryBlue mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5  shadow-md`}
+              >
+                <div className="flex items-start justify-between mx-5 gap-3 flex-row lg:items-top">
+                  <h1 className="max-w-[300px] md:max-w-[350px] font-bold text-xl">
+                    {theme}
+                  </h1>
+                  <DownloadThemeFile theme={theme} />
+                  {
+                    classes?.filter(cla => cla.theme.toString() === theme).map((cla, claIndex) => (
+                      <p key={claIndex}>{cla.name}</p>
+                    ))
+                  }
+                </div>
 
-                  <div className="flex flex-col items-start mx-2 mt-5 gap-3 p-3 lg:py-0"></div>
-                </section>
+                <div className="flex flex-col items-start mx-2 mt-5 gap-3 p-3 lg:py-0"></div>
+              </section>
             ))}
           </div>
         ))}
-
 
         <Footer />
       </div>
