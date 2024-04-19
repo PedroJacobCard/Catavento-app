@@ -1,6 +1,13 @@
+import Image from "next/image";
+
 //import types
 import { ReportType } from "@/utils/Types";
+
+//import bilioteca
 import jsPDF from "jspdf";
+
+//import icons
+import Download from "@/public/Download.svg";
 
 //props type
 type DownloadReportPropsType = {
@@ -73,9 +80,10 @@ function DownloadReport({ report }: DownloadReportPropsType) {
   return (
     <button
       type="button"
-      className="mx-2 md:mx-8 p-2 flex items-center w-[9rem] gap-3 m-auto py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+      className="mx-2 md:mx-8 p-2 flex items-center justify-center w-[11rem] gap-3 py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
       onClick={handleGeneratePDF}
     >
+      <Image src={Download} alt="Baixar relatório" width={25} height={25} priority={true}/>
       Baixar como PDF
     </button>
   );

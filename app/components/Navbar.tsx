@@ -151,7 +151,7 @@ function Navbar() {
               {shiftToLowerCase.map((shift, index) => (
                 <Link key={index} href={`/temas/${shift}`}>
                   <div
-                    className={`w-[4rem] h-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300 opacity-0 group-hover:opacity-100  ${
+                    className={`w-[4rem] h-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${
                       router === `/temas/${shift}`
                         ? "dark:bg-darkModeBgColor bg-secondaryBlue opacity-100"
                         : "transparent"

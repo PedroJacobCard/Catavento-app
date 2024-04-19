@@ -1,9 +1,14 @@
+import Image from "next/image";
+
 //import bibliotecas
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 
 //import types
 import { SchoolOnUserType } from "@/utils/Types";
+
+//importar icons
+import Download from '@/public/Download.svg';
 
 //import custom hooks
 import useUsers from "@/app/hooks/useUsers";
@@ -59,10 +64,21 @@ function DownloadUsersTable({ school }: DownloadUsersTablePropsType) {
     }
   }
   return (
-      <button type="button" className="mx-2 md:mx-8 p-2 flex items-center w-[9rem] gap-3 m-auto py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300" onClick={generate}>
-        Baixar em PDF
-      </button>
-   );
+    <button
+      type="button"
+      className="mx-2 md:mx-8 p-2 flex items-center justify-center w-[10rem] gap-3 py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+      onClick={generate}
+    >
+      <Image
+        src={Download}
+        alt="Baixar relatório"
+        width={25}
+        height={25}
+        priority={true}
+      />
+      Baixar em PDF
+    </button>
+  );
 }
 
 export default DownloadUsersTable;
