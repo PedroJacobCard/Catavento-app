@@ -61,6 +61,9 @@ function Matutino() {
   //filtrar escolas das classes do período matutino
   const filteredSchools = schools.filter(sch => filterMorningClasses?.some(cla => cla.schoolName === sch.name))
 
+  //funcionalidades para somar o numero de alunos que fizeram o devido tema
+  //const handleNumberOfStudentsChange = ()
+
   return (
     <>
       <Navbar />
@@ -69,7 +72,7 @@ function Matutino() {
         setIsRememberOpen={setIsRememberOpen}
       />
       <div className="lg:max-w-[75vw] md:max-w-[65vw] max-w-full md:ml-[70px]">
-        <header className="w-full h-[4rem] dark:bg-darkMode bg-primaryBlue flex md:hidden justify-center items-center fixed top-0">
+        <header className="w-full h-[4rem] dark:bg-darkMode bg-primaryBlue flex md:hidden justify-center items-center fixed top-0 z-50">
           <Link href={"/"}>
             <Image
               src={Logo}
@@ -106,22 +109,70 @@ function Matutino() {
               <section
                 key={themeIndex}
                 className={`${
-                themeIndex === 0 ? "mt-2" : "mt-5"
-              } dark:bg-darkMode bg-primaryBlue mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5  shadow-md`}
+                  themeIndex === 0 ? "mt-2" : "mt-5"
+                } dark:bg-darkMode bg-primaryBlue mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md relative`}
               >
-                <div className="flex items-start justify-between mx-5 gap-3 flex-row lg:items-top">
+                <div className="flex items-start justify-between mx-5 mb-5 flex-row lg:items-top">
                   <h1 className="max-w-[300px] md:max-w-[350px] font-bold text-xl">
                     {theme}
                   </h1>
                   <DownloadThemeFile theme={theme} />
-                  {
-                    classes?.filter(cla => cla.theme.toString() === theme).map((cla, claIndex) => (
-                      <p key={claIndex}>{cla.name}</p>
-                    ))
-                  }
                 </div>
+                <div className="flex flex-wrap mt-9">
+                  {filterMorningClasses
+                    ?.filter((cla) => {
+                      let transformedThemesOnClass: string[] = [];
+                      switch (cla.theme.toString()) {
+                        case "SUPERACAO":
+                          transformedThemesOnClass.push("Superação");
+                          break;
+                        case "ESPERANCA":
+                          transformedThemesOnClass.push("Esperança");
+                          break;
+                        case "GRATIDAO":
+                          transformedThemesOnClass.push("Gratidão");
+                          break;
+                        case "COMPAIXAO":
+                          transformedThemesOnClass.push("Compaixão");
+                          break;
+                        case "FE":
+                          transformedThemesOnClass.push("Fé");
+                          break;
+                        case "DOMINIO_PROPRIO":
+                          transformedThemesOnClass.push("Dominio Próprio");
+                          break;
+                        default:
+                          transformedThemesOnClass.push(
+                            cla.theme.toString().charAt(0).toUpperCase() +
+                              cla.theme.toString().slice(1).toLowerCase()
+                          );
+                      }
+                      return transformedThemesOnClass[0] === theme;
+                    })
+                    .map((cla, claIndex) => (
+                      <div key={claIndex} className="flex">
+                        {claIndex === 0 ? (
+                          <div className="absolute top-[3.5rem] right-5">
+                            <p>
+                              {cla.done
+                                ? filterMorningClasses
+                                    .filter(c => c.theme === cla.theme && c.done)
+                                    .map((cla) => cla.students)
+                                    .reduce((acc, current) => acc + current, 0)
+                                : 0}{" "}
+                              Alunos fizeram esta temática
+                            </p>
+                          </div>
+                        ) : (
+                          ""
+                        )}
 
-                <div className="flex flex-col items-start mx-2 mt-5 gap-3 p-3 lg:py-0"></div>
+                        <div className="flex flex-col items-center justify-center ml-5 my-2 p-5 dark:bg-darkModeBgColor bg-white rounded-md shadow-md">
+                          <p>{cla.name}</p>
+                        </div>
+                      </div>
+                    ))}
+                </div>
               </section>
             ))}
           </div>
