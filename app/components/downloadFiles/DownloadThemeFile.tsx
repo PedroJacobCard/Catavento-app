@@ -30,6 +30,7 @@ function DownloadThemeFile({ theme }: DownloadThemeFilePropsType) {
       priority={true}
       className="cursor-pointer"
       onClick={handleGeneratePDF}
+      title={`Baixar o documento ${theme}`}
     />
   );
 }
