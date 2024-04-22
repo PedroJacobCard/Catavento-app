@@ -1,53 +1,33 @@
 "use client";
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 //import icons
 import Logo from "@/public/Logo-principal.svg";
 import Plane from "@/public/Plane.svg";
-import Link from "next/link";
+import Marker from "@/public/Marker.svg";
+import Plus from "@/public/Plus.svg";
+import Form from "@/public/Form.svg";
 
 //import components
 import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
+import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
+import { themeArray } from "@/lib/ThemeArray";
 
 //import costume hooks
 import useClass from "@/app/hooks/useClass";
 import useSchool from "@/app/hooks/useSchool";
-
-//import enums
-import { Theme } from "@/utils/Enums";
-import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
+import useUser from "@/app/hooks/useUser";
 
 function Matutino() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
-
-  //funcionalidades para transformar temas em array
-  let themeArray: string[] = [];
-  for (let key in Theme) {
-    if (isNaN(Number(Theme[key]))) {
-      switch (Theme[key]) {
-        case "SUPERACAO": themeArray.push("Superação");
-        break;
-        case "ESPERANCA": themeArray.push("Esperança");
-        break;
-        case "GRATIDAO": themeArray.push("Gratidão");
-        break;
-        case "COMPAIXAO": themeArray.push("Compaixão");
-        break;
-        case "FE": themeArray.push("Fé");
-        break;
-        case "DOMINIO_PROPRIO": themeArray.push("Dominio Próprio");
-        break;
-        default: themeArray.push(Theme[key].charAt(0).toUpperCase() + Theme[key].slice(1).toLowerCase());
-      }
-    }
-  }
 
   //import classes data
   const { classes } = useClass();
@@ -55,14 +35,14 @@ function Matutino() {
   //import schools data
   const { schools } = useSchool();
 
+  //import user data
+  const { user } = useUser();
+
   //filtrar classes do matutino
   const filterMorningClasses = classes?.filter(cla => cla.shift === "MATUTINO")
 
   //filtrar escolas das classes do período matutino
   const filteredSchools = schools.filter(sch => filterMorningClasses?.some(cla => cla.schoolName === sch.name))
-
-  //funcionalidades para somar o numero de alunos que fizeram o devido tema
-  //const handleNumberOfStudentsChange = ()
 
   return (
     <>
@@ -118,7 +98,7 @@ function Matutino() {
                   </h1>
                   <DownloadThemeFile theme={theme} />
                 </div>
-                <div className="flex flex-wrap mt-9">
+                <div className="flex flex-wrap mt-9 items-center justify-start gap-3 mx-5 mb-3">
                   {filterMorningClasses
                     ?.filter((cla) => {
                       let transformedThemesOnClass: string[] = [];
@@ -147,16 +127,23 @@ function Matutino() {
                               cla.theme.toString().slice(1).toLowerCase()
                           );
                       }
-                      return transformedThemesOnClass[0] === theme;
+                      return (
+                        transformedThemesOnClass[0] === theme &&
+                        cla.schoolName === school.name
+                      );
                     })
                     .map((cla, claIndex) => (
                       <div key={claIndex} className="flex">
+                        {/*Função abaixo serve para mostrar a mesagem somente uma vez, 
+                        pois a mesagem se repete por causa do loop*/}
                         {claIndex === 0 ? (
                           <div className="absolute top-[3.5rem] right-5">
                             <p>
                               {cla.done
                                 ? filterMorningClasses
-                                    .filter(c => c.theme === cla.theme && c.done)
+                                    .filter(
+                                      (c) => c.theme === cla.theme && c.done
+                                    )
                                     .map((cla) => cla.students)
                                     .reduce((acc, current) => acc + current, 0)
                                 : 0}{" "}
@@ -167,12 +154,76 @@ function Matutino() {
                           ""
                         )}
 
-                        <div className="flex flex-col items-center justify-center ml-5 my-2 p-5 dark:bg-darkModeBgColor bg-white rounded-md shadow-md">
-                          <p>{cla.name}</p>
+                        <div className="flex flex-col items-center justify-center min-w-[100px] my-2 p-1 dark:bg-darkModeBgColor bg-white rounded-md shadow-md">
+                          <div className="flex items-center justify-between w-full">
+                            <input
+                              type="checkbox"
+                              checked={cla.done}
+                              unselectable="off"
+                            />
+
+                            {user?.role === "COORDENADOR(A)" ||
+                            user?.role === "SECRETARIO(A)" ? (
+                              <Image
+                                src={Marker}
+                                alt="Alterar classe"
+                                width={15}
+                                height={15}
+                                priority={true}
+                              />
+                            ) : (
+                              ""
+                            )}
+                          </div>
+
+                          <div className="flex flex-col items-center justify-center mt-2">
+                            <p className="font-bold">{cla.name}</p>
+                            <p>
+                              <span>{cla.students}</span> Alunos
+                            </p>
+                          </div>
                         </div>
                       </div>
                     ))}
+                  {user?.role === "COORDENADOR(A)" ||
+                  user?.role === "SECRETARIO(A)" ? (
+                    <button
+                      type="button"
+                      className="w-10 h-10 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
+                    >
+                      <Image
+                        src={Plus}
+                        alt="addicionar classe"
+                        width={25}
+                        height={25}
+                        priority={true}
+                        className="m-auto"
+                        title="Adicionar Classe"
+                      />
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </div>
+
+                {user?.role === "COORDENADOR(A)" ||
+                user?.role === "SECRETARIO(A)" ? (
+                  <button
+                    type="button"
+                    className="w-auto h-10 flex items-center justify-center gap-3 px-2 mx-5 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
+                  >
+                    <Image
+                      src={Form}
+                      alt="Relatório"
+                      width={25}
+                      height={25}
+                      priority={true}
+                    />
+                    Fazer relatório
+                  </button>
+                ) : (
+                  ""
+                )}
               </section>
             ))}
           </div>
