@@ -9,43 +9,49 @@ import { SubmitHandler, Controller, useForm } from "react-hook-form";
 import { schema, FieldValuesCreateClass } from './ValidationSchemaCreateClass';
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import toast from "react-hot-toast";
 
 //props type
 type CreateClassPropsType = {
   showCreateClassForm: boolean,
   setShowCreateClassForm: Dispatch<SetStateAction<boolean>>,
   schoolName: string,
-  theme: string
+  theme: string,
+  shift: string
 };
 
-function CreateClass({ showCreateClassForm, setShowCreateClassForm, schoolName, theme }: CreateClassPropsType) {
+function CreateClass({ showCreateClassForm, setShowCreateClassForm, schoolName, theme, shift }: CreateClassPropsType) {
   //funcionalidades para enviar se a classe já fez a temática ou não
   const [classDone, setClassDone] = useState<boolean>(false);
 
   //funcionalidades para enviar os dados do formulário
-  const { 
-    register, 
+  const {
     control,
-    handleSubmit, 
-    formState: {errors}
+    handleSubmit,
+    formState: { errors },
+    reset,
   } = useForm<FieldValuesCreateClass>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: '',
+      name: "",
       students: 0,
       done: classDone,
       schoolName: schoolName,
-      theme: theme
-    }
-  })
+      theme: theme,
+      shift: shift,
+    },
+  });
 
   const onSubmit: SubmitHandler<FieldValuesCreateClass> = (data) => {
     const formData = {
       ...data,
-      done: classDone
-    }
-    console.log(formData)
-  }
+      done: classDone,
+    };
+    setShowCreateClassForm(!setShowCreateClassForm);
+    reset();
+    toast.success("Classe criada com sucesso!");
+    console.log(formData);
+  };
 
   return (
     <div

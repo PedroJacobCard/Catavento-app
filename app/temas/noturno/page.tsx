@@ -25,10 +25,17 @@ import { themeArray } from "@/lib/ThemeArray";
 import useClass from "@/app/hooks/useClass";
 import useSchool from "@/app/hooks/useSchool";
 import useUser from "@/app/hooks/useUser";
+import CreateClass from "@/app/components/forms/create-class/CreateClass";
+import { Theme } from "@/utils/Enums";
 
 function Noturno() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
+
+  //funcionalidades para mostrar o formulário de criação de classe
+  const [showCreateClassForm, setShowCreateClassForm] =
+    useState<boolean>(false);
+  const [createClassIndex, setCreateClassIndex] = useState<number>(0);
 
   //import classes data
   const { classes } = useClass();
@@ -40,9 +47,7 @@ function Noturno() {
   const { user } = useUser();
 
   //filtrar classes do noturno
-  const filterNightClasses = classes?.filter(
-    (cla) => cla.shift === "NOTURNO"
-  );
+  const filterNightClasses = classes?.filter((cla) => cla.shift === "NOTURNO");
 
   //filtrar escolas das classes do período noturno
   const filteredSchools = schools.filter((sch) =>
@@ -127,7 +132,9 @@ function Noturno() {
                                 transformedThemesOnClass.push("Fé");
                                 break;
                               case "DOMINIO_PROPRIO":
-                                transformedThemesOnClass.push("Dominio Próprio");
+                                transformedThemesOnClass.push(
+                                  "Dominio Próprio"
+                                );
                                 break;
                               default:
                                 transformedThemesOnClass.push(
@@ -143,7 +150,7 @@ function Noturno() {
                           })
                           .map((cla) => cla.students)
                           .reduce((acc, current) => acc + current, 0)}
-                        </span> {" "}
+                      </span>{" "}
                       Alunos fizeram esta temática
                     </p>
                   </div>
@@ -228,6 +235,10 @@ function Noturno() {
                         priority={true}
                         className="m-auto"
                         title="Adicionar Classe"
+                        onClick={() => {
+                          setShowCreateClassForm(!showCreateClassForm);
+                          setCreateClassIndex(themeIndex)
+                        }}
                       />
                     </button>
                   ) : (
@@ -253,6 +264,15 @@ function Noturno() {
                 ) : (
                   ""
                 )}
+                <CreateClass
+                  showCreateClassForm={
+                    createClassIndex === themeIndex && showCreateClassForm
+                  }
+                  setShowCreateClassForm={setShowCreateClassForm}
+                  schoolName={school.name}
+                  theme={Theme[themeIndex]}
+                  shift="NOTURNO"
+                />
               </section>
             ))}
           </div>

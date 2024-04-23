@@ -15,6 +15,7 @@ import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
 import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
+import CreateClass from "@/app/components/forms/create-class/CreateClass";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -24,7 +25,8 @@ import { themeArray } from "@/lib/ThemeArray";
 import useClass from "@/app/hooks/useClass";
 import useSchool from "@/app/hooks/useSchool";
 import useUser from "@/app/hooks/useUser";
-import CreateClass from "@/app/components/forms/create-class/CreateClass";
+
+//import enums
 import { Theme } from "@/utils/Enums";
 
 function Matutino() {
@@ -268,6 +270,7 @@ function Matutino() {
                   theme={
                     Theme[themeIndex]
                   }
+                  shift="MATUTINO"
                 />
               </section>
             ))}

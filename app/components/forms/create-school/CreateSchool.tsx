@@ -133,7 +133,7 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
               className="ml-4"
             />
             <p className="text-sm flex flex-col">
-              Escreva abaixo o nome da escola de atuação e a frente, o nome da
+              Escreva abaixo o nome da escola de atuação e à frente, o nome da
               cidade em que ela se localiza.
               <span className="text-infoTrackBlue">
                 Ex.: Escola Municipal Alpes, Goiânia - GO.

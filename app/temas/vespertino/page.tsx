@@ -15,6 +15,7 @@ import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
 import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
+import CreateClass from "@/app/components/forms/create-class/CreateClass";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -25,9 +26,17 @@ import useClass from "@/app/hooks/useClass";
 import useSchool from "@/app/hooks/useSchool";
 import useUser from "@/app/hooks/useUser";
 
+//impoert enums
+import { Theme } from "@/utils/Enums";
+
 function Vespertino() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
+
+  //funcionalidades para mostrar o formulário de criação de classe
+  const [showCreateClassForm, setShowCreateClassForm] =
+    useState<boolean>(false);
+  const [createClassIndex, setCreateClassIndex] = useState<number>(0);
 
   //import classes data
   const { classes } = useClass();
@@ -229,6 +238,10 @@ function Vespertino() {
                         priority={true}
                         className="m-auto"
                         title="Adicionar Classe"
+                        onClick={() => {
+                          setShowCreateClassForm(!showCreateClassForm);
+                          setCreateClassIndex(themeIndex);
+                        }}
                       />
                     </button>
                   ) : (
@@ -254,6 +267,16 @@ function Vespertino() {
                 ) : (
                   ""
                 )}
+
+                <CreateClass
+                  showCreateClassForm={
+                    createClassIndex === themeIndex && showCreateClassForm
+                  }
+                  setShowCreateClassForm={setShowCreateClassForm}
+                  schoolName={school.name}
+                  theme={Theme[themeIndex]}
+                  shift="VESPERTINO"
+                />
               </section>
             ))}
           </div>
