@@ -1,11 +1,11 @@
 'use client'
 import Image from "next/image";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction} from "react";
 
 //import icons
 import Close from '@/public/Cancel.svg';
 
-//import react-hhok-form e schema de validação
+//import react-hook-form e schema de validação
 import { SubmitHandler, Controller, useForm } from "react-hook-form";
 import { schema, FieldValidationCreateEvent } from './ValidationSchemaCreateEvent';
 import { zodResolver } from "@hookform/resolvers/zod";
