@@ -103,6 +103,52 @@ function Vespertino() {
                   <DownloadThemeFile theme={theme} />
                 </div>
                 <div className="flex flex-wrap mt-9 items-center justify-start gap-3 mx-5 mb-3">
+                  <div className="absolute top-[3.5rem] right-5">
+                    <p>
+                      <span className="font-bold">
+                        {filterEveningClasses
+                          ?.filter((c) => {
+                            let transformedThemesOnClass: string[] = [];
+                            switch (c.theme.toString()) {
+                              case "SUPERACAO":
+                                transformedThemesOnClass.push("Superação");
+                                break;
+                              case "ESPERANCA":
+                                transformedThemesOnClass.push("Esperança");
+                                break;
+                              case "GRATIDAO":
+                                transformedThemesOnClass.push("Gratidão");
+                                break;
+                              case "COMPAIXAO":
+                                transformedThemesOnClass.push("Compaixão");
+                                break;
+                              case "FE":
+                                transformedThemesOnClass.push("Fé");
+                                break;
+                              case "DOMINIO_PROPRIO":
+                                transformedThemesOnClass.push(
+                                  "Dominio Próprio"
+                                );
+                                break;
+                              default:
+                                transformedThemesOnClass.push(
+                                  c.theme.toString().charAt(0).toUpperCase() +
+                                    c.theme.toString().slice(1).toLowerCase()
+                                );
+                            }
+                            return (
+                              transformedThemesOnClass[0] === theme &&
+                              c.done &&
+                              c.schoolName === school.name
+                            );
+                          })
+                          .map((cla) => cla.students)
+                          .reduce((acc, current) => acc + current, 0)}
+                      </span>{" "}
+                      Alunos fizeram esta temática
+                    </p>
+                  </div>
+
                   {filterEveningClasses
                     ?.filter((cla) => {
                       let transformedThemesOnClass: string[] = [];
@@ -138,24 +184,6 @@ function Vespertino() {
                     })
                     .map((cla, claIndex) => (
                       <div key={claIndex} className="flex">
-                        
-                          <div className="absolute top-[3.5rem] right-5">
-                            <p>
-                              {cla.done
-                                ? filterEveningClasses
-                                    .filter(
-                                      (c) =>
-                                        c.theme === cla.theme &&
-                                        c.done &&
-                                        c.schoolName === school.name
-                                    )
-                                    .map((cla) => cla.students)
-                                    .reduce((acc, current) => acc + current, 0)
-                                : 0}{" "}
-                              Alunos fizeram esta temática
-                            </p>
-                          </div>
-
                         <div className="flex flex-col items-center justify-center min-w-[100px] my-2 p-1 dark:bg-darkModeBgColor bg-white rounded-md shadow-md">
                           <div className="flex items-center justify-between w-full">
                             <input

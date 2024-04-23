@@ -24,10 +24,16 @@ import { themeArray } from "@/lib/ThemeArray";
 import useClass from "@/app/hooks/useClass";
 import useSchool from "@/app/hooks/useSchool";
 import useUser from "@/app/hooks/useUser";
+import CreateClass from "@/app/components/forms/create-class/CreateClass";
+import { Theme } from "@/utils/Enums";
 
 function Matutino() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
+
+  //funcionalidades para mostrar o formulário de criação de classe
+  const [showCreateClassForm, setShowCreateClassForm] = useState<boolean>(false);
+  const [createClassIndex, setCreateClassIndex] = useState<number>(0);
 
   //import classes data
   const { classes } = useClass();
@@ -99,6 +105,52 @@ function Matutino() {
                   <DownloadThemeFile theme={theme} />
                 </div>
                 <div className="flex flex-wrap mt-9 items-center justify-start gap-3 mx-5 mb-3">
+                  <div className="absolute top-[3.5rem] right-5">
+                    <p>
+                      <span className="font-bold">
+                        {filterMorningClasses
+                          ?.filter((c) => {
+                            let transformedThemesOnClass: string[] = [];
+                            switch (c.theme.toString()) {
+                              case "SUPERACAO":
+                                transformedThemesOnClass.push("Superação");
+                                break;
+                              case "ESPERANCA":
+                                transformedThemesOnClass.push("Esperança");
+                                break;
+                              case "GRATIDAO":
+                                transformedThemesOnClass.push("Gratidão");
+                                break;
+                              case "COMPAIXAO":
+                                transformedThemesOnClass.push("Compaixão");
+                                break;
+                              case "FE":
+                                transformedThemesOnClass.push("Fé");
+                                break;
+                              case "DOMINIO_PROPRIO":
+                                transformedThemesOnClass.push(
+                                  "Dominio Próprio"
+                                );
+                                break;
+                              default:
+                                transformedThemesOnClass.push(
+                                  c.theme.toString().charAt(0).toUpperCase() +
+                                    c.theme.toString().slice(1).toLowerCase()
+                                );
+                            }
+                            return (
+                              transformedThemesOnClass[0] === theme &&
+                              c.done &&
+                              c.schoolName === school.name
+                            );
+                          })
+                          .map((cla) => cla.students)
+                          .reduce((acc, current) => acc + current, 0)}
+                      </span>{" "}
+                      Alunos fizeram esta temática
+                    </p>
+                  </div>
+
                   {filterMorningClasses
                     ?.filter((cla) => {
                       let transformedThemesOnClass: string[] = [];
@@ -134,32 +186,13 @@ function Matutino() {
                     })
                     .map((cla, claIndex) => (
                       <div key={claIndex} className="flex">
-                        {/*Função abaixo serve para mostrar a mesagem somente uma vez, 
-                        pois a mesagem se repete por causa do loop*/}
-                        {claIndex === 0 ? (
-                          <div className="absolute top-[3.5rem] right-5">
-                            <p>
-                              {cla.done
-                                ? filterMorningClasses
-                                    .filter(
-                                      (c) => c.theme === cla.theme && c.done
-                                    )
-                                    .map((cla) => cla.students)
-                                    .reduce((acc, current) => acc + current, 0)
-                                : 0}{" "}
-                              Alunos fizeram esta temática
-                            </p>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-
                         <div className="flex flex-col items-center justify-center min-w-[100px] my-2 p-1 dark:bg-darkModeBgColor bg-white rounded-md shadow-md">
                           <div className="flex items-center justify-between w-full">
                             <input
                               type="checkbox"
                               checked={cla.done}
                               unselectable="off"
+                              readOnly
                             />
 
                             {user?.role === "COORDENADOR(A)" ||
@@ -199,6 +232,10 @@ function Matutino() {
                         priority={true}
                         className="m-auto"
                         title="Adicionar Classe"
+                        onClick={() => {
+                          setShowCreateClassForm(!showCreateClassForm)
+                          setCreateClassIndex(themeIndex)
+                        }}
                       />
                     </button>
                   ) : (
@@ -224,6 +261,14 @@ function Matutino() {
                 ) : (
                   ""
                 )}
+                <CreateClass 
+                  showCreateClassForm={createClassIndex === themeIndex && showCreateClassForm} 
+                  setShowCreateClassForm={setShowCreateClassForm}
+                  schoolName={school.name}
+                  theme={
+                    Theme[themeIndex]
+                  }
+                />
               </section>
             ))}
           </div>

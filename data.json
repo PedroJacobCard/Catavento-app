@@ -1247,7 +1247,7 @@
       "theme": "RESPEITO",
       "schoolName": "Escola Municipal Professor fernandes, Goiânia-GO",
       "shift": "VESPERTINO",
-      "done": false,
+      "done": true,
       "createdAt":"20/04/2023 17:40",
       "updatedAt": "20/07/2023 13:40"
     },
