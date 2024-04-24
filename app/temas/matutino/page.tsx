@@ -16,6 +16,7 @@ import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
 import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
 import CreateClass from "@/app/components/forms/create-class/CreateClass";
+import EditClass from "@/app/components/forms/edit-class/EditClass";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -36,6 +37,11 @@ function Matutino() {
   //funcionalidades para mostrar o formulário de criação de classe
   const [showCreateClassForm, setShowCreateClassForm] = useState<boolean>(false);
   const [createClassIndex, setCreateClassIndex] = useState<number>(0);
+
+  //funcionalidades para mostrar o formulário de edição de classe
+  const [showEditClassForm, setShowEditClassForm] = useState<boolean>(false);
+  const [editClassIndex, setEditClassIndex] = useState<number>(0);
+  console.log(editClassIndex)
 
   //import classes data
   const { classes } = useClass();
@@ -205,6 +211,10 @@ function Matutino() {
                                 width={15}
                                 height={15}
                                 priority={true}
+                                onClick={() => {
+                                  setEditClassIndex(themeIndex)
+                                  setShowEditClassForm(!showEditClassForm)
+                                }}
                               />
                             ) : (
                               ""
@@ -218,6 +228,9 @@ function Matutino() {
                             </p>
                           </div>
                         </div>
+                        
+                      
+                            <EditClass showEditClassForm={showEditClassForm} setShowEditClassForm={setShowEditClassForm} classId={cla.id}/>
                       </div>
                     ))}
                   {user?.role === "COORDENADOR(A)" ||
@@ -225,7 +238,7 @@ function Matutino() {
                     <button
                       type="button"
                       className="w-10 h-10 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
-                    >
+                      >
                       <Image
                         src={Plus}
                         alt="addicionar classe"

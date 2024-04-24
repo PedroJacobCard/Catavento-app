@@ -16,6 +16,7 @@ import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
 import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
 import CreateClass from "@/app/components/forms/create-class/CreateClass";
+import EditClass from "@/app/components/forms/edit-class/EditClass";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -37,6 +38,10 @@ function Vespertino() {
   const [showCreateClassForm, setShowCreateClassForm] =
     useState<boolean>(false);
   const [createClassIndex, setCreateClassIndex] = useState<number>(0);
+
+  //funcionalidades para mostrar o formulário de edição de classe
+  const [showEditClassForm, setShowEditClassForm] = useState<boolean>(false);
+  const [EditClassIndex, setEditClassIndex] = useState<number>(0);
 
   //import classes data
   const { classes } = useClass();
@@ -209,6 +214,10 @@ function Vespertino() {
                                 width={15}
                                 height={15}
                                 priority={true}
+                                onClick={() => {
+                                  setEditClassIndex(claIndex)
+                                  setShowEditClassForm(!showEditClassForm);
+                                }}
                               />
                             ) : (
                               ""
@@ -222,6 +231,17 @@ function Vespertino() {
                             </p>
                           </div>
                         </div>
+
+                        {EditClassIndex === claIndex ? (
+                          <EditClass
+                          showEditClassForm={
+                            EditClassIndex === claIndex && showEditClassForm
+                          }
+                          setShowEditClassForm={setShowEditClassForm}
+                          classId={cla.id}
+                          />
+                        ) : ("")}
+                        
                       </div>
                     ))}
                   {user?.role === "COORDENADOR(A)" ||
