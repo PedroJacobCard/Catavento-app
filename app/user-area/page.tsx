@@ -114,7 +114,11 @@ function UserArea() {
                 </p>
                 <p className="mb-1">
                   <span className="font-bold mr-3">Escolas de atuação:</span>
-                  {user.school.map((schooll) => schooll.schoolName + "; ")}
+                  {user.school.map((school, schoolIndex) =>
+                    schoolIndex !== user.school.length - 1
+                      ? school.schoolName + "; "
+                      : school.schoolName + "."
+                  )}
                 </p>
               </div>
             </>

@@ -20,7 +20,7 @@ import EditClass from "@/app/components/forms/edit-class/EditClass";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
-import { themeArray } from "@/lib/ThemeArray";
+import { themeArray } from "@/lib/EnumsToArray";
 
 //import costume hooks
 import useClass from "@/app/hooks/useClass";
@@ -41,7 +41,16 @@ function Vespertino() {
 
   //funcionalidades para mostrar o formulário de edição de classe
   const [showEditClassForm, setShowEditClassForm] = useState<boolean>(false);
-  const [EditClassIndex, setEditClassIndex] = useState<number>(0);
+  const [editClassIndexes, setEditClassIndexes] = useState<number[]>([]);
+
+  const handleEditClassClick = (
+    schoolIndex: number,
+    themeIndex: number,
+    claIndex: number
+  ) => {
+    setShowEditClassForm(!showEditClassForm);
+    setEditClassIndexes([schoolIndex, themeIndex, claIndex]);
+  };
 
   //import classes data
   const { classes } = useClass();
@@ -214,10 +223,14 @@ function Vespertino() {
                                 width={15}
                                 height={15}
                                 priority={true}
-                                onClick={() => {
-                                  setEditClassIndex(claIndex)
-                                  setShowEditClassForm(!showEditClassForm);
-                                }}
+                                onClick={() =>
+                                  handleEditClassClick(
+                                    schoolIndex,
+                                    themeIndex,
+                                    claIndex
+                                  )
+                                }
+                                className="cursor-pointer"
                               />
                             ) : (
                               ""
@@ -232,16 +245,16 @@ function Vespertino() {
                           </div>
                         </div>
 
-                        {EditClassIndex === claIndex ? (
-                          <EditClass
+                        <EditClass
                           showEditClassForm={
-                            EditClassIndex === claIndex && showEditClassForm
+                            editClassIndexes[0] === schoolIndex &&
+                            editClassIndexes[1] === themeIndex &&
+                            editClassIndexes[2] === claIndex &&
+                            showEditClassForm
                           }
                           setShowEditClassForm={setShowEditClassForm}
-                          classId={cla.id}
-                          />
-                        ) : ("")}
-                        
+                          cla={cla}
+                        />
                       </div>
                     ))}
                   {user?.role === "COORDENADOR(A)" ||

@@ -14,20 +14,23 @@ import { zodResolver } from "@hookform/resolvers/zod";
 //import toaster
 import toast from "react-hot-toast";
 
+//import types
+import { ClassType } from "@/utils/Types";
+
 //props type
 type CreateClassPropsType = {
   showEditClassForm: boolean;
   setShowEditClassForm: Dispatch<SetStateAction<boolean>>;
-  classId: string | undefined;
+  cla: ClassType;
 };
 
 function CreateClass({
   showEditClassForm,
   setShowEditClassForm,
-  classId
+  cla
 }: CreateClassPropsType) {
   //funcionalidades para enviar se a classe já fez a temática ou não
-  const [classDone, setClassDone] = useState<boolean>(false);
+  const [classDone, setClassDone] = useState<boolean>(cla.done);
 
   //funcionalidades para enviar os dados do formulário
   const {
@@ -38,12 +41,12 @@ function CreateClass({
   } = useForm<FieldValuesEditClass>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name:  "",
-      students:  0,
-      done:  false,
-      schoolName:  "",
-      theme:  "",
-      shift:  "",
+      name: cla.name || "",
+      students: cla.students || 0,
+      done: cla.done || false,
+      schoolName: cla.schoolName || "",
+      theme: cla.theme.toString() || "",
+      shift: cla.shift.toString() || "",
     },
   });
 
@@ -53,6 +56,7 @@ function CreateClass({
   const onSubmit: SubmitHandler<FieldValuesEditClass> = (data) => {
     const formData = {
       ...data,
+      id: cla.id,
       done: classDone,
     };
     setShowEditClassForm(!setShowEditClassForm);
@@ -90,7 +94,7 @@ function CreateClass({
               height={20}
               priority={true}
             />
-            Deletar Evento
+            Deletar classe
           </button>
         </div>
 
@@ -147,13 +151,13 @@ function CreateClass({
 
           <div className="flex flex-col justify-start">
             <label htmlFor="Completou" className="m-auto font-bold mb-1">
-              Esta classe já completou a temática {classId}?
+              Esta classe já completou a temática {cla.theme}?
             </label>
             <input
               type="checkbox"
               checked={classDone}
               onChange={(e) => setClassDone(e.target.checked)}
-              className="mb-5"
+              className="mb-5 cursor-pointer"
             />
           </div>
 

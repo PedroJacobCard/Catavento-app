@@ -46,11 +46,11 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
   const { user } = useUser();
   
   //funcionalidades para criar um array de turnos existentes da escola chamada
-  const selectedSchoolData = schools.filter(s => s.name === schoolName);
+  const selectedSchoolData = schools.filter(s => s.name === schoolName)[0];
   const initSelectedState: string[] = (() => {
     if (selectedSchoolData) {
       let userSchoolShifts: string[] = []; 
-      selectedSchoolData.map(s => s.shift.map(sh => {userSchoolShifts.push(sh.toString())}))
+      selectedSchoolData.shift.map(sh => {userSchoolShifts.push(sh.toString())})
       return userSchoolShifts
     } else {
       return [];
@@ -103,13 +103,21 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
     const {
       control,
       handleSubmit,
-      formState: { errors }
+      formState: { errors },
     } = useForm<FieldValuesEditSchool>({
       resolver: zodResolver(schema),
       defaultValues: {
-        shift: userSchoolShifts?.map(sh => sh.toString()),
-      }
-    })
+        name: selectedSchoolData?.name || "",
+        principal: selectedSchoolData?.principal || "",
+        coordinator_morning: selectedSchoolData?.coordinator_morning || "",
+        coordinator_evening: selectedSchoolData?.coordinator_evening || "",
+        coordinator_night: selectedSchoolData?.coordinator_night || "",
+        telephone: selectedSchoolData?.telephone  || "",
+        email: selectedSchoolData?.email || "",
+        address: selectedSchoolData?.address || '',
+        shift: userSchoolShifts?.map((sh) => sh.toString()),
+      },
+    });
     
       //se não for o formulário das outras escolas, não será renderizado
       if (!showForm) return null;

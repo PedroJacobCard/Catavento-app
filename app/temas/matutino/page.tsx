@@ -17,10 +17,11 @@ import Footer from "@/app/components/Footer";
 import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
 import CreateClass from "@/app/components/forms/create-class/CreateClass";
 import EditClass from "@/app/components/forms/edit-class/EditClass";
+import CreateReport from "@/app/components/forms/create-report/CreateReport";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
-import { themeArray } from "@/lib/ThemeArray";
+import { themeArray } from "@/lib/EnumsToArray";
 
 //import costume hooks
 import useClass from "@/app/hooks/useClass";
@@ -35,13 +36,35 @@ function Matutino() {
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
 
   //funcionalidades para mostrar o formulário de criação de classe
-  const [showCreateClassForm, setShowCreateClassForm] = useState<boolean>(false);
+  const [showCreateClassForm, setShowCreateClassForm] =
+    useState<boolean>(false);
   const [createClassIndex, setCreateClassIndex] = useState<number>(0);
 
   //funcionalidades para mostrar o formulário de edição de classe
   const [showEditClassForm, setShowEditClassForm] = useState<boolean>(false);
-  const [editClassIndex, setEditClassIndex] = useState<number>(0);
-  console.log(editClassIndex)
+  const [editClassIndexes, setEditClassIndexes] = useState<number[]>([]);
+  
+    const handleEditClassClick = (
+      schoolIndex: number,
+      themeIndex: number,
+      claIndex: number
+    ) => {
+      setShowEditClassForm(!showEditClassForm);
+      setEditClassIndexes([schoolIndex, themeIndex, claIndex]);
+    };
+
+  //funcionalidades para mostrar o formulário de criação de relatórios
+  const [showCreateReportForm, setShowCreateReportForm] =
+    useState<boolean>(false);
+  const [createReportIndexes, setCreateReportIndexes] = useState<number[]>([]);
+
+  const handleCreateReportClick = (
+    schoolIndex: number,
+    themeIndex: number,
+  ) => {
+    setShowCreateReportForm(!showCreateReportForm);
+    setCreateReportIndexes([schoolIndex, themeIndex]);
+  };
 
   //import classes data
   const { classes } = useClass();
@@ -53,10 +76,14 @@ function Matutino() {
   const { user } = useUser();
 
   //filtrar classes do matutino
-  const filterMorningClasses = classes?.filter(cla => cla.shift === "MATUTINO")
+  const filterMorningClasses = classes?.filter(
+    (cla) => cla.shift === "MATUTINO"
+  );
 
   //filtrar escolas das classes do período matutino
-  const filteredSchools = schools.filter(sch => filterMorningClasses?.some(cla => cla.schoolName === sch.name))
+  const filteredSchools = schools.filter((sch) =>
+    filterMorningClasses?.some((cla) => cla.schoolName === sch.name)
+  );
 
   return (
     <>
@@ -211,10 +238,14 @@ function Matutino() {
                                 width={15}
                                 height={15}
                                 priority={true}
-                                onClick={() => {
-                                  setEditClassIndex(themeIndex)
-                                  setShowEditClassForm(!showEditClassForm)
-                                }}
+                                onClick={() =>
+                                  handleEditClassClick(
+                                    schoolIndex,
+                                    themeIndex,
+                                    claIndex
+                                  )
+                                }
+                                className="cursor-pointer"
                               />
                             ) : (
                               ""
@@ -228,9 +259,17 @@ function Matutino() {
                             </p>
                           </div>
                         </div>
-                        
-                      
-                            <EditClass showEditClassForm={showEditClassForm} setShowEditClassForm={setShowEditClassForm} classId={cla.id}/>
+
+                        <EditClass
+                          showEditClassForm={
+                            editClassIndexes[0] === schoolIndex &&
+                            editClassIndexes[1] === themeIndex &&
+                            editClassIndexes[2] === claIndex &&
+                            showEditClassForm
+                          }
+                          setShowEditClassForm={setShowEditClassForm}
+                          cla={cla}
+                        />
                       </div>
                     ))}
                   {user?.role === "COORDENADOR(A)" ||
@@ -238,7 +277,7 @@ function Matutino() {
                     <button
                       type="button"
                       className="w-10 h-10 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
-                      >
+                    >
                       <Image
                         src={Plus}
                         alt="addicionar classe"
@@ -248,8 +287,8 @@ function Matutino() {
                         className="m-auto"
                         title="Adicionar Classe"
                         onClick={() => {
-                          setShowCreateClassForm(!showCreateClassForm)
-                          setCreateClassIndex(themeIndex)
+                          setShowCreateClassForm(!showCreateClassForm);
+                          setCreateClassIndex(themeIndex);
                         }}
                       />
                     </button>
@@ -263,6 +302,9 @@ function Matutino() {
                   <button
                     type="button"
                     className="w-auto h-10 flex items-center justify-center gap-3 px-2 mx-5 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
+                    onClick={() =>
+                      handleCreateReportClick(schoolIndex, themeIndex)
+                    }
                   >
                     <Image
                       src={Form}
@@ -276,13 +318,25 @@ function Matutino() {
                 ) : (
                   ""
                 )}
-                <CreateClass 
-                  showCreateClassForm={createClassIndex === themeIndex && showCreateClassForm} 
+                <CreateClass
+                  showCreateClassForm={
+                    createClassIndex === themeIndex && showCreateClassForm
+                  }
                   setShowCreateClassForm={setShowCreateClassForm}
                   schoolName={school.name}
-                  theme={
-                    Theme[themeIndex]
+                  theme={Theme[themeIndex]}
+                  shift="MATUTINO"
+                />
+
+                <CreateReport
+                  showCreateReportForm={
+                    createReportIndexes[0] === schoolIndex &&
+                    createReportIndexes[1] === themeIndex &&
+                    showCreateReportForm
                   }
+                  setShowCreateReportForm={setShowCreateReportForm}
+                  theme={Theme[themeIndex]}
+                  schoolName={school.name}
                   shift="MATUTINO"
                 />
               </section>

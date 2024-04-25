@@ -15,17 +15,20 @@ import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
 import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
+import CreateClass from "@/app/components/forms/create-class/CreateClass";
+import EditClass from "@/app/components/forms/edit-class/EditClass";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
-import { themeArray } from "@/lib/ThemeArray";
+import { themeArray } from "@/lib/EnumsToArray";
 
 
 //import costume hooks
 import useClass from "@/app/hooks/useClass";
 import useSchool from "@/app/hooks/useSchool";
 import useUser from "@/app/hooks/useUser";
-import CreateClass from "@/app/components/forms/create-class/CreateClass";
+
+//import enums
 import { Theme } from "@/utils/Enums";
 
 function Noturno() {
@@ -36,6 +39,19 @@ function Noturno() {
   const [showCreateClassForm, setShowCreateClassForm] =
     useState<boolean>(false);
   const [createClassIndex, setCreateClassIndex] = useState<number>(0);
+
+  //funcionalidades para mostrar o formulário de edição de classe
+  const [showEditClassForm, setShowEditClassForm] = useState<boolean>(false);
+  const [editClassIndexes, setEditClassIndexes] = useState<number[]>([]);
+
+  const handleEditClassClick = (
+    schoolIndex: number,
+    themeIndex: number,
+    claIndex: number
+  ) => {
+    setShowEditClassForm(!showEditClassForm);
+    setEditClassIndexes([schoolIndex, themeIndex, claIndex]);
+  };
 
   //import classes data
   const { classes } = useClass();
@@ -206,6 +222,14 @@ function Noturno() {
                                 width={15}
                                 height={15}
                                 priority={true}
+                                onClick={() =>
+                                  handleEditClassClick(
+                                    schoolIndex,
+                                    themeIndex,
+                                    claIndex
+                                  )
+                                }
+                                className="cursor-pointer"
                               />
                             ) : (
                               ""
@@ -219,6 +243,17 @@ function Noturno() {
                             </p>
                           </div>
                         </div>
+
+                        <EditClass
+                          showEditClassForm={
+                            editClassIndexes[0] === schoolIndex &&
+                            editClassIndexes[1] === themeIndex &&
+                            editClassIndexes[2] === claIndex &&
+                            showEditClassForm
+                          }
+                          setShowEditClassForm={setShowEditClassForm}
+                          cla={cla}
+                        />
                       </div>
                     ))}
                   {user?.role === "COORDENADOR(A)" ||
@@ -237,7 +272,7 @@ function Noturno() {
                         title="Adicionar Classe"
                         onClick={() => {
                           setShowCreateClassForm(!showCreateClassForm);
-                          setCreateClassIndex(themeIndex)
+                          setCreateClassIndex(themeIndex);
                         }}
                       />
                     </button>
