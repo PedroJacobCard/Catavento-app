@@ -10,8 +10,13 @@ import { SubmitHandler, Controller, useForm } from "react-hook-form";
 import { schema, FieldValuesCreateReport } from './ValidationSchemaCreateReport';
 import { zodResolver } from "@hookform/resolvers/zod";
 
+//import costume hooks
+import useUser from "@/app/hooks/useUser";
+
 //import toaster
 import toast from "react-hot-toast";
+
+//import lib functions
 import { activitiesDoneArray, resourcesArray } from "@/lib/EnumsToArray";
 
 //props type
@@ -24,6 +29,57 @@ type CreateReportPropsType = {
 };
 
 function CreateReport({ showCreateReportForm, setShowCreateReportForm, theme, schoolName, shift }: CreateReportPropsType) {
+  //importar dados do usuário logado
+  const { user } = useUser();
+  
+  //funcionalidades para adquirir o valor de atividades realizadas
+  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
+  const [hasNoActivities, setHasNoActivities] = useState(false)
+
+  const handleActivitiesCheck = (checked: boolean, activity: string) => {
+    setSelectedActivities((prev) => {
+      if (checked) {
+        if (prev.includes(activity)) {
+          return [
+            ...prev
+          ]
+        } else {
+          return [...prev, activity];
+        }
+      } else {
+        return prev.filter(a => a !== activity)
+      }
+    })
+  }
+
+  const resetActivitieOnSubmit = () => {
+    setSelectedActivities([])
+  }
+
+  //funcionalidades para adquirir o valor de recursos
+  const [selectedResources, setSelectedResources] = useState<string[]>([]);
+
+  const handleResourcesCheck = (checked: boolean, resource: string) => {
+    setSelectedResources((prev) => {
+      if (checked) {
+        if (prev.includes(resource)) {
+          return [
+            ...prev
+          ]
+        } else {
+          return [...prev, resource];
+        }
+      } else {
+        return prev.filter(r => r !== resource)
+      }
+    })
+  }
+
+
+  const resetResourcesOnSubmit = () => {
+    setSelectedResources([]);
+  };
+
   //funcionalidades para enviar os dados do formulário
   const {
     control,
@@ -32,17 +88,39 @@ function CreateReport({ showCreateReportForm, setShowCreateReportForm, theme, sc
     reset
   } = useForm<FieldValuesCreateReport>({
     resolver: zodResolver(schema),
-    defaultValues: {}
+    defaultValues: {
+      authorName: user?.name || '',
+      schoolName: schoolName || '',
+      classAndShift: '',
+      theme: theme || '',
+      activitiesDone: [],
+      resources: [],
+      coworkers: 0,
+      assistedInChaplaincy: 0,
+      chaplaincyObservation: ''
+    }
   })
 
   //não renderiza o componente se não for o relatório selecionado
   if(!showCreateReportForm) return null;
 
   const onSubmit: SubmitHandler<FieldValuesCreateReport> = (data) => {
+    setShowCreateReportForm(!showCreateReportForm)
+    const { classAndShift } = data;
+    const formData = {
+      ...data,
+      authorName: user?.name,
+      schoolName: schoolName,
+      theme: theme,
+      activitiesDone: selectedActivities,
+      resources: selectedResources,
+      classAndShift: classAndShift?.concat(', ' + shift)
+    }
+    console.log(formData);
     toast.success("Relatório enviado com sucesso!");
     reset();
-    setShowCreateReportForm(!showCreateReportForm)
-    console.log(data);
+    resetActivitieOnSubmit();
+    resetResourcesOnSubmit();
   }
 
   return (
@@ -72,24 +150,142 @@ function CreateReport({ showCreateReportForm, setShowCreateReportForm, theme, sc
             Atividades realizadas nesta temática:
           </label>
           {activitiesDoneArray.map((activity, activityIndex) => (
-            <div key={activityIndex} className={`flex gap-3 ${activityIndex === activitiesDoneArray.length - 1 ? 'mb-5' : ''}`}>
-              <input type="checkbox" className="mb-2" />
+            <div
+              key={activityIndex}
+              className={`flex items-center gap-3 ${
+                activityIndex === activitiesDoneArray.length - 1 ? "mb-5" : ""
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedActivities.includes(activity)}
+                onChange={(e) =>
+                  handleActivitiesCheck(e.target.checked, activity)
+                }
+              />
               <p>{activity}</p>
             </div>
           ))}
+          {selectedActivities.length === 0 && hasNoActivities && (
+            <p className="text-red-600 text-sm font-medium mt-[-1rem] my-5">
+              Selecione as atividades realizadas
+            </p>
+          )}
 
           <label htmlFor="activitiesDone" className="m-auto font-bold mb-1">
             Materiais utilizados:
           </label>
           {resourcesArray.map((resource, resourceIndex) => (
-            <div key={resourceIndex} className={`flex gap-3 ${resourceIndex === resourcesArray.length - 1 ? 'mb-5' : ''}`}>
-              <input type="checkbox" className="mb-2" />
+            <div
+              key={resourceIndex}
+              className={`flex items-center gap-3 ${
+                resourceIndex === resourcesArray.length - 1 ? "mb-5" : ""
+              }`}
+            >
+              <input
+                type="checkbox"
+                checked={selectedResources.includes(resource)}
+                onChange={(e) =>
+                  handleResourcesCheck(e.target.checked, resource)
+                }
+              />
               <p>{resource}</p>
             </div>
           ))}
 
+          <label htmlFor="Voluntários" className="m-auto font-bold mb-1">
+            Quantidade de voluntários que participaram:
+          </label>
+          <Controller
+            name="coworkers"
+            control={control}
+            render={({ field }) => (
+              <input
+                type="number"
+                min={0}
+                value={field.value}
+                onChange={(e) => {
+                  const parsedValue = parseInt(e.target.value);
+                  field.onChange(parsedValue);
+                }}
+                className="px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
+              />
+            )}
+          />
+          {errors.coworkers && (
+            <p className="text-red-600 text-sm font-medium mt-[-1rem] my-5">
+              {errors.coworkers.message}
+            </p>
+          )}
+
+          <label htmlFor="Classes" className="m-auto font-bold mb-1">
+            Nome das classes:
+          </label>
+          <Controller
+            name="classAndShift"
+            control={control}
+            render={({ field }) => (
+              <input
+                type="text"
+                placeholder="Ex.: 6° A"
+                {...field}
+                className="px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
+              />
+            )}
+          />
+          {errors.classAndShift && (
+            <p className="text-red-600 text-sm font-medium mt-[-1rem] my-5">
+              {errors.classAndShift.message}
+            </p>
+          )}
+
+          <label
+            htmlFor="Assistidos em capelania"
+            className="m-auto font-bold mb-1"
+          >
+            Quantidade de assistidos em capelania individual:
+          </label>
+          <Controller
+            name="assistedInChaplaincy"
+            control={control}
+            render={({ field }) => (
+              <input
+                type="number"
+                min={0}
+                value={field.value}
+                onChange={(e) => {
+                  const parsedValue = parseInt(e.target.value);
+                  field.onChange(parsedValue);
+                }}
+                className="px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
+              />
+            )}
+          />
+          {errors.assistedInChaplaincy && (
+            <p className="text-red-600 text-sm font-medium mt-[-1rem] my-5">
+              {errors.assistedInChaplaincy.message}
+            </p>
+          )}
+
+          <label htmlFor="Observação" className="m-auto font-bold mb-1">
+            Observações sobre a capelania individual:
+          </label>
+          <Controller
+            name="chaplaincyObservation"
+            control={control}
+            render={({ field }) => (
+              <textarea
+                rows={4}
+                placeholder="Opcional"
+                {...field}
+                className="px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
+              />
+            )}
+          />
+
           <button
             type="submit"
+            onClick={() => setHasNoActivities(selectedActivities.length === 0)}
             className="w-[50%] mx-auto mb-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
