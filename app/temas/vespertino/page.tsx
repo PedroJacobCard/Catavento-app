@@ -17,6 +17,7 @@ import Footer from "@/app/components/Footer";
 import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
 import CreateClass from "@/app/components/forms/create-class/CreateClass";
 import EditClass from "@/app/components/forms/edit-class/EditClass";
+import CreateReport from "@/app/components/forms/create-report/CreateReport";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -50,6 +51,16 @@ function Vespertino() {
   ) => {
     setShowEditClassForm(!showEditClassForm);
     setEditClassIndexes([schoolIndex, themeIndex, claIndex]);
+  };
+
+  //funcionalidades para mostrar o formulário de criação de relatórios
+  const [showCreateReportForm, setShowCreateReportForm] =
+    useState<boolean>(false);
+  const [createReportIndexes, setCreateReportIndexes] = useState<number[]>([]);
+
+  const handleCreateReportClick = (schoolIndex: number, themeIndex: number) => {
+    setShowCreateReportForm(!showCreateReportForm);
+    setCreateReportIndexes([schoolIndex, themeIndex]);
   };
 
   //import classes data
@@ -286,6 +297,7 @@ function Vespertino() {
                 user?.role === "SECRETARIO(A)" ? (
                   <button
                     type="button"
+                    onClick={() => handleCreateReportClick(schoolIndex, themeIndex)}
                     className="w-auto h-10 flex items-center justify-center gap-3 px-2 mx-5 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
                   >
                     <Image
@@ -308,6 +320,18 @@ function Vespertino() {
                   setShowCreateClassForm={setShowCreateClassForm}
                   schoolName={school.name}
                   theme={Theme[themeIndex]}
+                  shift="VESPERTINO"
+                />
+
+                <CreateReport
+                  showCreateReportForm={
+                    createReportIndexes[0] === schoolIndex &&
+                    createReportIndexes[1] === themeIndex &&
+                    showCreateReportForm
+                  }
+                  setShowCreateReportForm={setShowCreateReportForm}
+                  theme={Theme[themeIndex]}
+                  schoolName={school.name}
                   shift="VESPERTINO"
                 />
               </section>

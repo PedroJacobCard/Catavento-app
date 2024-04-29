@@ -30,6 +30,7 @@ import useUser from "@/app/hooks/useUser";
 
 //import enums
 import { Theme } from "@/utils/Enums";
+import TableOfQualityData from "@/app/components/TableOfQualityData";
 
 function Matutino() {
   //Funcionalidades para display do campo de lembretes
@@ -343,6 +344,8 @@ function Matutino() {
             ))}
           </div>
         ))}
+
+        <TableOfQualityData shift="MATUTINO"/>
 
         <Footer />
       </div>

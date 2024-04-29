@@ -1236,7 +1236,7 @@
       "theme": "HONESTIDADE",
       "schoolName": "Colégio Estadual Lyceu, Goiânia-GO",
       "shift": "MATUTINO",
-      "done": false,
+      "done": true,
       "createdAt":"20/04/2023 17:40",
       "updatedAt": "20/07/2023 13:40"
     },
