@@ -30,6 +30,7 @@ import useUser from "@/app/hooks/useUser";
 
 //impoert enums
 import { Theme } from "@/utils/Enums";
+import TableOfQualityData from "@/app/components/TableOfQualityData";
 
 function Vespertino() {
   //Funcionalidades para display do campo de lembretes
@@ -297,7 +298,9 @@ function Vespertino() {
                 user?.role === "SECRETARIO(A)" ? (
                   <button
                     type="button"
-                    onClick={() => handleCreateReportClick(schoolIndex, themeIndex)}
+                    onClick={() =>
+                      handleCreateReportClick(schoolIndex, themeIndex)
+                    }
                     className="w-auto h-10 flex items-center justify-center gap-3 px-2 mx-5 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
                   >
                     <Image
@@ -338,6 +341,10 @@ function Vespertino() {
             ))}
           </div>
         ))}
+
+        <section className="overflow-x-scroll mt-7 mx-2 md:mx-[2rem]">
+          <TableOfQualityData shift="VESPERTINO" />
+        </section>
 
         <Footer />
       </div>

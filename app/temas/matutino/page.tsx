@@ -345,7 +345,9 @@ function Matutino() {
           </div>
         ))}
 
-        <TableOfQualityData shift="MATUTINO"/>
+        <section className="overflow-x-scroll mt-7 mx-2 md:mx-[2rem]">
+          <TableOfQualityData shift="MATUTINO" />
+        </section>
 
         <Footer />
       </div>
