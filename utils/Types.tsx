@@ -161,6 +161,11 @@ export type UseClassContextTypes = {
   classes: ClassType[] | null;
 };
 
+export type InitSchoolOnUserType = {
+  schoolName: string;
+  shifts: (string | Shift)[];
+};
+
 //tipos do objeto que será feito para o download da tabela de dados qualitativos
 export  type DownloadDataTableOfQualityType = {
   name: string;

@@ -7,10 +7,10 @@ import Close from '@/public/Cancel.svg';
 import Bin from '@/public/Bin.svg';
 
 //import enum
-import { Role, Shift } from "@/utils/Enums";
+import { Role } from "@/utils/Enums";
 
 //import props types
-import { EditPropType } from "@/utils/Types";
+import { EditPropType, InitSchoolOnUserType } from "@/utils/Types";
 
 //import hooks
 import useUser from "@/app/hooks/useUser";
@@ -42,15 +42,8 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   //funcionalidade para checar se o usuário está conectado com o calendário e mudar o valor
   const [isConnected, setIsConnected] = useState<boolean | undefined>(user?.connectedToCalender);
 
-  
-  //funcionalidade para selecionar novos turnos e escolas de atuação
-  type NewSchoolType = {
-    schoolName: string,
-    shifts: (string | Shift)[]
-  }
-
   //essa função servirá como estado inicial das escolas selecionadas as quais seram as que o usuário já participa
-  const initSelectedState: NewSchoolType[] = (() => {
+  const initSelectedState: InitSchoolOnUserType[] = (() => {
     if (user && user.school) {
       return user.school.map((s) => ({
         schoolName: s.schoolName,
@@ -61,7 +54,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
     }
   })();
 
-  const [selectedShiftAndSchool, setSelectedShiftAndSchool] =  useState<NewSchoolType[]>(initSelectedState);
+  const [selectedShiftAndSchool, setSelectedShiftAndSchool] =  useState<InitSchoolOnUserType[]>(initSelectedState);
   
   const handleCheckboxChange = (checked: boolean, schoolName: string, shift: string) => {
     setSelectedShiftAndSchool(prev => {
