@@ -136,7 +136,7 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
         </thead>
 
         <tbody>
-          {schoolsDataOnTable.map((school, schoolIndex) => (
+          {schoolsDataOnTable.filter(school => school.coordinatorName.length > 0).map((school, schoolIndex) => (
             <tr key={schoolIndex}>
               <td className="w-[12rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.name}

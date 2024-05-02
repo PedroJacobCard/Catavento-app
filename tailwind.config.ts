@@ -13,6 +13,7 @@ const config: Config = {
         secondaryBlue: '#A5CADF',
         darkMode: '#323232',
         darkModeGlass: "rgba(50,50,50,0.9)",
+        primaryBlueGlass: "rgba(227,245,255,0.7)",
         darkModeBgColor: "#202020",
         darkBlue: "#00080D",
         infoTrackBlue: "#2F9FDD",

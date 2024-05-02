@@ -127,7 +127,7 @@ function CreateRemember() {
         type="button"
         className={`${
           grow ? "hidden" : "block"
-        } dark:bg-darkMode bg-white w-10 py-[.5rem] px-2 rounded-r-full`}
+        } dark:bg-darkMode bg-white w-10 py-[.5rem] md:h-9 px-2 rounded-r-full`}
         >
         <Image
           src={Plane}

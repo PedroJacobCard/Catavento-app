@@ -1,5 +1,5 @@
 //import enums
-import { Activities, Resources, Theme } from "@/utils/Enums";
+import { Activities, Resources, Role, Theme } from "@/utils/Enums";
 
 export let themeArray: string[] = [];
   for (let key in Theme) {
@@ -43,6 +43,13 @@ export let activitiesDoneArray: string[] = [];
   for (let key in Activities) {
     if (isNaN(Number(Activities[key]))) {
       activitiesDoneArray.push(Activities[key]);
+    }
+  }
+
+export let rolesArray: string[] = [];
+  for (let key in Role) {
+    if (isNaN(Number(Role[key]))) {
+      rolesArray.push(Role[key]);
     }
   }
 

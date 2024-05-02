@@ -12,7 +12,6 @@ export type SessionType = {
 };
 
 export type UserType = {
-  user: any;
   id: string;
   name: string;
   email: string;
