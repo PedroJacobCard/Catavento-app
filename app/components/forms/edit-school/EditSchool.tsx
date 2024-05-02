@@ -9,6 +9,7 @@ import { IMaskInput } from 'react-imask';
 import Close from '@/public/Cancel.svg';
 import Info from '@/public/Info.svg';
 import Bin from '@/public/Bin.svg';
+import Alert from '@/public/Alert.svg';
 
 //import enums
 import { Shift } from '@/utils/Enums';
@@ -172,6 +173,20 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col justify-start px-5 mt-9 overflow-y-scroll"
         >
+          <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-cautionYellow rounded-md shadow-md mb-3 relative">
+            <div className="h-[100%] w-[10px] bg-cautionTrackYellow absolute rounded-l-md" />
+            <Image
+              src={Alert}
+              alt="atenção"
+              width={24}
+              height={24}
+              className="ml-4"
+            />
+            <p className="text-sm flex flex-col">
+              Por favor, considere conversar com a escola para o uso de dados.
+            </p>
+          </div>
+
           <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mb-3 relative">
             <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
             <Image
@@ -376,10 +391,9 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
                   className="ml-4"
                 />
                 <p className="text-sm flex flex-col">
-                  Se não houver número, por favor escreva um número abaixo de zero.
-                  <span className="text-infoTrackBlue">
-                    Ex.: -1.
-                  </span>
+                  Se não houver número, por favor escreva um número abaixo de
+                  zero.
+                  <span className="text-infoTrackBlue">Ex.: -1.</span>
                 </p>
               </div>
               <label htmlFor="Endereço">Número do Prédio:</label>

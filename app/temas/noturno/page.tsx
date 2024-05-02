@@ -31,6 +31,7 @@ import useUser from "@/app/hooks/useUser";
 
 //import enums
 import { Theme } from "@/utils/Enums";
+import TableOfQualityData from "@/app/components/TableOfQualityData";
 
 function Noturno() {
   //Funcionalidades para display do campo de lembretes
@@ -339,6 +340,10 @@ function Noturno() {
             ))}
           </div>
         ))}
+
+        <section className="overflow-x-scroll mt-7 mx-2 md:mx-[2rem]">
+          <TableOfQualityData shift="NOTURNO" />
+        </section>
 
         <Footer />
       </div>

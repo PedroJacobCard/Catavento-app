@@ -39,6 +39,7 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
 
   const [selectedShifts, setSelectedShifts] =
     useState<string[]>([]);
+    const [hasNoShift, setHasNoShift] = useState<boolean>(false);
 
   const handleCheckShiftChange = (checked: boolean, shift: string) => {
     setSelectedShifts((prev) => {
@@ -89,6 +90,7 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
   });
 
   const onSubmit: SubmitHandler<FieldValuesCreateSchool> = (data) => {
+    if (hasNoShift) return;
     const form = {
       ...data,
       shift: selectedShifts,
@@ -123,6 +125,21 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col justify-start px-5 mt-9 overflow-y-scroll"
         >
+
+          <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-cautionYellow rounded-md shadow-md mb-3 relative">
+            <div className="h-[100%] w-[10px] bg-cautionTrackYellow absolute rounded-l-md" />
+            <Image
+              src={Alert}
+              alt="atenção"
+              width={24}
+              height={24}
+              className="ml-4"
+            />
+            <p className="text-sm flex flex-col">
+              Por favor, considere conversar com a escola para o uso de dados.
+            </p>
+          </div>
+
           <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mb-3 relative">
             <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
             <Image
@@ -164,20 +181,6 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
             )}
           />
 
-          <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-cautionYellow rounded-md shadow-md mb-3 relative">
-            <div className="h-[100%] w-[10px] bg-cautionTrackYellow absolute rounded-l-md" />
-            <Image
-              src={Alert}
-              alt="atenção"
-              width={24}
-              height={24}
-              className="ml-4"
-            />
-            <p className="text-sm flex flex-col">
-              Por favor, selecione pelo menos um turno.
-            </p>
-          </div>
-
           <div className="flex flex-col mb-5">
             <p className="font-bold mx-auto">Quais são os turnos de atuação?</p>
             {shiftArray.map((shift, index) => (
@@ -193,6 +196,11 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
                 <label htmlFor="Turno">{shift}</label>
               </div>
             ))}
+            {selectedShifts.length === 0 && hasNoShift && (
+              <p className="text-red-600 text-sm font-medium mt-2 mb-5">
+                Por favor, selecione um turno
+              </p>
+            )}
           </div>
 
           <Controller
@@ -390,6 +398,7 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
           </div>
 
           <button
+            onClick={() => setHasNoShift(selectedShifts.length === 0)}
             type="submit"
             className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >

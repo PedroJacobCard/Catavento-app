@@ -161,3 +161,14 @@ export type UseReportContextType = {
 export type UseClassContextTypes = {
   classes: ClassType[] | null;
 };
+
+//tipos do objeto que será feito para o download da tabela de dados qualitativos
+export  type DownloadDataTableOfQualityType = {
+  name: string;
+  uniqueThemes: string;
+  totalStudents: number;
+  notAccomplishedThemes: string;
+  totalStudentsNotDone: number;
+  shift: string;
+  coordinatorName: string
+};

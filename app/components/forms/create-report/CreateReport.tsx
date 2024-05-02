@@ -105,6 +105,7 @@ function CreateReport({ showCreateReportForm, setShowCreateReportForm, theme, sc
   if(!showCreateReportForm) return null;
 
   const onSubmit: SubmitHandler<FieldValuesCreateReport> = (data) => {
+    if (hasNoActivities) return;
     setShowCreateReportForm(!showCreateReportForm)
     const { classAndShift } = data;
     const formData = {

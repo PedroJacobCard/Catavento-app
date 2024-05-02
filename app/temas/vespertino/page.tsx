@@ -18,6 +18,7 @@ import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile"
 import CreateClass from "@/app/components/forms/create-class/CreateClass";
 import EditClass from "@/app/components/forms/edit-class/EditClass";
 import CreateReport from "@/app/components/forms/create-report/CreateReport";
+import TableOfQualityData from "@/app/components/TableOfQualityData";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -30,7 +31,6 @@ import useUser from "@/app/hooks/useUser";
 
 //impoert enums
 import { Theme } from "@/utils/Enums";
-import TableOfQualityData from "@/app/components/TableOfQualityData";
 
 function Vespertino() {
   //Funcionalidades para display do campo de lembretes

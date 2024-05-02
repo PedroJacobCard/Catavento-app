@@ -83,6 +83,16 @@ input[type="checkbox"]:checked::before {
   @apply mt-[4rem] md:mt-0;
 }
 
+table {
+  border-collapse: separate;
+  border-spacing: 10px; /*  /* You can adjust the width and color */
+}
+
+td, th {
+  border: 1px solid black; /* You can adjust the width and color */
+  padding: 10px; /* Adjust the padding as needed */
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
