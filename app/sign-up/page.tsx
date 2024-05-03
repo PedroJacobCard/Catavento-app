@@ -19,7 +19,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 
 //import lib functions
-import { rolesArray, shiftsArray } from "@/lib/EnumsToArray";
+import { rolesArray } from "@/lib/EnumsToArray";
 
 //import costume hooks
 import useSchool from "../hooks/useSchool";
@@ -27,6 +27,7 @@ import { InitSchoolOnUserType } from "@/utils/Types";
 
 //import enums
 import { Shift } from "@/utils/Enums";
+import CreateSchoolByCoordinator from "../components/CreateSchoolByCoordinator";
 
 function SignUp() {
   //funcionalidades para conectar com o Google calendário
@@ -43,8 +44,6 @@ function SignUp() {
 
   //funcionalidades para criar escola no usuário
   const [selectedSchoolAndShifts, setSelectedSchoolAndShifts] = useState<InitSchoolOnUserType[]>([])
-
-  const [schoolNameByCoordinator, setSchoolNameByCoordinator] = useState<string>('');
 
   const handleCheckShift = (checked: boolean, schoolName: string, shift: string) => {
     setSelectedSchoolAndShifts(prev => {
@@ -116,8 +115,12 @@ function SignUp() {
   });
 
   const onSubmit: SubmitHandler<FieldValuesRegister> = (data) => {
-    if (selectedSchoolAndShifts.length < 1 || selectedRole === "Papel") {
+    if (
+      (selectedSchoolAndShifts.every(item => item.schoolName === '' || item.shifts.length < 1)) ||
+      selectedRole === "Papel"
+    ) {
       toast.error("Ops! Você se esqueceu de algo...");
+      setSelectedSchoolAndShifts([]);
       return;
     } 
 
@@ -129,6 +132,9 @@ function SignUp() {
     };
     console.log(formData);
     reset();
+    setSelectedRole('');
+    setSelectedSchoolAndShifts([]);
+    setConnect(false);
     toast.success("Perfil criado com successo!");
   }
 
@@ -188,6 +194,7 @@ function SignUp() {
                   name="Papel"
                   className="w-[100%] flex items-center justify-center py-2 mx-auto mb-5 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark dark:bg-darkModeBgColor bg-primaryBlue px-1 cursor-pointer"
                   onChange={(e) => {
+                    setSelectedSchoolAndShifts([]);
                     setSelectedRole(e.target.value);
                     field.onChange(e.target.value);
                   }}
@@ -297,73 +304,12 @@ function SignUp() {
           )}
 
           {selectedRole.length !== 0 && selectedRole === "COORDENADOR(A)" && (
-            <div className="w-full mb-5 flex flex-col items-start justify-start">
-              <p className="font-bold text-lg mt-3 mx-auto">
-                Escolas de coordenação
-              </p>
-
-              <div>
-                <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mt-2 mb-3 relative">
-                  <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
-                  <Image
-                    src={Info}
-                    alt="informativo"
-                    width={24}
-                    height={24}
-                    className="ml-4"
-                  />
-                  <p className="text-sm flex flex-col">
-                    Escreva abaixo o nome da escola de atuação e à frente, o
-                    nome da cidade em que ela se localiza.
-                    <span className="text-infoTrackBlue">
-                      Ex.: Escola Municipal Alpes, Goiânia - GO.
-                    </span>
-                  </p>
-                </div>
-                <Controller
-                  name="school.schoolName"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      type="text"
-                      placeholder="Ex. Escola Municipal Alpes, Goiânia - GO"
-                      {...field}
-                      className="w-full px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
-                      value={schoolNameByCoordinator}
-                      onChange={(e) => setSchoolNameByCoordinator(e.target.value)}
-                    />
-                  )}
-                />
-              </div>
-
-              {shiftsArray.map((shift, i) => (
-                <div key={i} className="flex items-center gap-3 my-1">
-                  <input
-                    type="checkbox"
-                    value={shift}
-                    onChange={(e) =>
-                      handleCheckShift(
-                        e.target.checked,
-                        schoolNameByCoordinator,
-                        shift.toString()
-                      )
-                    }
-                    checked={selectedSchoolAndShifts.some(
-                      (item) =>
-                        item.schoolName === schoolNameByCoordinator &&
-                        item.shifts.includes(shift.toString())
-                    )}
-                  />
-                  <label>{shift}</label>
-                </div>
-              ))}
-
-              {selectedSchoolAndShifts.length < 1 && hasNoSchoolsAndShifts && (
-                <p className="text-red-600 text-sm font-medium mt-2 mb-5">
-                  Selecione uma escola de atuação
-                </p>
-              )}
-            </div>
+            <CreateSchoolByCoordinator
+              control={control}
+              hasNoSchoolsAndShifts={hasNoSchoolsAndShifts}
+              handleCheckShift={handleCheckShift}
+              selectedSchoolAndShifts={selectedSchoolAndShifts}
+            />
           )}
 
           <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-cautionYellow rounded-md shadow-md my-3  relative">
@@ -385,7 +331,11 @@ function SignUp() {
           <button
             type="submit"
             onClick={() =>
-              setHasNoSchoolsAndShifts(selectedSchoolAndShifts.length < 1)
+              setHasNoSchoolsAndShifts(
+                selectedSchoolAndShifts.every(
+                  (item) => item.schoolName === "" || item.shifts.length < 1
+                )
+              )
             }
             className="border dark:border-slate-700 border-black rounded-full w-[80%] md:w-[60%] flex py-2 px-2 mx-auto mt-5  hover:dark:bg-slate-600 hover:bg-slate-400 duration-300"
           >
