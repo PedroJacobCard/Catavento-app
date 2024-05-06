@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 //import icons
-import LoginPicture from '@/public/images/login-picture.png';
+import LoginPicture from '@/public/images/sign-picture.png';
 import Logo from "@/public/Logo-navabar-extended.svg";
 import GoogleLogo from '@/public/Google.svg';
 import Link from "next/link";

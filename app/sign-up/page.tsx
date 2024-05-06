@@ -4,11 +4,15 @@ import { useState } from "react";
 import Image from "next/image";
 
 //import icons
-import LoginPicture from "@/public/images/login-picture.png";
+import LoginPicture from "@/public/images/sign-picture.png";
 import Logo from "@/public/Logo-navabar-extended.svg";
 import GoogleLogo from "@/public/Google.svg";
 import Alert from '@/public/Alert.svg';
 import Info from "@/public/Info.svg";
+import Plus from "@/public/Plus.svg";
+
+//import components
+import CoordinatorAddSchool from "../components/CoordinatorAddSchool";
 
 //import react-form-hooks e schema para validação 
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -27,7 +31,6 @@ import { InitSchoolOnUserType } from "@/utils/Types";
 
 //import enums
 import { Shift } from "@/utils/Enums";
-import CreateSchoolByCoordinator from "../components/CreateSchoolByCoordinator";
 
 function SignUp() {
   //funcionalidades para conectar com o Google calendário
@@ -46,6 +49,11 @@ function SignUp() {
   const [selectedSchoolAndShifts, setSelectedSchoolAndShifts] = useState<InitSchoolOnUserType[]>([])
 
   const handleCheckShift = (checked: boolean, schoolName: string, shift: string) => {
+    if (schoolName.length < 1) {
+      toast.error("Ops! Precisa preencher o nome da escola")
+      return;
+    }
+
     setSelectedSchoolAndShifts(prev => {
       const existingSchoolIndex = prev.findIndex(item => item.schoolName === schoolName);
 
@@ -95,6 +103,24 @@ function SignUp() {
     })
   }
 
+  //estado inicial para a criação de escola pelo coordenador
+  const [coordinatorSchool, setCoordinatorSchool] = useState<InitSchoolOnUserType[]>([
+    {
+      schoolName: '',
+      shifts: []
+    }
+  ]);
+
+  const addSchool = () => {
+    setCoordinatorSchool([
+      ...coordinatorSchool,
+      {
+        schoolName: "",
+        shifts: [],
+      },
+    ]);
+  };
+
   //funcionalidades para enviar os dados do formulário
   const {
     control,
@@ -135,6 +161,12 @@ function SignUp() {
     setSelectedRole('');
     setSelectedSchoolAndShifts([]);
     setConnect(false);
+    setCoordinatorSchool([
+        {
+          schoolName: "",
+          shifts: [],
+        },
+      ])
     toast.success("Perfil criado com successo!");
   }
 
@@ -222,6 +254,20 @@ function SignUp() {
           {(selectedRole.length !== 0 && selectedRole === "SECRETARIO(A)") ||
           (selectedRole.length !== 0 && selectedRole === "VOLUNTARIO(A)") ? (
             <>
+              <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3   relative">
+                <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
+                <Image
+                  src={Info}
+                  alt="informativo"
+                  width={24}
+                  height={24}
+                  className="ml-4"
+                />
+                <p className="text-sm flex flex-col">
+                  Não encontrou uma escola específica? Contate o coordenador que
+                  trabalha nessa escola para registrar-se.
+                </p>
+              </div>
               <p className="font-bold text-lg mt-3 mx-auto">
                 Escolas e turnos de Atuação
               </p>
@@ -265,6 +311,20 @@ function SignUp() {
             selectedRole.length !== 0 &&
             selectedRole === "COORDENADOR(A)_GERAL" && (
               <div className="w-full mb-5 flex flex-col items-start justify-start">
+                <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3   relative">
+                  <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
+                  <Image
+                    src={Info}
+                    alt="informativo"
+                    width={24}
+                    height={24}
+                    className="ml-4"
+                  />
+                  <p className="text-sm flex flex-col">
+                    Não encontrou uma escola específica? Contate o coordenador
+                    que trabalha nessa escola para registrar-se.
+                  </p>
+                </div>
                 <p className="font-bold text-lg mt-3 mx-auto">
                   Escolas de coordenação
                 </p>
@@ -304,12 +364,50 @@ function SignUp() {
           )}
 
           {selectedRole.length !== 0 && selectedRole === "COORDENADOR(A)" && (
-            <CreateSchoolByCoordinator
-              control={control}
-              hasNoSchoolsAndShifts={hasNoSchoolsAndShifts}
-              handleCheckShift={handleCheckShift}
-              selectedSchoolAndShifts={selectedSchoolAndShifts}
-            />
+            <div className="w-full">
+              <p className="font-bold text-lg mt-3 mx-auto">
+                Escolas de coordenação
+              </p>
+              <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mt-2 mb-3 relative">
+                <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
+                <Image
+                  src={Info}
+                  alt="informativo"
+                  width={24}
+                  height={24}
+                  className="ml-4"
+                />
+                <p className="text-sm flex flex-col">
+                  Escreva abaixo o nome da escola de atuação e à frente, o nome
+                  da cidade em que ela se localiza.
+                  <span className="text-infoTrackBlue">
+                    Ex.: Escola Municipal Alpes, Goiânia - GO.
+                  </span>
+                </p>
+              </div>
+              <CoordinatorAddSchool
+                control={control}
+                hasNoSchoolsAndShifts={hasNoSchoolsAndShifts}
+                handleCheckShift={handleCheckShift}
+                selectedSchoolAndShifts={selectedSchoolAndShifts}
+                coordinatorSchool={coordinatorSchool}
+                setCoordinatorSchool={setCoordinatorSchool}
+              />
+              <button
+                onClick={addSchool}
+                type="button"
+                className="flex items-center justify-center w-full gap-3 m-auto py-2 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+              >
+                <Image
+                  src={Plus}
+                  alt="Adicionar"
+                  width={25}
+                  height={25}
+                  priority={true}
+                />
+                Adicionar outra escola
+              </button>
+            </div>
           )}
 
           <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-cautionYellow rounded-md shadow-md my-3  relative">
@@ -323,8 +421,8 @@ function SignUp() {
             />
             <p className="text-sm flex flex-col">
               Ao continuar, você concordará com o compartilhamento de teu
-              endereço de email para um melhor contato com os coordenadores do
-              Catavento.
+              endereço de email para melhorar o contato com os coordenadores do
+              Catavento. Nenhum cookie de navegação será armazenado.
             </p>
           </div>
 

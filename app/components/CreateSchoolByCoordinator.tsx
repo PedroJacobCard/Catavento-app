@@ -1,8 +1,4 @@
-import { useState } from "react";
-import Image from "next/image";
-
-//import icons
-import Info from '@/public/Info.svg';
+import { Dispatch, SetStateAction } from "react";
 
 //import types
 import { InitSchoolOnUserType } from "@/utils/Types";
@@ -10,6 +6,7 @@ import { InitSchoolOnUserType } from "@/utils/Types";
 //import lib functions
 import { shiftsArray } from "@/lib/EnumsToArray";
 import { Control, Controller } from "react-hook-form";
+import { Shift } from "@/utils/Enums";
 
 //props type
 type CreateSchoolByCoordinatorPropsType = {
@@ -39,39 +36,22 @@ type CreateSchoolByCoordinatorPropsType = {
     shift: string
   ) => void;
   selectedSchoolAndShifts: InitSchoolOnUserType[];
+  schoolData: InitSchoolOnUserType;
+  setCoordinatorSchool: Dispatch<SetStateAction<InitSchoolOnUserType[]>>;
 };
 
 function CreateSchoolByCoordinator({
   control,
   hasNoSchoolsAndShifts,
   handleCheckShift,
-  selectedSchoolAndShifts }: CreateSchoolByCoordinatorPropsType) {
-
-  const [schoolNameByCoordinator, setSchoolNameByCoordinator] =
-    useState<string>("");
+  selectedSchoolAndShifts,
+  schoolData,
+  setCoordinatorSchool
+ }: CreateSchoolByCoordinatorPropsType) {
 
   return (
     <div className="w-full mb-5 flex flex-col items-start justify-start">
-      <p className="font-bold text-lg mt-3 mx-auto">Escolas de coordenação</p>
-
-      <div>
-        <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mt-2 mb-3 relative">
-          <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
-          <Image
-            src={Info}
-            alt="informativo"
-            width={24}
-            height={24}
-            className="ml-4"
-          />
-          <p className="text-sm flex flex-col">
-            Escreva abaixo o nome da escola de atuação e à frente, o nome da
-            cidade em que ela se localiza.
-            <span className="text-infoTrackBlue">
-              Ex.: Escola Municipal Alpes, Goiânia - GO.
-            </span>
-          </p>
-        </div>
+      <div className="w-full">
         <Controller
           name="school.schoolName"
           control={control}
@@ -81,8 +61,11 @@ function CreateSchoolByCoordinator({
               placeholder="Ex. Escola Municipal Alpes, Goiânia - GO"
               {...field}
               className="w-full px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
-              value={schoolNameByCoordinator}
-              onChange={(e) => setSchoolNameByCoordinator(e.target.value)}
+              value={schoolData.schoolName}
+              onChange={(e) => setCoordinatorSchool([
+                ...selectedSchoolAndShifts,
+                { schoolName: e.target.value, shifts: schoolData.shifts}
+              ])}
             />
           )}
         />
@@ -97,13 +80,13 @@ function CreateSchoolByCoordinator({
             onChange={(e) =>
               handleCheckShift(
                 e.target.checked,
-                schoolNameByCoordinator,
+                schoolData.schoolName,
                 shift.toString()
               )
             }
             checked={selectedSchoolAndShifts.some(
               (item) =>
-                item.schoolName === schoolNameByCoordinator &&
+                item.schoolName === schoolData.schoolName &&
                 item.shifts.includes(shift.toString())
             )}
           />
