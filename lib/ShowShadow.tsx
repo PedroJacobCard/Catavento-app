@@ -20,7 +20,7 @@ function ShowShadow({ children }: ChildrenPropsType) {
   
   return (
     <div
-      className={`bg-white dark:bg-darkModeBgColor w-full pt-5 page-title fixed top-0 z-50 ${
+      className={`flex bg-white dark:bg-darkModeBgColor w-full pt-5 page-title fixed top-0 z-50 ${
         showShadow ? " shadow-md dark:shadow-xl" : "shadow-none"
       } duration-300`}
     >

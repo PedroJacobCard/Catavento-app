@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 //import icons
@@ -8,6 +8,7 @@ import Plane from "@/public/Plane.svg";
 import Link from "next/link";
 import Marker from "@/public/Marker.svg";
 import Plus from "@/public/Plus.svg";
+import Logout from "@/public/Logout.svg";
 
 //import components
 import Navbar from "./components/Navbar";
@@ -24,7 +25,32 @@ import GoogleMaps from "@/lib/GoogleMaps";
 import EditSchool from "./components/forms/edit-school/EditSchool";
 import CreateSchool from "./components/forms/create-school/CreateSchool";
 
+//import session
+import { useSession, signOut, getSession } from "next-auth/react";
+import { authOptions } from "@/utils/authOptions";
+import { redirect } from "next/navigation";
+import { getServerSession } from "next-auth";
+
 export default function Home() {
+  //session
+  const { status } = useSession();
+
+  useEffect(() => {
+    const getSession = async () => {
+      try {
+        const session = await getServerSession(authOptions);
+        console.log(session)
+        if (!session) {
+          return redirect("/sign-in")
+        }
+      } catch (error) {
+        console.error("Error", error);
+      }
+    }
+    getSession();
+  }, []);
+  
+
   //import school data
   const { schools } = useSchool();
 
@@ -74,6 +100,18 @@ export default function Home() {
 
         <ShowShadow>
           <h1 className="title mx-2 md:ml-[2rem] pb-3">Escola</h1>
+          {status === "authenticated" && (
+            <button onClick={() => signOut()} className="flex gap-3 absolute left-[77vw] md:left-[50vw] lg:left-[66vw] py-1 px-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300">
+              <Image
+                src={Logout}
+                alt="Sair"
+                width={25}
+                height={25}
+                priority={true}
+              />
+              Sair
+            </button>
+          )}
         </ShowShadow>
 
         {filteredSchools &&
@@ -153,23 +191,21 @@ export default function Home() {
             </section>
           ))}
 
-        {
-          user?.role === "COORDENADOR(A)" ||
-          user?.role === "SECRETARIO(A)" ? (
-            <button
-              type="button"
-              className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+        {user?.role === "COORDENADOR(A)" || user?.role === "SECRETARIO(A)" ? (
+          <button
+            type="button"
+            className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+            onClick={() => setShowCreateSchoolForm(!showCreateSchoolForm)}
+          >
+            <Image
+              src={Plus}
+              width={15}
+              height={15}
+              alt=""
               onClick={() => setShowCreateSchoolForm(!showCreateSchoolForm)}
-            >
-              <Image
-                src={Plus}
-                width={15}
-                height={15}
-                alt=""
-                onClick={() => setShowCreateSchoolForm(!showCreateSchoolForm)}
-              />
-              Criar Escola
-            </button>
+            />
+            Criar Escola
+          </button>
         ) : (
           ""
         )}
