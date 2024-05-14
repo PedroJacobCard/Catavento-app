@@ -18,12 +18,22 @@ import ShowShadow from "@/lib/ShowShadow";
 
 //import custome hooks
 import useReport from "../hooks/useReport";
-import useUser from "../hooks/useUser";
+
+//session and redirection
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 
 function Report() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
+
+  //session
+  const { status } = useSession();
+
+  if (status === "unauthenticated") {
+    redirect("/sign-in");
+  }
 
   //importar relatórios
   const { reports } = useReport();
@@ -35,7 +45,7 @@ function Report() {
         isRememberOpen={isRememberOpen}
         setIsRememberOpen={setIsRememberOpen}
       />
-      <div className="lg:max-w-[75vw] md:max-w-[65vw] max-w-full md:ml-[70px]">
+      <div className="max-w-full md:mr-[12.5rem] lg:mr-[15.6rem] md:ml-[4.4rem]">
         <header className="w-full h-[4rem] dark:bg-darkMode bg-primaryBlue flex md:hidden justify-center items-center fixed top-0">
           <Link href={"/"}>
             <Image

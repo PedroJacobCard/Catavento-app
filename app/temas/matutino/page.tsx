@@ -32,6 +32,10 @@ import useUser from "@/app/hooks/useUser";
 //import enums
 import { Theme } from "@/utils/Enums";
 
+//session and redirection
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+
 function Matutino() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
@@ -44,28 +48,32 @@ function Matutino() {
   //funcionalidades para mostrar o formulário de edição de classe
   const [showEditClassForm, setShowEditClassForm] = useState<boolean>(false);
   const [editClassIndexes, setEditClassIndexes] = useState<number[]>([]);
-  
-    const handleEditClassClick = (
-      schoolIndex: number,
-      themeIndex: number,
-      claIndex: number
-    ) => {
-      setShowEditClassForm(!showEditClassForm);
-      setEditClassIndexes([schoolIndex, themeIndex, claIndex]);
-    };
+
+  const handleEditClassClick = (
+    schoolIndex: number,
+    themeIndex: number,
+    claIndex: number
+  ) => {
+    setShowEditClassForm(!showEditClassForm);
+    setEditClassIndexes([schoolIndex, themeIndex, claIndex]);
+  };
 
   //funcionalidades para mostrar o formulário de criação de relatórios
   const [showCreateReportForm, setShowCreateReportForm] =
     useState<boolean>(false);
   const [createReportIndexes, setCreateReportIndexes] = useState<number[]>([]);
 
-  const handleCreateReportClick = (
-    schoolIndex: number,
-    themeIndex: number,
-  ) => {
+  const handleCreateReportClick = (schoolIndex: number, themeIndex: number) => {
     setShowCreateReportForm(!showCreateReportForm);
     setCreateReportIndexes([schoolIndex, themeIndex]);
   };
+
+  //session
+  const { status } = useSession();
+
+  if (status === "unauthenticated") {
+    redirect("/sign-in");
+  }
 
   //import classes data
   const { classes } = useClass();
@@ -93,7 +101,7 @@ function Matutino() {
         isRememberOpen={isRememberOpen}
         setIsRememberOpen={setIsRememberOpen}
       />
-      <div className="lg:max-w-[75vw] md:max-w-[65vw] max-w-full md:ml-[70px]">
+      <div className="max-w-full md:mr-[12.5rem] lg:mr-[15.6rem] md:ml-[4.4rem]">
         <header className="w-full h-[4rem] dark:bg-darkMode bg-primaryBlue flex md:hidden justify-center items-center fixed top-0 z-50">
           <Link href={"/"}>
             <Image

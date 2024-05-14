@@ -26,30 +26,16 @@ import EditSchool from "./components/forms/edit-school/EditSchool";
 import CreateSchool from "./components/forms/create-school/CreateSchool";
 
 //import session
-import { useSession, signOut, getSession } from "next-auth/react";
-import { authOptions } from "@/utils/authOptions";
+import { useSession, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
-import { getServerSession } from "next-auth";
 
 export default function Home() {
   //session
   const { status } = useSession();
-
-  useEffect(() => {
-    const getSession = async () => {
-      try {
-        const session = await getServerSession(authOptions);
-        console.log(session)
-        if (!session) {
-          return redirect("/sign-in")
-        }
-      } catch (error) {
-        console.error("Error", error);
-      }
-    }
-    getSession();
-  }, []);
   
+  if (status === "unauthenticated") {
+    redirect("/sign-in");
+  };
 
   //import school data
   const { schools } = useSchool();
@@ -77,7 +63,7 @@ export default function Home() {
         isRememberOpen={isRememberOpen}
         setIsRememberOpen={setIsRememberOpen}
       />
-      <div className="lg:max-w-[75vw] md:max-w-[65vw] max-w-full md:ml-[70px]">
+      <div className="max-w-full md:mr-[12.5rem] lg:mr-[15.6rem] md:ml-[4.4rem]">
         <header className="w-full h-[4rem] dark:bg-darkMode bg-primaryBlue flex md:hidden justify-center items-center fixed top-0 z-50">
           <Link href={"/"}>
             <Image
@@ -101,7 +87,10 @@ export default function Home() {
         <ShowShadow>
           <h1 className="title mx-2 md:ml-[2rem] pb-3">Escola</h1>
           {status === "authenticated" && (
-            <button onClick={() => signOut()} className="flex gap-3 absolute left-[77vw] md:left-[50vw] lg:left-[66vw] py-1 px-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300">
+            <button
+              onClick={() => signOut()}
+              className="flex gap-3 absolute left-[77vw] md:left-[50vw] lg:left-[66vw] py-1 px-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+            >
               <Image
                 src={Logout}
                 alt="Sair"

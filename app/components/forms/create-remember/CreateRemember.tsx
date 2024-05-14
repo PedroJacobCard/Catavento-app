@@ -77,8 +77,8 @@ function CreateRemember() {
     <div
       ref={divRef}
       className={`${
-        grow ? "top-[73vh] h-[10rem]" : "h-auto top-[89vh]"
-      } w-full flex justify-center items-center px-4 py-4 dark:bg-darkModeBgColor bg-secondaryBlue shadow-upShadow absolute overflow-y-scroll duration-300`}
+        grow ? "h-[10rem]" : "h-auto"
+      } w-full bottom-0 flex justify-center items-center px-4 py-4 dark:bg-darkModeBgColor bg-secondaryBlue shadow-upShadow absolute overflow-y-scroll duration-300`}
       >
         
       <form

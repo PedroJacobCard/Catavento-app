@@ -8,31 +8,19 @@ import GoogleLogo from '@/public/Google.svg';
 import Link from "next/link";
 
 //import signIn functions
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 //import session functions
-import { getSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-import { useEffect } from "react";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/utils/authOptions";
 
 function SignIn() {
   //session
-    useEffect(() => {
-      const getSession = async () => {
-        try {
-          const session = await getServerSession(authOptions);
-          console.log(session);
-          if (session) {
-            return redirect("/");
-          }
-        } catch (error) {
-          console.error("Error", error);
-        }
-      };
-      getSession();
-    }, []);
+  const { data: session } = useSession();
+
+  if (session) {
+    redirect("/")
+  }
+
   
   return (
     <div className="w-full h-[100vh] flex flex-col lg:flex-row justify-center items-center">

@@ -22,6 +22,8 @@ import ShowShadow from "@/lib/ShowShadow";
 //import costume hooks
 import useEvent from "../hooks/useEvent";
 import useUser from "../hooks/useUser";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 function Calendario() {
   //Funcionalidades para display do campo de lembretes
@@ -38,9 +40,16 @@ function Calendario() {
   const [editEventIndex, setEditEventIndex] = useState<number>(0);
 
   //funcionalidades para aparecer o formulário de criação de eventos
-  const [showCreateEventForm, setShowCreateEventForm] = useState<boolean>(false);
+  const [showCreateEventForm, setShowCreateEventForm] =
+    useState<boolean>(false);
 
-  
+  //session
+  const { status } = useSession();
+
+  if (status === "unauthenticated") {
+    redirect("/sign-in");
+  }
+
   return (
     <>
       <Navbar />
@@ -48,7 +57,7 @@ function Calendario() {
         isRememberOpen={isRememberOpen}
         setIsRememberOpen={setIsRememberOpen}
       />
-      <div className="lg:max-w-[75vw] md:max-w-[65vw] max-w-full md:ml-[70px]">
+      <div className="max-w-full md:mr-[12.5rem] lg:mr-[15.6rem] md:ml-[4.4rem]">
         <header className="w-full h-[4rem] dark:bg-darkMode bg-primaryBlue flex md:hidden justify-center items-center fixed top-0 z-50">
           <Link href={"/"}>
             <Image
@@ -88,7 +97,10 @@ function Calendario() {
                 <h1 className="max-w-[300px] lg:max-w-[350px] pb-5 pl-5 lg:pl-0 font-bold">
                   {event.organizerSchool}
                 </h1>
-                {user?.role !== "VOLUNTARIO(A)" && user?.school.some(s => s.schoolName ===event.organizerSchool) ? (
+                {user?.role !== "VOLUNTARIO(A)" &&
+                user?.school.some(
+                  (s) => s.schoolName === event.organizerSchool
+                ) ? (
                   <Image
                     src={Marker}
                     alt="Icon para editar"
@@ -121,7 +133,11 @@ function Calendario() {
                   <span className="font-normal">{`${event.startTime} - ${event.endTime}`}</span>
                 </p>
               </div>
-              <EditEvent showForm={editEventIndex === eventIndex && showForm} setShowForm={setShowForm} eventId={event.id} />
+              <EditEvent
+                showForm={editEventIndex === eventIndex && showForm}
+                setShowForm={setShowForm}
+                eventId={event.id}
+              />
             </section>
           ))}
 
@@ -129,14 +145,9 @@ function Calendario() {
           <button
             type="button"
             className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
-            onClick={() => setShowCreateEventForm(prev => !prev)}
+            onClick={() => setShowCreateEventForm((prev) => !prev)}
           >
-            <Image
-              src={Plus}
-              width={15}
-              height={15}
-              alt="Adicionar"
-            />
+            <Image src={Plus} width={15} height={15} alt="Adicionar" />
             Criar Evento
           </button>
         ) : (

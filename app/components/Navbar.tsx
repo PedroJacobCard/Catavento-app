@@ -19,7 +19,13 @@ import User from "@/public/User.svg";
 //import hook
 import useUser from "../hooks/useUser";
 
+//import session
+import { useSession } from "next-auth/react";
+
 function Navbar() {
+  //session
+  const { data: session } = useSession();
+
   //funcionalidades para alterar a cor de background dos links de navegação
   const router = usePathname();
 
@@ -44,7 +50,7 @@ function Navbar() {
   }
   
   return (
-    <div className="w-[100vw] left-0 top-[90%] h-[4rem] md:w-[70px] md:hover:w-[250px] md:top-0 md:left-0 md:h-[100vh] flex md:flex-col overflow-hidden dark:bg-darkMode shadow-md hover:shadow-blueShadow dark:hover:shadow-xl bg-primaryBlue fixed z-[999] duration-500 opacity-effect">
+    <div className="w-full left-0 bottom-0 h-[4rem] md:w-[70px] md:hover:w-[250px] md:top-0 md:left-0 md:h-[100vh] flex md:flex-col overflow-hidden dark:bg-darkMode shadow-md hover:shadow-blueShadow dark:hover:shadow-xl bg-primaryBlue fixed z-[999] duration-500 opacity-effect">
       <div className="hidden md:flex justify-center items-center px-2 py-2 shadow-md">
         <Link href={"/"}>
           <Image
@@ -172,20 +178,20 @@ function Navbar() {
 
       <Link href={"/user-area"}>
         <div
-          className={`w-[4rem] md:min-w-[250px] h-[4rem] absolute flex items-center gap-3 px-4 md:px-3 shadow-upShadow left-0 md:top-[89.5vh] ${
+          className={`w-[4rem] md:min-w-[250px] h-[4rem] absolute flex items-center gap-3 px-4 md:px-3 shadow-upShadow left-0 md:bottom-0 ${
             router === "/user-area"
               ? "dark:bg-gray-600 bg-gray-400"
               : "dark:bg-darkModeBgColor bg-secondaryBlue"
           }`}
         >
-          {user?.image ? (
+          {session?.user?.image ? (
             <Image
-              src={user!.image}
+              src={session.user.image}
               alt="Usuário"
-              width={100}
-              height={100}
+              width={45}
+              height={45}
               priority={true}
-              className="w-[10vw] h-[5.2vh] md:w-[6vw] md:h-[7.3vh] lg:w-[3.5vw] object-cover rounded-full"
+              className="m-auto md:mx-0 object-cover rounded-full"
             />
           ) : (
             <Image

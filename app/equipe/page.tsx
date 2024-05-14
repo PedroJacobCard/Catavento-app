@@ -21,9 +21,20 @@ import useUsers from "../hooks/useUsers";
 import useUser from "../hooks/useUser";
 import DownloadUsersTable from "../components/downloadFiles/DownloadUsersTable";
 
+//session and redirection
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+
 function Equipe() {
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
+
+  //session
+  const { status } = useSession();
+
+  if (status === "unauthenticated") {
+    redirect("/sign-in");
+  }
 
   //importar dados dos usuários de equipe
   const { users } = useUsers();
@@ -38,7 +49,7 @@ function Equipe() {
         isRememberOpen={isRememberOpen}
         setIsRememberOpen={setIsRememberOpen}
       />
-      <div className="lg:max-w-[75vw] md:max-w-[65vw] max-w-full md:ml-[70px]">
+      <div className="max-w-full md:mr-[12.5rem] lg:mr-[15.6rem] md:ml-[4.4rem]">
         <header className="w-full h-[4rem] dark:bg-darkMode bg-primaryBlue flex md:hidden justify-center items-center fixed top-0">
           <Link href={"/"}>
             <Image
@@ -83,7 +94,10 @@ function Equipe() {
                       u.school.some((s) => s.schoolName === school.schoolName)
                     )
                     .map((user, i) => (
-                      <div key={i} className="flex flex-col lg:flex-row items-center mx-2 mt-5 gap-3 border lg:border-none   border-slate-300 dark:border-gray-600 rounded-md p-3 lg:py-0">
+                      <div
+                        key={i}
+                        className="flex flex-col lg:flex-row items-center mx-2 mt-5 gap-3 border lg:border-none   border-slate-300 dark:border-gray-600 rounded-md p-3 lg:py-0"
+                      >
                         {user.image ? (
                           <Image
                             src={user.image}
@@ -103,24 +117,26 @@ function Equipe() {
                         )}
                         <p>{user.name}</p>
                         <p className="font-bold">{user.role}</p>
-                      {user.school
-                        .filter((sch) => sch.schoolName === school.schoolName)
-                        .map((school, schooIndex) => (
-                          <p key={schooIndex} className="font-bold">
+                        {user.school
+                          .filter((sch) => sch.schoolName === school.schoolName)
+                          .map((school, schooIndex) => (
+                            <p key={schooIndex} className="font-bold">
                               Turnos:
                               {school.shifts.map((sh, ind) => (
-                              <span key={ind} className="ml-2 font-normal">{sh}</span>
-                            ))}
-                          </p>
-                      ))}
-                  </div>
-                ))}
+                                <span key={ind} className="ml-2 font-normal">
+                                  {sh}
+                                </span>
+                              ))}
+                            </p>
+                          ))}
+                      </div>
+                    ))}
               </section>
-              {
-                user.role === "COORDENADOR(A)_GERAL" ? (
-                  <DownloadUsersTable school={school} />
-                ) : ("")
-              }
+              {user.role === "COORDENADOR(A)_GERAL" ? (
+                <DownloadUsersTable school={school} />
+              ) : (
+                ""
+              )}
             </div>
           ))}
 

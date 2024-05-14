@@ -104,7 +104,7 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
   }, [schools, classes, users, shift]);
 
   return (
-    <div className="w-[250vw] md:w-[137vw] lg:w-[84vw] my-5">
+    <div className="w-[250vw] md:w-[137vw] lg:w-[83vw] my-5">
       <table className="flex flex-col px-5 py-5 dark:bg-darkMode bg-primaryBlue rounded-md shadow-md border-collapse">
         <caption className="title pb-3 pl-2 text-left">
           Tabela de dados qualitativos
