@@ -31,9 +31,9 @@ import { redirect } from "next/navigation";
 
 export default function Home() {
   //session
-  const { status } = useSession();
+  const { status, data: session } = useSession();
   
-  if (status === "unauthenticated") {
+  if (!session) {
     redirect("/sign-in");
   };
 
@@ -63,7 +63,7 @@ export default function Home() {
         isRememberOpen={isRememberOpen}
         setIsRememberOpen={setIsRememberOpen}
       />
-      <div className="max-w-full md:mr-[12.5rem] lg:mr-[15.6rem] md:ml-[4.4rem]">
+      <div className="max-w-full min-h-[100vh] pb-[16rem] md:pb-[12rem] md:mr-[12.5rem] lg:mr-[15.6rem] md:ml-[4.4rem] relative">
         <header className="w-full h-[4rem] dark:bg-darkMode bg-primaryBlue flex md:hidden justify-center items-center fixed top-0 z-50">
           <Link href={"/"}>
             <Image
@@ -89,7 +89,7 @@ export default function Home() {
           {status === "authenticated" && (
             <button
               onClick={() => signOut()}
-              className="flex gap-3 absolute left-[77vw] md:left-[50vw] lg:left-[66vw] py-1 px-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+              className="flex gap-3 absolute right-2 md:right-[19rem] lg:right-[22rem] py-2 px-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
             >
               <Image
                 src={Logout}

@@ -8,7 +8,7 @@ function Footer() {
   const year = new Date(Date.now()).getFullYear();
 
   return (
-    <div className="dark:bg-darkMode bg-secondaryBlue py-5 mt-[62vh] md:mt-[71.5vh] mb-[3.7rem] md:mb-0">
+    <div className="w-full dark:bg-darkMode bg-secondaryBlue py-5 bottom-[4rem] md:bottom-0 absolute">
       <div className="flex justify-center items-center">
         <Image
           src={CataventoLogo}

@@ -104,32 +104,32 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
   }, [schools, classes, users, shift]);
 
   return (
-    <div className="w-[250vw] md:w-[137vw] lg:w-[83vw] my-5">
+    <div className="w-[55rem] my-5">
       <table className="flex flex-col px-5 py-5 dark:bg-darkMode bg-primaryBlue rounded-md shadow-md border-collapse">
         <caption className="title pb-3 pl-2 text-left">
           Tabela de dados qualitativos
         </caption>
         <thead className="dark:bg-darkModeBgColor bg-secondaryBlue">
           <tr>
-            <th className="w-[12rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+            <th className="min-w-[10rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
               Escola
             </th>
-            <th className="w-[9rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+            <th className="max-w-[7rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
               Temas Concluídos
             </th>
-            <th className="w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+            <th className="max-w-[6rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
               Alunos que Concluíram
             </th>
-            <th className="w-[9rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+            <th className="max-w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
               Temas a Concluir
             </th>
-            <th className="w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+            <th className="max-w-[6rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
               Alunos a Concluir
             </th>
-            <th className="w-[9rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+            <th className="min-w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
               Turno
             </th>
-            <th className="w-[9.2rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+            <th className="max-w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
               Coordenador de Equipe
             </th>
           </tr>
@@ -138,25 +138,25 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
         <tbody>
           {schoolsDataOnTable.filter(school => school.coordinatorName.length > 0).map((school, schoolIndex) => (
             <tr key={schoolIndex}>
-              <td className="w-[12rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+              <td className="max-w-[15rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.name}
               </td>
-              <td className="w-[9rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+              <td className="min-w-[7rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.uniqueThemes}
               </td>
-              <td className="w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+              <td className="min-w-[6rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.totalStudents}
               </td>
-              <td className="w-[9rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+              <td className="max-w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.notAccomplishedThemes}
               </td>
-              <td className="w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+              <td className="min-w-[6rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.totalStudentsNotDone}
               </td>
-              <td className="w-[9rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+              <td className="min-w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.shift}
               </td>
-              <td className="w-[9.2rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
+              <td className="min-w-[8rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.coordinatorName}
               </td>
             </tr>
