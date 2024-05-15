@@ -31,6 +31,7 @@ import { InitSchoolOnUserType } from "@/utils/Types";
 
 //import enums
 import { Shift } from "@/utils/Enums";
+import { signIn } from "next-auth/react";
 
 function SignUp() {
   //funcionalidades para conectar com o Google calendário
@@ -140,7 +141,7 @@ function SignUp() {
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValuesRegister> = (data) => {
+  const onSubmit: SubmitHandler<FieldValuesRegister> = async (data) => {
     if (
       (selectedSchoolAndShifts.every(item => item.schoolName === '' || item.shifts.length < 1)) ||
       selectedRole === "Papel"
@@ -156,7 +157,15 @@ function SignUp() {
       school: selectedSchoolAndShifts,
       schoolCreated: selectedRole === "COORDENADOR(A)" ? selectedSchoolAndShifts : {}
     };
-    console.log(formData);
+    
+    try {
+      await signIn("google", formData);
+      toast.success("Perfil criado com successo!");
+    } catch (error) {
+      console.error("Error on creating the user:", error)
+      toast.error("Ops! Algo deu errado...");
+    }
+
     reset();
     setSelectedRole('');
     setSelectedSchoolAndShifts([]);
@@ -167,7 +176,6 @@ function SignUp() {
           shifts: [],
         },
       ])
-    toast.success("Perfil criado com successo!");
   }
 
   return (
