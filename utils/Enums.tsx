@@ -1,8 +1,8 @@
 export enum Role {
-  "COORDENADOR(A)_GERAL",
-  "COORDENADOR(A)",
-  "SECRETARIO(A)",
-  "VOLUNTARIO(A)",
+  "COORDENADOR_A_GERAL",
+  "COORDENADOR_A",
+  "SECRETARIO_A",
+  "VOLUNTARIO_A",
 }
 
 export enum Shift {

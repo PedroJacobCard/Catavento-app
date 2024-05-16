@@ -159,7 +159,12 @@ function SignUp() {
     };
     
     try {
-      await signIn("google", formData);
+      await signIn("credentials", {
+        connectedToCalender: formData.connectedToCalender,
+        role: formData.role,
+        school: formData.school,
+        schoolCreated: formData.schoolCreated
+      });
       toast.success("Perfil criado com successo!");
     } catch (error) {
       console.error("Error on creating the user:", error)

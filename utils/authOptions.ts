@@ -1,13 +1,15 @@
-import { Account, AuthOptions, User } from "next-auth";
+import { AuthOptions } from "next-auth";
 import GoogleProvider from 'next-auth/providers/google';
 
 import prisma from "@/lib/prismadb";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { Adapter, AdapterUser } from "next-auth/adapters";
 import { redirect } from "next/navigation";
-import toast from "react-hot-toast";
 
+//import toaster
+import toast from "react-hot-toast";
 import { FieldValuesRegister } from "@/app/sign-up/ValidationSchemaRegister";
+import { UserType } from "./Types";
 
 export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -18,48 +20,51 @@ export const authOptions: AuthOptions = {
     })
   ],
   callbacks: {
-    //async signIn(user: User | AdapterUser, account: Account | null, formData: FieldValuesRegister) {
-    // const userExist = await prisma.user.findUnique({
-    //   where: {
-    //     email: user.email
-    //   }
-    // });
+    async signIn({user, account, credentials}) {
+     const userExist = await prisma.user.findUnique({
+       where: {
+         email: user.email
+       }
+     });
 
-    // if (!userExist) {
-    //   toast.error("Ops! Parece que você ainda não está cadastrado.")
-    //   redirect("/sign-up");
-    // }
+     if (!userExist) {
+       toast.error("Ops! Parece que você ainda não está registrado.")
+       return redirect("/sign-up");
+     }
 
-    // const { connectedToCalender, role, school, schoolCreated} = formData;
-    // 
-    // const createUser = await prisma.user.create({
-    //   data: {
-    //     email: user.email,
-    //     name: user.name,
-    //     image: user.image,
-    //     account: account,
-    //     connectedToCalender: connectedToCalender,
-    //     role: role,
-    //     school: school,
-    //     schoolCreated: schoolCreated
-    //   }
-    // });
+     if (userExist) {
+      return userExist;
+     }
+     
+     const createUser = await prisma.user.create({
+       data: {
+         email: user.email,
+         name: user.name,
+         image: user.image,
+         account: account,
+         ...credentials
+       }
+     });
 
-    // return createUser;
-    //,
-    async session({ session, token, user }) {
+     return createUser;
+    },
+    async session({ session, user }) {
       if (session.user) {
-        const userAdapter = await prisma.user.findUnique({
+        const userAdapter: UserType | null = await prisma.user.findUnique({
           where: {
-            email: session.user.email
+            email: user.email
           }
         });
-        return session.user = userAdapter;
+        if (userAdapter) {
+          session.user = userAdapter;
+        }
       }
+      return session;
     }
   },
   pages: {
-    signIn: "/sign-in"
+    signIn: "/sign-in",
+    signOut: "/sign-in"
   },
   secret: process.env.NEXTAUTH_SECRET,
 }

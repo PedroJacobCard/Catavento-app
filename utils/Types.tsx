@@ -13,10 +13,10 @@ export type SessionType = {
 
 export type UserType = {
   id: string;
-  name: string;
-  email: string;
-  emailVerified: string;
-  image: string;
+  name?: string;
+  email?: string;
+  emailVerified?: string;
+  image?: string;
   connectedToCalender: boolean;
   role: Role | string;
   schoolCreated: SchoolType[];
@@ -24,10 +24,10 @@ export type UserType = {
   remember: RememberType[];
   event: EventType[];
   report: ReportType[];
-  accounts?: AccountType[];
+  accounts?: AccountType[] | null;
   sessions?: SessionType[];
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type AccountType = {
