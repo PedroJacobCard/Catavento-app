@@ -178,7 +178,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
                 >
                   {roleArray &&
                     roleArray.map((role) =>
-                      user && user?.role === role ? (
+                      user && user?.role.toString() === role ? (
                         <option
                           key={role}
                           className="dark:bg-darkMode bg-secondaryBlue"

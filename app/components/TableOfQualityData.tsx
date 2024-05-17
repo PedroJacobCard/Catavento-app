@@ -85,7 +85,7 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
 
         const coordinator = users?.filter(
           (user) =>
-            user.role === "COORDENADOR(A)" &&
+            user.role.toString() === "COORDENADOR_A" &&
             user.school.some((s) => s.schoolName == schoolName)
         )[0];
 
@@ -136,7 +136,7 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
         </thead>
 
         <tbody>
-          {schoolsDataOnTable.filter(school => school.coordinatorName.length > 0).map((school, schoolIndex) => (
+          {schoolsDataOnTable.filter(school => school.coordinatorName!.length > 0).map((school, schoolIndex) => (
             <tr key={schoolIndex}>
               <td className="max-w-[15rem] text-center px-2 py-1 dark:border-b dark:border-darkBlue border-gray-300">
                 {school.name}

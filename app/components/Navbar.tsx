@@ -117,7 +117,7 @@ function Navbar() {
           </div>
         </Link>
 
-        {user?.role === "COORDENADOR(A)_GERAL" && (
+        {user?.role.toString() === "COORDENADOR_A_GERAL" && (
           <Link href={"/relatorios"}>
             <div
               className={`w-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${

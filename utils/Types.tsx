@@ -18,7 +18,7 @@ export type UserType = {
   emailVerified?: string;
   image?: string;
   connectedToCalender: boolean;
-  role: Role | string;
+  role: Role;
   schoolCreated: SchoolType[];
   school: SchoolOnUserType[];
   remember: RememberType[];
@@ -174,5 +174,5 @@ export  type DownloadDataTableOfQualityType = {
   notAccomplishedThemes: string;
   totalStudentsNotDone: number;
   shift: string;
-  coordinatorName: string
+  coordinatorName?: string
 };

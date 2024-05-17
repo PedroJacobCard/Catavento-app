@@ -53,32 +53,46 @@ enum Role {
   VOLUNTARIO_A
 }
 
-model User {
-  id                  String          @id @default(auto()) @map("_id") @db.ObjectId
-  name                String?         @unique
-  email               String?         @unique
-  emailVerified       DateTime?       @map("email_verified")
-  image               String?
-  connectedToCalender Boolean
-  role                Role
+model Profile {
+  id                  String         @id @default(auto()) @map("_id") @db.ObjectId
+  user                User           @relation(fields: [userId, userName], references: [id, name])
+  userId              String         @db.ObjectId
+  userName            String         @unique
+  connectedToCalender Boolean?
+  role                Role?
   schoolCreated       School[]
   school              SchoolOnUser[]
   remember            Remember[]
   event               Event[]
   report              Report[]
-  accounts            Account[]
-  sessions            Session[]
-  authenticator       Authenticator[]
-  createdAt           DateTime        @default(now())
-  updatedAt           DateTime        @updatedAt
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@unique([id, userName])
+  @@unique([userId, userName])
+}
+
+model User {
+  id            String          @id @default(auto()) @map("_id") @db.ObjectId
+  name          String?         @unique
+  email         String?         @unique
+  emailVerified DateTime?       @map("email_verified")
+  image         String?
+  profile       Profile?
+  accounts      Account[]
+  sessions      Session[]
+  authenticator Authenticator[]
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
   @@unique([name, id])
+  @@unique([id, name])
   @@map("users")
 }
 
 model SchoolOnUser {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user       Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
   schoolName String
   shifts     String[]
@@ -125,7 +139,7 @@ model School {
   remember            Remember[]
   event               Event[]
   report              Report[]
-  creator             User       @relation(fields: [creatorId], references: [id])
+  creator             Profile    @relation(fields: [creatorId], references: [id])
   creatorId           String     @db.ObjectId
   createdAt           DateTime   @default(now())
   updatedAt           DateTime   @updatedAt
@@ -169,7 +183,7 @@ enum Theme {
 
 model Remember {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  author     User     @relation(fields: [authorId, authorName], references: [id, name], onDelete: Cascade)
+  author     Profile  @relation(fields: [authorId, authorName], references: [id, userName], onDelete: Cascade)
   authorId   String   @db.ObjectId
   authorName String
   content    String
@@ -189,7 +203,7 @@ model Event {
   endTime         DateTime
   timeZone        String
   date            DateTime
-  organizer       User     @relation(fields: [organizerId], references: [id], onDelete: Cascade)
+  organizer       Profile  @relation(fields: [organizerId], references: [id], onDelete: Cascade)
   organizerId     String   @db.ObjectId
   school          School   @relation(fields: [organizerSchool], references: [name])
   organizerSchool String
@@ -212,7 +226,7 @@ enum Resources {
 
 model Report {
   id                    String       @id @default(auto()) @map("_id") @db.ObjectId
-  author                User         @relation(fields: [authorName], references: [name], onDelete: Cascade)
+  author                Profile      @relation(fields: [authorName], references: [userName], onDelete: Cascade)
   authorName            String
   school                School       @relation(fields: [schoolName], references: [name])
   schoolName            String

@@ -9,7 +9,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/jovem-barbudo-com-camisa-listrada_273609-5677.jpg?t=st=1710794344~exp=1710797944~hmac=8152d26023142fbde74d2d8beb50bf262378bb432647e5da253e687de49ac9ca&w=740",
       "connectedToCalender": true,
-      "role": "COORDENADOR(A)_GERAL",
+      "role": "COORDENADOR_A_GERAL",
       "school": [
         {
           "schoolName":"Colégio Estadual Lyceu, Goiânia-GO",
@@ -43,7 +43,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/jovem-bonito-vestindo-camiseta-casual-sobre-o-rosto-feliz-de-fundo-azul-sorrindo-com-os-bracos-cruzados-olhando-para-a-camera-pessoa-positiva_839833-12963.jpg?t=st=1710795957~exp=1710799557~hmac=a11ea6b41a82ed16dfd42b6f54dbfcbd324e554b1c2baa609788ab5b6ef1e499&w=740",
       "connectedToCalender": true,
-      "role": "COORDENADOR(A)",
+      "role": "COORDENADOR_A",
       "school": [
         {
           "schoolName":"Colégio Estadual Lyceu, Goiânia-GO",
@@ -145,7 +145,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/feliz-homem-levantando-praia_107420-9868.jpg?t=st=1710852272~exp=1710855872~hmac=a97c1878d3b9094e1d6d37003cb73867ce445a9cb0c2b57cf3708876fe96ff04&w=740",
       "connectedToCalender": true,
-      "role": "SECRETARIO(A)",
+      "role": "SECRETARIO_A",
       "school": [
         {
           "schoolName":"Colégio Estadual Lyceu, Goiânia-GO",
@@ -222,7 +222,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/jovem-determinada-estudante-universitaria-armenia-de-cabelos-cacheados-ouca-com-atencao-a-atribuicao-parece-confiante-pronto-para-fazer-a-tarefa-cruzar-as-maos-no-peito-sorrindo-confiante-em-pe-fundo-branco_176420-56066.jpg?t=st=1710853988~exp=1710857588~hmac=11fd90b1d205dff5b2f172f4ee77fb031106e55abafe445d195cbc861fefc734&w=740",
       "connectedToCalender": true,
-      "role": "SECRETARIO(A)",
+      "role": "SECRETARIO_A",
       "school": [
         {
           "schoolName":"Escola Municipal Professor fernandes, Goiânia-GO",
@@ -299,7 +299,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/feliz-bonito-mulher-jovem-posar-camera-em-parque-cidade_1262-19158.jpg?t=st=1710853399~exp=1710856999~hmac=4bd4a2aa62b5cd977e0ad4881c853cfc31980c677edae782a356367efa672ea6&w=740",
       "connectedToCalender": true,
-      "role": "SECRETARIO(A)",
+      "role": "SECRETARIO_A",
       "school": [
         {
           "schoolName":"Escola Municipal Professor fernandes, Goiânia-GO",
@@ -361,7 +361,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/alegre-mulher-envelhecida-media-com-cabelos-cacheados_1262-20859.jpg?t=st=1710855343~exp=1710858943~hmac=9d1cb7a2ea9902e4efccaf9fdedaa27387867c2c1fca9452529edd950b6b058a&w=740",
       "connectedToCalender": true,
-      "role": "COORDENADOR(A)",
+      "role": "COORDENADOR_A",
       "school": [
         {
           "schoolName":"Colégio Estadual Polivalent, Goiânia-GO",
@@ -438,7 +438,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/cara-elegante-alegre-em-copos-posando-na-varanda-do-apartamento_74855-2968.jpg?t=st=1710855547~exp=1710859147~hmac=b4c6f0f5aa9525b1c02f865c9d258191c185abd1d7b7a6dfce86ac1750218602&w=740",
       "connectedToCalender": true,
-      "role": "SECRETARIO(A)",
+      "role": "SECRETARIO_A",
       "school": [
         {
           "schoolName":"Colégio Estadual Polivalent, Goiânia-GO",
@@ -479,7 +479,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/empresario-prospero-mantem-as-maos-cruzadas-tem-expressao-satisfeita_273609-16711.jpg?t=st=1710856292~exp=1710859892~hmac=d07aa579104320b8c619b95eeebda4c399be5ff3cd6808ae6615ba8177e7c67b&w=740",
       "connectedToCalender": true,
-      "role": "VOLUNTARIO(A)",
+      "role": "VOLUNTARIO_A",
       "school": [
         {
           "schoolName":"Colégio Estadual Polivalent, Goiânia-GO",
@@ -518,7 +518,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/o-negocio-jovem-empresario-profissional-de-oculos-sorrindo-para-a-camera-cruze-o-braco-no-peito-com_1258-26377.jpg?t=st=1710857025~exp=1710860625~hmac=87d828665e05b4eed6a9ff7063988572467d07f702b479061ad5ef81b1762e12&w=740",
       "connectedToCalender": true,
-      "role": "VOLUNTARIO(A)",
+      "role": "VOLUNTARIO_A",
       "school": [
         {
           "schoolName":"Colégio Estadual Lyceu, Goiânia-GO",
@@ -557,7 +557,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/conceito-de-felicidade-bem-estar-e-confianca-mulher-afro-americana-atraente-alegre-corte-de-cabelo-encaracolado-peito-de-bracos-cruzados-em-pose-poderosa-e-segura-sorrindo-determinado-usar-sueter-amarelo_176420-35063.jpg?t=st=1710857433~exp=1710861033~hmac=0e8b406bdb62f31fbc67533f749cf25a53c3275ff4a63a982ddf43b1c2c54fc9&w=740",
       "connectedToCalender": true,
-      "role": "VOLUNTARIO(A)",
+      "role": "VOLUNTARIO_A",
       "school": [
         {
           "schoolName":"Escola Municipal Professor fernandes, Goiânia-GO",
@@ -596,7 +596,7 @@
       "updatedAt": "20/07/2023 13:40",
       "image": "https://img.freepik.com/fotos-gratis/mulher-africana-sorridente-com-brincos-de-ouro_23-2148747979.jpg?t=st=1710857807~exp=1710861407~hmac=064ad991f526fd39e2d9f0a46f0b6501124348835d837d4b6cb495b7fcd58fb6&w=360",
       "connectedToCalender": true,
-      "role": "VOLUNTARIO(A)",
+      "role": "VOLUNTARIO_A",
       "school": [
         {
           "schoolName":"Escola Municipal Professor fernandes, Goiânia-GO",

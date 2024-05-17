@@ -155,17 +155,22 @@ function SignUp() {
       ...data,
       connectedToCalender: connect,
       school: selectedSchoolAndShifts,
-      schoolCreated: selectedRole === "COORDENADOR(A)" ? selectedSchoolAndShifts : {}
+      schoolCreated: selectedRole === "COORDENADOR_A" ? selectedSchoolAndShifts : {}
     };
     
     try {
-      await signIn("credentials", {
-        connectedToCalender: formData.connectedToCalender,
-        role: formData.role,
-        school: formData.school,
-        schoolCreated: formData.schoolCreated
+      const response = await fetch("/api/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData)
       });
-      toast.success("Perfil criado com successo!");
+
+      if (response.ok) {
+        await signIn("google");
+        toast.success("Perfil criado com successo!");
+      }
     } catch (error) {
       console.error("Error on creating the user:", error)
       toast.error("Ops! Algo deu errado...");
@@ -264,8 +269,8 @@ function SignUp() {
             )}
           />
 
-          {(selectedRole.length !== 0 && selectedRole === "SECRETARIO(A)") ||
-          (selectedRole.length !== 0 && selectedRole === "VOLUNTARIO(A)") ? (
+          {(selectedRole.length !== 0 && selectedRole === "SECRETARIO_A") ||
+          (selectedRole.length !== 0 && selectedRole === "VOLUNTARIO_A") ? (
             <>
               <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3   relative">
                 <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
@@ -322,7 +327,7 @@ function SignUp() {
             </>
           ) : (
             selectedRole.length !== 0 &&
-            selectedRole === "COORDENADOR(A)_GERAL" && (
+            selectedRole === "COORDENADOR_A_GERAL" && (
               <div className="w-full mb-5 flex flex-col items-start justify-start">
                 <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3   relative">
                   <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
@@ -376,7 +381,7 @@ function SignUp() {
             )
           )}
 
-          {selectedRole.length !== 0 && selectedRole === "COORDENADOR(A)" && (
+          {selectedRole.length !== 0 && selectedRole === "COORDENADOR_A" && (
             <div className="w-full">
               <p className="font-bold text-lg mt-3 mx-auto">
                 Escolas de coordenação
