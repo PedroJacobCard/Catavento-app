@@ -11,14 +11,30 @@ export type SessionType = {
   user: UserType;
 };
 
+export type ProfileType = {
+  id: string;
+  userId: string;
+  userName?: string | null;
+  connectedToCalender: boolean | null;
+  role: Role | null;
+  user: UserType;
+  schoolCreated: SchoolType[];
+  school: SchoolOnUserType[];
+  remember: RememberType[];
+  event: EventType[];
+  report: ReportType[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type UserType = {
   id: string;
-  name?: string;
-  email?: string;
-  emailVerified?: string;
-  image?: string;
-  connectedToCalender: boolean;
-  role: Role;
+  name?: string | null;
+  email?: string | null;
+  emailVerified?: string | null;
+  image?: string | null;
+  connectedToCalender: boolean | null;
+  role: Role | null;
   schoolCreated: SchoolType[];
   school: SchoolOnUserType[];
   remember: RememberType[];
@@ -138,7 +154,7 @@ export type EditPropType = {
 
 //types de contextos
 export type UseUserContextType = {
-  user: UserType | null;
+  user: ProfileType | null;
 };
 
 export type UseUsersContextType = {

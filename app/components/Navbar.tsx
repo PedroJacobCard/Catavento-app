@@ -23,9 +23,6 @@ import useUser from "../hooks/useUser";
 import { useSession } from "next-auth/react";
 
 function Navbar() {
-  //session
-  const { data: session } = useSession();
-
   //funcionalidades para alterar a cor de background dos links de navegação
   const router = usePathname();
 
@@ -117,7 +114,7 @@ function Navbar() {
           </div>
         </Link>
 
-        {user?.role.toString() === "COORDENADOR_A_GERAL" && (
+        {user?.role!.toString() === "COORDENADOR_A_GERAL" && (
           <Link href={"/relatorios"}>
             <div
               className={`w-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${
@@ -184,9 +181,9 @@ function Navbar() {
               : "dark:bg-darkModeBgColor bg-secondaryBlue"
           }`}
         >
-          {session?.user?.image ? (
+          {user?.user?.image ? (
             <Image
-              src={session.user.image}
+              src={user.user.image}
               alt="Usuário"
               width={45}
               height={45}
@@ -203,7 +200,7 @@ function Navbar() {
             />
           )}
           <h2 className="hidden md:block font-bold text-xl my-auto mx-auto">
-            {user?.name}
+            {user?.user.name}
           </h2>
         </div>
       </Link>

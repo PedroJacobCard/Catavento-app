@@ -61,7 +61,7 @@ body {
 }
 
 input[type="checkbox"] {
-  @apply w-5 h-5 rounded-sm appearance-none border border-slate-400 bg-white hover:bg-slate-300 outline-none duration-300 relative;
+  @apply w-5 h-5 rounded-sm appearance-none border border-slate-400 bg-white hover:bg-slate-300 outline-none duration-300 relative cursor-pointer;
 }
 input[type="checkbox"]:checked {
   @apply bg-lime-200;

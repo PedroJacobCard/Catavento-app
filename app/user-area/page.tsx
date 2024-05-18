@@ -38,6 +38,7 @@ function UserArea() {
 
   //obter dados do usuário
   const { user } = useUser();
+  console.log(user)
 
   //funcionalidade para aparecer o formulário de edição do usuário
   const [showForm, setShowForm] = useState<boolean>(false);
@@ -78,9 +79,9 @@ function UserArea() {
           {user && (
             <>
               <div className="flex justify-center items-center gap-3  mx-5 py-5 relative">
-                {user.image ? (
+                {user.user.image ? (
                   <Image
-                    src={user.image}
+                    src={user.user.image}
                     alt="User foto"
                     width={100}
                     height={100}
@@ -96,7 +97,7 @@ function UserArea() {
                   />
                 )}
 
-                {user?.name}
+                {user?.user.name}
                 <Image
                   src={Marker}
                   alt="Icon para editar"
@@ -115,7 +116,7 @@ function UserArea() {
                 </p>
                 <p className="mb-1">
                   <span className="font-bold mr-3">Email:</span>
-                  {user.email}
+                  {user.user.email}
                 </p>
                 <p className="mb-1">
                   <span className="font-bold mr-3">

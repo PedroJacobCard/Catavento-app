@@ -2,10 +2,11 @@
 import { createContext, useEffect, useState } from "react";
 
 //import types
-import { UserType, ChildrenPropsType, UseUserContextType } from "@/utils/Types";
+import { ChildrenPropsType, UseUserContextType, ProfileType } from "@/utils/Types";
+import { useSession } from "next-auth/react";
 
 
-const initState: UserType | null = null;
+const initState: ProfileType | null = null;
 
 const initContextState: UseUserContextType = {
   user: null,
@@ -15,19 +16,42 @@ export const UserContext = createContext<UseUserContextType>(initContextState);
 
 
 function UserProvider({ children }: ChildrenPropsType) {
-  const [user, setUser] = useState<UserType | null>(initState);
+  const [user, setUser] = useState<ProfileType | null>(initState);
+
+  const {data: session} = useSession();
   
   useEffect(() => {
     //get user
-    const getUser = async (): Promise<UserType | null> => {
+    const getUser = async (): Promise<ProfileType | null> => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/users?id=b285jfjfur2875dns9`
+          '/api/profile', {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
         );
           
         if (response.ok) {
-          const data = await response.json();
-          setUser(data[0]);
+          const data: ProfileType = await response.json();
+          const mergeUser: ProfileType = {
+            id: data.id,
+            userId: data.user.id,
+            userName: session?.user?.name,
+            connectedToCalender: data.connectedToCalender,
+            role: data.role,
+            schoolCreated: data.schoolCreated,
+            school: data.school,
+            user: data.user,
+            remember: [],
+            event: [],
+            report: [],
+            createdAt: data.createdAt,
+            updatedAt: data.updatedAt
+          }
+          setUser(mergeUser);
+
           return data;
         }
       } catch (error) {
@@ -36,7 +60,7 @@ function UserProvider({ children }: ChildrenPropsType) {
       return null;
     }
     getUser();
-  }, []);
+  }, [session?.user]);
 
   return ( 
     <UserContext.Provider value={{user}}>
