@@ -12,6 +12,7 @@ import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "../components/Footer";
 import DownloadReportTable from "../components/downloadFiles/DownloadReportTable";
+import Loading from "../components/Loading";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -29,14 +30,19 @@ function Report() {
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
 
   //session
-  const { data: session } = useSession();
+  const { status, data: session } = useSession();
+
+  //importar relatórios
+  const { reports } = useReport();
+
+  //verifica o status da seção
+  if (status === "loading") {
+    return <Loading />;
+  }
 
   if (!session) {
     redirect("/sign-in");
   }
-
-  //importar relatórios
-  const { reports } = useReport();
 
   return (
     <>

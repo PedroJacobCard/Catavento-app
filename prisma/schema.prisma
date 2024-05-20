@@ -94,7 +94,7 @@ model SchoolOnUser {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   user       Profile  @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String   @db.ObjectId
-  schoolName String
+  schoolName String   @unique
   shifts     String[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
@@ -132,7 +132,7 @@ model School {
   coordinator_morning String?
   coordinator_evening String?
   coordinator_night   String?
-  email               String?    @unique
+  email               String?
   telephone           String?
   address             String?
   class               Class[]

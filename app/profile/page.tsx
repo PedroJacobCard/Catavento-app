@@ -32,8 +32,13 @@ import { InitSchoolOnUserType } from "@/utils/Types";
 //import enums
 import { Shift } from "@/utils/Enums";
 import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { NextResponse } from "next/server";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 function Profile() {
+  const router = useRouter();
+
   //funcionalidades para conectar com o Google calendário
   const [connect, setConnect] = useState<boolean>(false);
 
@@ -167,11 +172,14 @@ function Profile() {
         body: JSON.stringify(formData)
       });
 
-      console.log(formData)
-
       if (response.ok) {
         toast.success("Perfil criado com successo!");
-        return redirect("/");
+        router.push("/");
+      } else {
+        toast.error(
+          "hum... Parece que os dados enviados já existem... Tente uma escola diferente."
+        );
+
       }
     } catch (error) {
       console.error("Error on creating the user:", error)

@@ -12,6 +12,8 @@ import User from "@/public/User.svg";
 import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "../components/Footer";
+import DownloadUsersTable from "../components/downloadFiles/DownloadUsersTable";
+import Loading from "../components/Loading";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -19,7 +21,6 @@ import ShowShadow from "@/lib/ShowShadow";
 //import hooks
 import useUsers from "../hooks/useUsers";
 import useUser from "../hooks/useUser";
-import DownloadUsersTable from "../components/downloadFiles/DownloadUsersTable";
 
 //session and redirection
 import { useSession } from "next-auth/react";
@@ -30,11 +31,7 @@ function Equipe() {
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
 
   //session
-  const { status } = useSession();
-
-  if (status === "unauthenticated") {
-    redirect("/sign-in");
-  }
+  const { status, data: session } = useSession();
 
   //importar dados dos usuários de equipe
   const { users } = useUsers();
@@ -42,6 +39,15 @@ function Equipe() {
   //importar dados do usuário logado
   const { user } = useUser();
 
+  //verifica o status da seção
+  if (status === "loading") {
+    return <Loading />;
+  }
+
+  if (!session) {
+    redirect("/sign-in");
+  }
+  
   return (
     <>
       <Navbar />
@@ -132,7 +138,7 @@ function Equipe() {
                       </div>
                     ))}
               </section>
-              {user.role.toString() === "COORDENADOR_A_GERAL" ? (
+              {user?.user.role?.toString() === "COORDENADOR_A_GERAL" ? (
                 <DownloadUsersTable school={school} />
               ) : (
                 ""

@@ -19,6 +19,7 @@ import CreateClass from "@/app/components/forms/create-class/CreateClass";
 import EditClass from "@/app/components/forms/edit-class/EditClass";
 import CreateReport from "@/app/components/forms/create-report/CreateReport";
 import TableOfQualityData from "@/app/components/TableOfQualityData";
+import Loading from "@/app/components/Loading";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -69,11 +70,7 @@ function Matutino() {
   };
 
   //session
-  const { data: session } = useSession();
-
-  if (!session) {
-    redirect("/sign-in");
-  }
+  const { status, data: session } = useSession();
 
   //import classes data
   const { classes } = useClass();
@@ -93,6 +90,15 @@ function Matutino() {
   const filteredSchools = schools.filter((sch) =>
     filterMorningClasses?.some((cla) => cla.schoolName === sch.name)
   );
+
+  //verifica o status da seção
+  if (status === "loading") {
+    return <Loading />;
+  }
+
+  if (!session) {
+    redirect("/sign-in");
+  }
 
   return (
     <>
@@ -239,8 +245,8 @@ function Matutino() {
                               readOnly
                             />
 
-                            {user?.role.toString() === "COORDENADOR_A" ||
-                            user?.role.toString() === "SECRETARIO_A" ? (
+                            {user?.user.role?.toString() === "COORDENADOR_A" ||
+                            user?.user.role?.toString() === "SECRETARIO_A" ? (
                               <Image
                                 src={Marker}
                                 alt="Alterar classe"
@@ -281,8 +287,8 @@ function Matutino() {
                         />
                       </div>
                     ))}
-                  {user?.role.toString() === "COORDENADOR_A" ||
-                  user?.role.toString() === "SECRETARIO_A" ? (
+                  {user?.user.role?.toString() === "COORDENADOR_A" ||
+                  user?.user.role?.toString() === "SECRETARIO_A" ? (
                     <button
                       type="button"
                       className="w-10 h-10 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
@@ -306,8 +312,8 @@ function Matutino() {
                   )}
                 </div>
 
-                {user?.role.toString() === "COORDENADOR_A" ||
-                user?.role.toString() === "SECRETARIO_A" ? (
+                {user?.user.role?.toString() === "COORDENADOR_A" ||
+                user?.user.role?.toString() === "SECRETARIO_A" ? (
                   <button
                     type="button"
                     className="w-auto h-10 flex items-center justify-center gap-3 px-2 mx-5 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"

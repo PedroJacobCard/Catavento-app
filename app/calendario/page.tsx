@@ -15,6 +15,7 @@ import RememberField from "@/app/components/RememberField";
 import Footer from "../components/Footer";
 import CreateEvent from "../components/forms/create-event/CreateEvent";
 import EditEvent from "../components/forms/edit-event/EditEvent";
+import Loading from "../components/Loading";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -22,6 +23,8 @@ import ShowShadow from "@/lib/ShowShadow";
 //import costume hooks
 import useEvent from "../hooks/useEvent";
 import useUser from "../hooks/useUser";
+
+//import session and navigation
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
@@ -44,7 +47,12 @@ function Calendario() {
     useState<boolean>(false);
 
   //session
-  const { data: session } = useSession();
+  const { status, data: session } = useSession();
+
+  //verifica o status da seção
+  if (status === "loading") {
+    return <Loading />;
+  }
 
   if (!session) {
     redirect("/sign-in");
@@ -97,7 +105,7 @@ function Calendario() {
                 <h1 className="max-w-[300px] lg:max-w-[350px] pb-5 pl-5 lg:pl-0 font-bold">
                   {event.organizerSchool}
                 </h1>
-                {user?.role.toString() !== "VOLUNTARIO_A" &&
+                {user?.user.role?.toString() !== "VOLUNTARIO_A" &&
                 user?.school.some(
                   (s) => s.schoolName === event.organizerSchool
                 ) ? (
@@ -141,7 +149,7 @@ function Calendario() {
             </section>
           ))}
 
-        {user?.role.toString() !== "VOLUNTARIO_A" ? (
+        {user?.user.role?.toString() !== "VOLUNTARIO_A" ? (
           <button
             type="button"
             className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"

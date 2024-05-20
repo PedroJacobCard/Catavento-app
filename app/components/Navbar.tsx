@@ -19,9 +19,6 @@ import User from "@/public/User.svg";
 //import hook
 import useUser from "../hooks/useUser";
 
-//import session
-import { useSession } from "next-auth/react";
-
 function Navbar() {
   //funcionalidades para alterar a cor de background dos links de navegação
   const router = usePathname();

@@ -12,9 +12,21 @@ export async function GET() {
       include: {
         school: true,
         schoolCreated: true,
-        user: true
+        user: {
+          include: {
+            accounts: {
+              select: {
+                access_token: true
+              }
+            }
+          }
+        }
       }
     });
+
+    if (!profile) {
+      return NextResponse.json({ message: "Conclua seu perfil!"})
+    }
 
     return NextResponse.json(profile);
   } else {

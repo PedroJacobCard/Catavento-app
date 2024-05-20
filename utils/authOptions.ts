@@ -20,29 +20,6 @@ export const authOptions: AuthOptions = {
           where: {
             email: session.user.email
           },
-          include: {
-            profile: {
-              select: {
-                id: true,
-                userId: true,
-                userName: true,
-                connectedToCalender: true,
-                role: true,
-                schoolCreated: true,
-                school: true,
-                remember: true,
-                event: true,
-                report: true,
-                createdAt: true,
-                updatedAt: true
-              }
-            },
-            accounts: {
-              select: {
-                access_token: true
-              }
-            },
-          }
         });
         if (userAdapter) {
           session.user = userAdapter;
@@ -52,7 +29,7 @@ export const authOptions: AuthOptions = {
     }
   },
   pages: {
-    signIn: "/profile",
+    signIn: "/",
     signOut: "/sign-in"
   },
   secret: process.env.NEXTAUTH_SECRET,

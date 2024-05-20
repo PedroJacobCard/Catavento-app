@@ -13,10 +13,11 @@ import User from '@/public/User.svg';
 import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
+import EditUser from "../components/forms/edit-user/EditUser";
+import Loading from "../components/Loading";
 
 //import hooks
 import useUser from "../hooks/useUser";
-import EditUser from "../components/forms/edit-user/EditUser";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -30,18 +31,23 @@ function UserArea() {
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
 
   //session
-  const { data: session } = useSession();
+  const { status, data: session } = useSession();
+
+  //obter dados do usuário
+  const { user } = useUser();
+  console.log(user);
+
+  //funcionalidade para aparecer o formulário de edição do usuário
+  const [showForm, setShowForm] = useState<boolean>(false);
+
+  //verifica o status da seção
+  if (status === "loading") {
+    return <Loading />;
+  }
 
   if (!session) {
     redirect("/sign-in");
   }
-
-  //obter dados do usuário
-  const { user } = useUser();
-  console.log(user)
-
-  //funcionalidade para aparecer o formulário de edição do usuário
-  const [showForm, setShowForm] = useState<boolean>(false);
 
   return (
     <>
@@ -83,9 +89,9 @@ function UserArea() {
                   <Image
                     src={user.user.image}
                     alt="User foto"
-                    width={100}
-                    height={100}
-                    className="h-[10vw] w-[7.2vh] md:h-[7vh] object-cover rounded-full"
+                    width={40}
+                    height={40}
+                    className="object-cover rounded-full"
                   />
                 ) : (
                   <Image
@@ -96,7 +102,6 @@ function UserArea() {
                     priority={true}
                   />
                 )}
-
                 {user?.user.name}
                 <Image
                   src={Marker}

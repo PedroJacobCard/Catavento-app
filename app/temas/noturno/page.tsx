@@ -18,6 +18,7 @@ import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile"
 import CreateClass from "@/app/components/forms/create-class/CreateClass";
 import EditClass from "@/app/components/forms/edit-class/EditClass";
 import CreateReport from "@/app/components/forms/create-report/CreateReport";
+import Loading from "@/app/components/Loading";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
@@ -70,11 +71,7 @@ function Noturno() {
   };
 
   //session
-  const { data: session } = useSession();
-
-  if (!session) {
-    redirect("/sign-in");
-  }
+  const { status, data: session } = useSession();
 
   //import classes data
   const { classes } = useClass();
@@ -92,6 +89,15 @@ function Noturno() {
   const filteredSchools = schools.filter((sch) =>
     filterNightClasses?.some((cla) => cla.schoolName === sch.name)
   );
+
+  //verifica o status da seção
+  if (status === "loading") {
+    return <Loading />;
+  }
+
+  if (!session) {
+    redirect("/sign-in");
+  }
 
   return (
     <>
@@ -237,8 +243,8 @@ function Noturno() {
                               unselectable="off"
                             />
 
-                            {user?.role.toString() === "COORDENADOR_A" ||
-                            user?.role.toString() === "SECRETARIO_A" ? (
+                            {user?.user.role?.toString() === "COORDENADOR_A" ||
+                            user?.user.role?.toString() === "SECRETARIO_A" ? (
                               <Image
                                 src={Marker}
                                 alt="Alterar classe"
@@ -279,8 +285,8 @@ function Noturno() {
                         />
                       </div>
                     ))}
-                  {user?.role.toString() === "COORDENADOR_A" ||
-                  user?.role.toString() === "SECRETARIO_A" ? (
+                  {user?.user.role?.toString() === "COORDENADOR_A" ||
+                  user?.user.role?.toString() === "SECRETARIO_A" ? (
                     <button
                       type="button"
                       className="w-10 h-10 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
@@ -304,8 +310,8 @@ function Noturno() {
                   )}
                 </div>
 
-                {user?.role.toString() === "COORDENADOR_A" ||
-                user?.role.toString() === "SECRETARIO_A" ? (
+                {user?.user.role?.toString() === "COORDENADOR_A" ||
+                user?.user.role?.toString() === "SECRETARIO_A" ? (
                   <button
                     type="button"
                     onClick={() =>

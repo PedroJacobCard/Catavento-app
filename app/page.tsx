@@ -14,50 +14,58 @@ import Logout from "@/public/Logout.svg";
 import Navbar from "./components/Navbar";
 import RememberField from "./components/RememberField";
 import Footer from "./components/Footer";
+import EditSchool from "./components/forms/edit-school/EditSchool";
+import CreateSchool from "./components/forms/create-school/CreateSchool";
+import Loading from "./components/Loading";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
+import GoogleMaps from "@/lib/GoogleMaps";
 
 //import hooks
 import useSchool from "./hooks/useSchool";
 import useUser from "./hooks/useUser";
-import GoogleMaps from "@/lib/GoogleMaps";
-import EditSchool from "./components/forms/edit-school/EditSchool";
-import CreateSchool from "./components/forms/create-school/CreateSchool";
 
 //import session
 import { useSession, signOut } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   //session
   const { status, data: session } = useSession();
   
-  if (!session) {
-    redirect("/sign-in");
-  };
-
-  //import school data
-  const { schools } = useSchool();
-
-  //import user data
-  const { user } = useUser();
-
-  //funcionalidades para adiquirir apenas as escolas das quais o usuário trabalha
-  const userSchools = user?.school.map((s) => s.schoolName);
-  const filteredSchools = schools?.filter((s) => userSchools?.includes(s.name));
-
-  //Funcionalidades para display do campo de lembretes
-  const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
-
-  //funcionalidade para aparecer o formulário de edição da escola
-  const [editSchoolIndex, setEditSchoolIndex] = useState<number | null>(null);
-  const [showForm, setShowForm] = useState<boolean>(false);
-
-  const [showCreateSchoolForm, setShowCreateSchoolForm] = useState<boolean>(false);
-
-  return (
-    <>
+    //import school data
+    const { schools } = useSchool();
+  
+    //import user data
+    const { user } = useUser();
+    
+    //funcionalidades para adiquirir apenas as escolas das quais o usuário trabalha
+    const userSchools = user?.school.map((s) => s.schoolName);
+    const filteredSchools = schools?.filter((s) => userSchools?.includes(s.name));
+    
+    //Funcionalidades para display do campo de lembretes
+    const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
+    
+    //funcionalidade para aparecer o formulário de edição da escola
+    const [editSchoolIndex, setEditSchoolIndex] = useState<number | null>(null);
+    const [showForm, setShowForm] = useState<boolean>(false);
+    
+    const [showCreateSchoolForm, setShowCreateSchoolForm] = useState<boolean>(false);
+    
+    //verifica o status da seção
+    if (status === "loading") {
+      return <Loading />
+    }
+  
+    if (!session) {
+      redirect("/sign-in");
+    };
+  
+    return (
+      <>
       <Navbar />
       <RememberField
         isRememberOpen={isRememberOpen}
@@ -115,8 +123,8 @@ export default function Home() {
                 <h1 className="max-w-[300px] md:max-w-[310px] lg:max-w-full font-bold">
                   {school.name}
                 </h1>
-                {user?.role === "COORDENADOR(A)" ||
-                user?.role === "SECRETARIO(A)" ? (
+                {user?.user.role?.toString() === "COORDENADOR_A" ||
+                user?.user.role?.toString() === "SECRETARIO_A" ? (
                   <Image
                     src={Marker}
                     alt="Icon para editar"
@@ -180,7 +188,7 @@ export default function Home() {
             </section>
           ))}
 
-        {user?.role === "COORDENADOR(A)" || user?.role === "SECRETARIO(A)" ? (
+        {user?.user.role?.toString() === "COORDENADOR_A" || user?.user.role?.toString() === "SECRETARIO_A" ? (
           <button
             type="button"
             className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
@@ -199,8 +207,8 @@ export default function Home() {
           ""
         )}
 
-        {user?.role === "COORDENADOR(A)" ||
-        (user?.role === "SECRETARIO(A)" && showCreateSchoolForm) ? (
+        {user?.user.role?.toString() === "COORDENADOR_A" ||
+        (user?.user.role?.toString() === "SECRETARIO_A" && showCreateSchoolForm) ? (
           <CreateSchool
             showCreateSchoolForm={showCreateSchoolForm}
             setShowCreateSchoolForm={setShowCreateSchoolForm}
