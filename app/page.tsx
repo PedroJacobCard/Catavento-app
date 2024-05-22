@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
 
 //import icons
@@ -28,44 +28,47 @@ import useUser from "./hooks/useUser";
 
 //import session
 import { useSession, signOut } from "next-auth/react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  const router = useRouter();
-
   //session
   const { status, data: session } = useSession();
+
+  //import school data
+  const { schools } = useSchool();
+
+  //import user data
+  const { user } = useUser();
+
+  if (!user) {
+    redirect('/profile')
+  }
   
-    //import school data
-    const { schools } = useSchool();
+  //funcionalidades para adiquirir apenas as escolas das quais o usuário trabalha
+  const userSchools = user?.school.map((s) => s.schoolName);
+  const filteredSchools = schools?.filter((s) => userSchools?.includes(s.name));
   
-    //import user data
-    const { user } = useUser();
-    
-    //funcionalidades para adiquirir apenas as escolas das quais o usuário trabalha
-    const userSchools = user?.school.map((s) => s.schoolName);
-    const filteredSchools = schools?.filter((s) => userSchools?.includes(s.name));
-    
-    //Funcionalidades para display do campo de lembretes
-    const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
-    
-    //funcionalidade para aparecer o formulário de edição da escola
-    const [editSchoolIndex, setEditSchoolIndex] = useState<number | null>(null);
-    const [showForm, setShowForm] = useState<boolean>(false);
-    
-    const [showCreateSchoolForm, setShowCreateSchoolForm] = useState<boolean>(false);
-    
-    //verifica o status da seção
-    if (status === "loading") {
-      return <Loading />
-    }
+  //Funcionalidades para display do campo de lembretes
+  const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
   
-    if (!session) {
-      redirect("/sign-in");
-    };
+  //funcionalidade para aparecer o formulário de edição da escola
+  const [editSchoolIndex, setEditSchoolIndex] = useState<number | null>(null);
+  const [showForm, setShowForm] = useState<boolean>(false);
   
-    return (
-      <>
+  const [showCreateSchoolForm, setShowCreateSchoolForm] =
+  useState<boolean>(false);
+  
+  //verifica o status da seção
+  if (status === "loading") {
+    return <Loading />;
+  }
+  
+  if (!session) {
+    return redirect("/sign-in");
+  }
+
+  return (
+    <>
       <Navbar />
       <RememberField
         isRememberOpen={isRememberOpen}
@@ -188,7 +191,8 @@ export default function Home() {
             </section>
           ))}
 
-        {user?.user.role?.toString() === "COORDENADOR_A" || user?.user.role?.toString() === "SECRETARIO_A" ? (
+        {user?.user.role?.toString() === "COORDENADOR_A" ||
+        user?.user.role?.toString() === "SECRETARIO_A" ? (
           <button
             type="button"
             className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
@@ -208,7 +212,8 @@ export default function Home() {
         )}
 
         {user?.user.role?.toString() === "COORDENADOR_A" ||
-        (user?.user.role?.toString() === "SECRETARIO_A" && showCreateSchoolForm) ? (
+        (user?.user.role?.toString() === "SECRETARIO_A" &&
+          showCreateSchoolForm) ? (
           <CreateSchool
             showCreateSchoolForm={showCreateSchoolForm}
             setShowCreateSchoolForm={setShowCreateSchoolForm}

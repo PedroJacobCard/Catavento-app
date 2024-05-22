@@ -2,11 +2,11 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 //import icons
 import LoginPicture from "@/public/images/sign-picture.png";
-import Logo from "@/public/Logo-navabar-extended.svg";
-import GoogleLogo from "@/public/Google.svg";
 import Alert from '@/public/Alert.svg';
 import Info from "@/public/Info.svg";
 import Plus from "@/public/Plus.svg";
@@ -27,17 +27,28 @@ import { rolesArray } from "@/lib/EnumsToArray";
 
 //import costume hooks
 import useSchool from "../hooks/useSchool";
+
+//import types
 import { InitSchoolOnUserType } from "@/utils/Types";
 
 //import enums
 import { Shift } from "@/utils/Enums";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/navigation";
-import { NextResponse } from "next/server";
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+
+//import user custom hook
+import useUser from "../hooks/useUser";
 
 function Profile() {
   const router = useRouter();
+
+  //session
+  const {data: session } = useSession();
+
+  if (!session) {
+    router.push('/sign-in');
+  }
+
+  //import user hook
+  const { setFetchProfile, handleFetchUser } = useUser();
 
   //funcionalidades para conectar com o Google calendário
   const [connect, setConnect] = useState<boolean>(false);
@@ -169,12 +180,14 @@ function Profile() {
         headers: {
           "Content-Type": "application/json",
         },
+        cache: 'no-store',
         body: JSON.stringify(formData)
       });
 
       if (response.ok) {
         toast.success("Perfil criado com successo!");
-        router.push("/");
+        setFetchProfile(true);
+        handleFetchUser();
       } else {
         toast.error(
           "hum... Parece que os dados enviados já existem... Tente uma escola diferente."

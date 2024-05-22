@@ -155,6 +155,8 @@ export type EditPropType = {
 //types de contextos
 export type UseUserContextType = {
   user: ProfileType | null;
+  setFetchProfile: Dispatch<SetStateAction<boolean>>;
+  handleFetchUser: () => void
 };
 
 export type UseUsersContextType = {

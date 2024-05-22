@@ -1,6 +1,6 @@
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prismadb";
-import { NextResponse } from "next/server";
 import { authOptions } from "@/utils/authOptions";
 
 export async function GET() {
@@ -23,11 +23,11 @@ export async function GET() {
         }
       }
     });
-
+    
     if (!profile) {
       return NextResponse.json({ message: "Conclua seu perfil!"})
     }
-
+    
     return NextResponse.json(profile);
   } else {
     return NextResponse.json({message: "Você não está autorizado"});
@@ -36,32 +36,32 @@ export async function GET() {
 
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
-
+  
   if (!session) {
     return NextResponse.json({ message: "Not authenticated"}, { status: 401 });
   }
-
+  
   const {connectedToCalender, role, school, schoolCreated } = await req.json();
-
+  
   const user = await prisma.user.findUnique({
     where: { email: session.user!.email },
   });
-
+  
   try {
     if (user && school && schoolCreated) {
-        const createSchoolOnUser = await Promise.all(
-          school.map( async (schoolData: {schoolName: string, shifts: string[]}) => {
-            const data = await prisma.schoolOnUser.create({
-             data: {
-               schoolName: schoolData.schoolName,
-               shifts: { set: schoolData.shifts},
-               userId: user.id
-              }
-            })
-            return data;
+      const createSchoolOnUser = await Promise.all(
+        school.map( async (schoolData: {schoolName: string, shifts: string[]}) => {
+          const data = await prisma.schoolOnUser.create({
+            data: {
+              schoolName: schoolData.schoolName,
+              shifts: { set: schoolData.shifts},
+              userId: user.id
+            }
           })
-        );
-        
+          return data;
+        })
+      );
+      
       const createSchoolCreated = Promise.all(
         schoolCreated.map( async (schoolData: {schoolName: string, shifts: string[]}) => {
           const data = await prisma.school.create({
@@ -89,6 +89,7 @@ export async function POST(req: Request) {
           }
         }
       });
+      
       
       return NextResponse.json(userProfile);
     } else {
