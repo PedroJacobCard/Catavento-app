@@ -105,7 +105,7 @@ function Calendario() {
                 <h1 className="max-w-[300px] lg:max-w-[350px] pb-5 pl-5 lg:pl-0 font-bold">
                   {event.organizerSchool}
                 </h1>
-                {user?.user.role?.toString() !== "VOLUNTARIO_A" &&
+                {user?.role?.toString() !== "VOLUNTARIO_A" &&
                 user?.school.some(
                   (s) => s.schoolName === event.organizerSchool
                 ) ? (
@@ -149,7 +149,7 @@ function Calendario() {
             </section>
           ))}
 
-        {user?.user.role?.toString() !== "VOLUNTARIO_A" ? (
+        {user?.role?.toString() !== "VOLUNTARIO_A" ? (
           <button
             type="button"
             className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"

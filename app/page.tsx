@@ -126,8 +126,8 @@ export default function Home() {
                 <h1 className="max-w-[300px] md:max-w-[310px] lg:max-w-full font-bold">
                   {school.name}
                 </h1>
-                {user?.user.role?.toString() === "COORDENADOR_A" ||
-                user?.user.role?.toString() === "SECRETARIO_A" ? (
+                {user?.role?.toString() === "COORDENADOR_A" ||
+                user?.role?.toString() === "SECRETARIO_A" ? (
                   <Image
                     src={Marker}
                     alt="Icon para editar"
@@ -191,8 +191,8 @@ export default function Home() {
             </section>
           ))}
 
-        {user?.user.role?.toString() === "COORDENADOR_A" ||
-        user?.user.role?.toString() === "SECRETARIO_A" ? (
+        {user?.role?.toString() === "COORDENADOR_A" ||
+        user?.role?.toString() === "SECRETARIO_A" ? (
           <button
             type="button"
             className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
@@ -211,8 +211,8 @@ export default function Home() {
           ""
         )}
 
-        {user?.user.role?.toString() === "COORDENADOR_A" ||
-        (user?.user.role?.toString() === "SECRETARIO_A" &&
+        {user?.role?.toString() === "COORDENADOR_A" ||
+        (user?.role?.toString() === "SECRETARIO_A" &&
           showCreateSchoolForm) ? (
           <CreateSchool
             showCreateSchoolForm={showCreateSchoolForm}

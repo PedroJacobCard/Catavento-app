@@ -48,7 +48,7 @@ function Profile() {
   }
 
   //import user hook
-  const { setFetchProfile, handleFetchUser } = useUser();
+  const { setFetchProfile } = useUser();
 
   //funcionalidades para conectar com o Google calendário
   const [connect, setConnect] = useState<boolean>(false);
@@ -187,7 +187,6 @@ function Profile() {
       if (response.ok) {
         toast.success("Perfil criado com successo!");
         setFetchProfile(true);
-        handleFetchUser();
       } else {
         toast.error(
           "hum... Parece que os dados enviados já existem... Tente uma escola diferente."

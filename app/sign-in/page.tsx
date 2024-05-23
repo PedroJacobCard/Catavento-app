@@ -5,7 +5,6 @@ import Image from "next/image";
 import LoginPicture from '@/public/images/sign-picture.png';
 import Logo from "@/public/Logo-navabar-extended.svg";
 import GoogleLogo from '@/public/Google.svg';
-import Link from "next/link";
 
 //import signIn functions
 import { signIn, useSession } from "next-auth/react";

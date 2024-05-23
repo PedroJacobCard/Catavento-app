@@ -40,7 +40,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   const { schools } = useSchool();
 
   //funcionalidade para checar se o usuário está conectado com o calendário e mudar o valor
-  const [isConnected, setIsConnected] = useState<boolean | undefined>(user?.connectedToCalender);
+  const [isConnected, setIsConnected] = useState<boolean | undefined>(user?.connectedToCalender ? true : false);
 
   //essa função servirá como estado inicial das escolas selecionadas as quais seram as que o usuário já participa
   const initSelectedState: InitSchoolOnUserType[] = (() => {
@@ -107,11 +107,11 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
           shifts: s.shifts.map(sh => sh.toString())
         }
       }),
-      role: user?.role.toString() || "VOLUNTARIO",
+      role: user?.role?.toString() || "VOLUNTARIO",
     }
   })
 
-  const onSubmit: SubmitHandler<FieldValuesEditUser> = (data) => {
+  const onSubmit: SubmitHandler<FieldValuesEditUser> = async (data) => {
     const formData = {
       ...data,
       school: selectedShiftAndSchool.length > 0 ? selectedShiftAndSchool : userSchools?.map(s => {
@@ -121,9 +121,24 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
         }
       }),
     }
-    console.log(formData);
-    setShowForm(!showForm);
-    toast.success("Perfil editado com sucesso!")
+
+    try {
+      const response = await fetch('/api/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: "no-store",
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        setShowForm(!showForm);
+        toast.success("Perfil editado com sucesso!")
+      }
+    } catch (error) {
+      toast.error("Uhm... Algo deu errado...");
+    }
   }
   
   return (
@@ -178,7 +193,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
                 >
                   {roleArray &&
                     roleArray.map((role) =>
-                      user && user?.role.toString() === role ? (
+                      user && user?.role?.toString() === role ? (
                         <option
                           key={role}
                           className="dark:bg-darkMode bg-secondaryBlue"

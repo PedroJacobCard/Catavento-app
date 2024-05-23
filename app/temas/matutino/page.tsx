@@ -245,8 +245,8 @@ function Matutino() {
                               readOnly
                             />
 
-                            {user?.user.role?.toString() === "COORDENADOR_A" ||
-                            user?.user.role?.toString() === "SECRETARIO_A" ? (
+                            {user?.role?.toString() === "COORDENADOR_A" ||
+                            user?.role?.toString() === "SECRETARIO_A" ? (
                               <Image
                                 src={Marker}
                                 alt="Alterar classe"
@@ -287,8 +287,8 @@ function Matutino() {
                         />
                       </div>
                     ))}
-                  {user?.user.role?.toString() === "COORDENADOR_A" ||
-                  user?.user.role?.toString() === "SECRETARIO_A" ? (
+                  {user?.role?.toString() === "COORDENADOR_A" ||
+                  user?.role?.toString() === "SECRETARIO_A" ? (
                     <button
                       type="button"
                       className="w-10 h-10 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"
@@ -312,8 +312,8 @@ function Matutino() {
                   )}
                 </div>
 
-                {user?.user.role?.toString() === "COORDENADOR_A" ||
-                user?.user.role?.toString() === "SECRETARIO_A" ? (
+                {user?.role?.toString() === "COORDENADOR_A" ||
+                user?.role?.toString() === "SECRETARIO_A" ? (
                   <button
                     type="button"
                     className="w-auto h-10 flex items-center justify-center gap-3 px-2 mx-5 dark:bg-darkModeBgColor bg-white rounded-md shadow-md dark:hover:bg-darkMode   hover:bg-slate-200 duration-300"

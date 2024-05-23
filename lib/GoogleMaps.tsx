@@ -24,11 +24,13 @@ function GoogleMaps({ address }: GoogleMapsPropsType) {
       
       const { Map } = await loader.importLibrary('maps');
 
-      const location = await geocode(address, opencageApiKey);
+      const parsedAddress = address ? address : "São Paulo, São Paulo, Brazil";
+
+      const location = await geocode(parsedAddress, opencageApiKey);
       
       const locationInMap = {
-        lat: location.lat ? location.lat : -16.67861,
-        lng: location.lng ? location.lng : -49.25389,
+        lat: location?.lat ? location.lat : "-16.67861",
+        lng: location?.lng ? location.lng : "-49.25389",
       };
 
       //marker

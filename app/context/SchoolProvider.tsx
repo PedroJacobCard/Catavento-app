@@ -25,7 +25,7 @@ function SchoolProvider({ children }: ChildrenPropsType ) {
   useEffect(() => {
     const getSchools = async (): Promise<SchoolType[]> => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/school`);
+        const response = await fetch('/api/school');
         if (response.ok) {
           const data = await response.json();
           setSchools(data)

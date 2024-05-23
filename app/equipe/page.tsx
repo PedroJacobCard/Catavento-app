@@ -138,7 +138,7 @@ function Equipe() {
                       </div>
                     ))}
               </section>
-              {user?.user.role?.toString() === "COORDENADOR_A_GERAL" ? (
+              {user?.role?.toString() === "COORDENADOR_A_GERAL" ? (
                 <DownloadUsersTable school={school} />
               ) : (
                 ""
