@@ -10,11 +10,17 @@ import GoogleLogo from '@/public/Google.svg';
 import { signIn, useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 
+//import user hook
+import useUser from "../hooks/useUser";
+
 //import session functions
 
 function SignIn() {
   //session
   const { data: session } = useSession();
+
+  //verificar se existe profile
+  const { user } = useUser();
 
   if (session) {
     redirect("/")

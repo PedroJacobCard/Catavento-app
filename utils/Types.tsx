@@ -156,6 +156,7 @@ export type EditPropType = {
 export type UseUserContextType = {
   user: ProfileType | null;
   setFetchProfile: Dispatch<SetStateAction<boolean>>;
+  setUserUpdated: Dispatch<SetStateAction<ProfileType | null>>
 };
 
 export type UseUsersContextType = {

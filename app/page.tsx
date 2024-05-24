@@ -39,10 +39,6 @@ export default function Home() {
 
   //import user data
   const { user } = useUser();
-
-  if (!user) {
-    redirect('/profile')
-  }
   
   //funcionalidades para adiquirir apenas as escolas das quais o usuário trabalha
   const userSchools = user?.school.map((s) => s.schoolName);
@@ -65,6 +61,10 @@ export default function Home() {
   
   if (!session) {
     return redirect("/sign-in");
+  }
+
+  if (session && !user) {
+    return redirect("/profile");
   }
 
   return (

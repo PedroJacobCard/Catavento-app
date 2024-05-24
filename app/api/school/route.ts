@@ -11,7 +11,11 @@ export async function GET() {
 
   if (session) {
     try {
-      const response = await prisma.school.findMany();
+      const response = await prisma.school.findMany({
+        orderBy: {
+          createdAt: "asc"
+        }
+      });
 
       if (!response) {
         return NextResponse.json({ message: "Não existem escolas" }, { status: 404 });

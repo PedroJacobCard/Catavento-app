@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prismadb";
 import { authOptions } from "@/utils/authOptions";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -119,8 +120,8 @@ export async function PUT(req: Request) {
   
     if (user) {
       //edita a escola no usuário e a escola criada
-      const updateSchoolOnUser = Promise.all(
-        school.map(async (school: {schoolName: string, shifts: string[]}) => {
+      const updateSchoolOnUserPromises = school.map(async (school: {schoolName: string, shifts: string[]}) => {
+        try {
           const updateSchoolOnUser = await prisma.schoolOnUser.update({
             where: {
               schoolName: school.schoolName,
@@ -130,23 +131,24 @@ export async function PUT(req: Request) {
               shifts: { set: school.shifts }
             }
           });
-
+          
+          return updateSchoolOnUser;
+        } catch (error) {
           //verifica se não existe e então cria uma nova
-          if (!updateSchoolOnUser) {
-            const createSchoolOnUser = await prisma.schoolOnUser.create({
-              data: {
-                schoolName: school.schoolName,
-                shifts: { set: school.shifts },
-                userId: user?.id,
-              }
-            });
-            return createSchoolOnUser;
-          }
-        })
-      );
+          const createSchoolOnUser = await prisma.schoolOnUser.create({
+            data: {
+              schoolName: school.schoolName,
+              shifts: { set: school.shifts },
+              userId: user?.id,
+            }
+          });
+          return createSchoolOnUser;
+        }
+      });
 
-      const updateSchoolCreated = Promise.all(
-        school.map(async (school: {schoolName: string, shifts: string[]}) => {
+
+      const updateSchoolCreatedPromises = school.map(async (school: {schoolName: string, shifts: string[]}) => {
+        try {
           const updateSchool = await prisma.school.update({
             where: {
               name: school.schoolName,
@@ -157,53 +159,55 @@ export async function PUT(req: Request) {
             }
           });
 
+          return updateSchool;
+        } catch (error) {
           //verifica se não existe e então cria uma nova
-          if (!updateSchool) {
-            const createSchool = await prisma.school.create({
-              data: {
-                name: school.schoolName,
-                shift: { set: school.shifts },
-                creatorId: user?.id
-              }
-            })
-            return createSchool;
-          }
-        })
-      );
+          const createSchool = await prisma.school.create({
+            data: {
+              name: school.schoolName,
+              shift: { set: school.shifts },
+              creatorId: user?.id
+            }
+          })
+          return createSchool;
+        }
+      });
+
+      //Promisse all nas arrays
+      const updateSchoolOnUser = await Promise.all(updateSchoolOnUserPromises);
+      const updateSchoolCreated = await Promise.all(updateSchoolCreatedPromises);
+
+      //objeto com os dados que serão enviados para alterar o perfil
+      const profileUpdateData = {
+        ...body,
+        school: {
+          connect: updateSchoolOnUser.map(school => ({ id: school.id }))
+        }
+      };
 
       //se vier dados de escola e se o usuário for coordenador, será alterado o perfil e as escolas correspondentes
-      if (user && user?.role?.toString() === 'COORDENADOR_A') {
-        const updateProfile = await prisma.profile.update({
-          where: {
-            id: user?.id
-          },
-          data: {
-            ...body,
-            schoolOnUser: {
-              connect: (await updateSchoolOnUser).map(school => ({ id: school.id })),
-            },
-            school: { 
-              connect: (await updateSchoolCreated).map(school => ({ id: school.id })),
-             }
-          }
-        })
-
-        return NextResponse.json(updateProfile);
-      } else {
-        const updateProfile = await prisma.profile.update({
-          where: {
-            id: user?.id
-          },
-          data: {
-            ...body,
-            schoolOnUser: {
-              connect: (await updateSchoolOnUser).map(school => ({ id: school.id })),
-            }
-          }
-        })
-
-        return NextResponse.json(updateProfile);
+      if (user?.role?.toString() === 'COORDENADOR_A') {
+        profileUpdateData["schoolCreated"] = {
+          connect: updateSchoolCreated.map(school => ({ id: school.id }))
+        }
       }
+
+      const updateProfile = await prisma.profile.update({
+        where: {
+          id: user?.id
+        },
+        data: profileUpdateData,
+        include: {
+          user: true,
+          school: true
+        }
+      });
+
+      if (updateProfile) {
+        revalidatePath('/user-area')
+      }
+
+      return NextResponse.json(updateProfile);
     }
 
   } catch (error) {

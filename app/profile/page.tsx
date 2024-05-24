@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 //import icons
@@ -38,13 +38,11 @@ import { Shift } from "@/utils/Enums";
 import useUser from "../hooks/useUser";
 
 function Profile() {
-  const router = useRouter();
-
   //session
   const {data: session } = useSession();
 
   if (!session) {
-    router.push('/sign-in');
+    redirect('/sign-in');
   }
 
   //import user hook

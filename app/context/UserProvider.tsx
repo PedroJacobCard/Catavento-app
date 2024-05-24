@@ -6,7 +6,7 @@ import { ChildrenPropsType, UseUserContextType, ProfileType } from "@/utils/Type
 
 //import session
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 
 const initState: ProfileType | null = null;
@@ -14,17 +14,20 @@ const initState: ProfileType | null = null;
 const initContextState: UseUserContextType = {
   user: null,
   setFetchProfile: () => {},
-}
+  setUserUpdated: () => {},
+};
 
 export const UserContext = createContext<UseUserContextType>(initContextState);
 
 
 function UserProvider({ children }: ChildrenPropsType) {
   const [fetchProfile, setFetchProfile] = useState<boolean>(false);
+  const [userUpdated, setUserUpdated] = useState<ProfileType | null>(initState);
   const [user, setUser] = useState<ProfileType | null>(initState);
 
   //router
   const router = useRouter();
+  const routerPath = usePathname();
 
   const {data: session} = useSession();
 
@@ -57,7 +60,32 @@ function UserProvider({ children }: ChildrenPropsType) {
               updatedAt: data.updatedAt,
             };
             setUser(mergeUser);
-            router.push('/')
+          }
+          
+          if (userUpdated !== null) {
+            const data: ProfileType = userUpdated;
+            const mergeUser: ProfileType = {
+              id: data.id,
+              userId: data.user.id,
+              userName: session?.user?.name,
+              connectedToCalender: data.connectedToCalender,
+              role: data.role,
+              schoolCreated: data.schoolCreated,
+              school: data.school,
+              user: data.user,
+              remember: [],
+              event: [],
+              report: [],
+              createdAt: data.createdAt,
+              updatedAt: data.updatedAt,
+            };
+            setUser(mergeUser);
+          }
+          
+          if (routerPath === '/profile') {
+            router.push("/");
+          } else {
+            router.push(`${routerPath}`);
           }
         } catch (error) {
           console.log("error:", error);
@@ -69,10 +97,10 @@ function UserProvider({ children }: ChildrenPropsType) {
       getUser();
       setFetchProfile(false);
     }
-  }, [session, fetchProfile, router]);
+  }, [session, fetchProfile, router, userUpdated, routerPath]);
 
   return ( 
-    <UserContext.Provider value={{ user, setFetchProfile }}>
+    <UserContext.Provider value={{ user, setFetchProfile, setUserUpdated }}>
       {
         children
       }

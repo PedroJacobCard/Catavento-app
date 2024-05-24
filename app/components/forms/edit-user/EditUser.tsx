@@ -34,7 +34,7 @@ for (const key in Role) {
 
 function EditUser({ showForm, setShowForm }: EditPropType) {
   //import user data
-  const { user } = useUser();
+  const { user, setUserUpdated } = useUser();
 
   //import school data
   const { schools } = useSchool();
@@ -133,11 +133,13 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
       });
 
       if (response.ok) {
+        setUserUpdated(await response.json());
         setShowForm(!showForm);
         toast.success("Perfil editado com sucesso!")
       }
     } catch (error) {
       toast.error("Uhm... Algo deu errado...");
+      console.log(error);
     }
   }
   
