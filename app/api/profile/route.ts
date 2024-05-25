@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prismadb";
 import { authOptions } from "@/utils/authOptions";
-import { revalidatePath } from "next/cache";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -35,6 +34,7 @@ export async function GET() {
   }
 }
 
+//Post
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
   
@@ -104,6 +104,7 @@ export async function POST(req: Request) {
   }
 }
 
+//Update
 export async function PUT(req: Request) {
   const session = await getServerSession(authOptions);
 
@@ -119,6 +120,18 @@ export async function PUT(req: Request) {
     });
   
     if (user) {
+      //deletar escolas no usuário que não fazem parte das escolas recebidas pelo formulário de edição de perfil.
+      //Como a coleção "SchoolOnUser" é um objeto referente aos dados da escola que o usuário participa,
+      //é necessário deletar as escolas de "SchoolOnUser" que não estão sendo enviadas pelo formulário, pois
+      //elas são marcadas altomaticamente, mas não são retornadas se o usuário desmarcar.
+      await prisma.schoolOnUser.deleteMany({
+        where: {
+          userId: user.id,
+          schoolName: { notIn: school.map((school: {schoolName: string, shifts: string[]}) => school.schoolName) }
+        }
+      });
+
+
       //edita a escola no usuário e a escola criada
       const updateSchoolOnUserPromises = school.map(async (school: {schoolName: string, shifts: string[]}) => {
         try {
@@ -203,15 +216,51 @@ export async function PUT(req: Request) {
         }
       });
 
-      if (updateProfile) {
-        revalidatePath('/user-area')
-      }
-
       return NextResponse.json(updateProfile);
     }
 
   } catch (error) {
     console.log("Error on updating the user profile: ", error);
     return NextResponse.json({ message: "Error on updating the user profile" })
+  }
+}
+
+//delete 
+export async function DELETE() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ message: "Você não está autenticado." }, { status: 401 });
+  }
+
+  try {
+    const user = await prisma.user.findUnique({
+      where: { name: session.user?.name },
+    });
+
+    const userProfile = await prisma.profile.findUnique({
+      where: { userName: user?.name },
+    });
+  
+    if (user && userProfile) {
+      await prisma.school.deleteMany({ where: { creatorId: userProfile.id } });
+      await prisma.schoolOnUser.deleteMany({ where: { userId: userProfile.id } });
+      await prisma.remember.deleteMany({ where: { authorId: userProfile.id } });
+      await prisma.event.deleteMany({ where: { organizerId: userProfile.id } });
+      await prisma.report.deleteMany({ where: { authorName: userProfile.userName } });
+
+      const deleteProfile = await prisma.profile.delete({ where: { userName: user.name } });
+
+      if (deleteProfile) {
+        await prisma.user.delete({
+          where: { id: user.id }
+        });
+
+        return NextResponse.json({ message: "Perfile deletado com sucesso"}, { status: 200 })
+      }
+    }
+  } catch (error) {
+    console.log("Error on deleting the user profile: ", error);
+    return NextResponse.json({ message: "Error ao deletar o perfil." }, { status: 400 })
   }
 }

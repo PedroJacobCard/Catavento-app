@@ -23,6 +23,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 //import toaster
 import toast from "react-hot-toast";
+import ShowMoreSchools from "../../ShowMoreSchools";
 
 //funcionalidade para transformar Role em array
 let roleArray: string[] = [];
@@ -121,7 +122,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
         }
       }),
     }
-
+    
     try {
       const response = await fetch('/api/profile', {
         method: 'PUT',
@@ -131,7 +132,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
         cache: "no-store",
         body: JSON.stringify(formData)
       });
-
+      
       if (response.ok) {
         setUserUpdated(await response.json());
         setShowForm(!showForm);
@@ -140,6 +141,26 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
     } catch (error) {
       toast.error("Uhm... Algo deu errado...");
       console.log(error);
+    }
+  }
+  
+  //funcionalidades para deletar conta
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await fetch("/api/profile", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Conta deletada com sucesso!");
+        setShowForm(!showForm)
+      }
+    } catch (error) {
+      console.error("Erro ao deletar perfil");
+      toast.error("Uhm... Algo deu errado...");
     }
   }
   
@@ -163,6 +184,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
           <button
             type="button"
             className="w-[10rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
+            onClick={handleDeleteAccount}
           >
             <Image
               src={Bin}
@@ -189,7 +211,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
                 </label>
                 <select
                   name="Papel"
-                  className="w-[70%] mx-auto mb-5 rounded-sm shadow-buttonShadow dark:shadow-buttonShadowDark dark:bg-darkModeBgColor bg-primaryBlue px-1 cursor-pointer"
+                  className="w-[70%] mx-auto mb-5 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark dark:bg-darkModeBgColor bg-primaryBlue px-1 cursor-pointer"
                   onChange={(e) => field.onChange(e.target.value)}
                   value={field.value}
                 >
@@ -260,10 +282,14 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
                   </div>
                 ))}
               </div>
-            ))}
+            ))
+          }
+
+          <ShowMoreSchools />
+
           <button
             type="submit"
-            className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] py-2 mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
           </button>

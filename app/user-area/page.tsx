@@ -35,7 +35,6 @@ function UserArea() {
 
   //obter dados do usuário
   const { user } = useUser();
-  console.log(user);
 
   //funcionalidade para aparecer o formulário de edição do usuário
   const [showForm, setShowForm] = useState<boolean>(false);

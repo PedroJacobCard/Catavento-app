@@ -1,17 +1,23 @@
 'use client'
+import { Dispatch, SetStateAction, createContext, useEffect, useState } from "react";
 
 //import types
 import { ChildrenPropsType, SchoolType } from "@/utils/Types";
-import { createContext, useEffect, useState } from "react";
+
+//import costume hooks
+import useUser from "../hooks/useUser";
+import { useSession } from "next-auth/react";
 
 const initState: SchoolType[] = [];
 
 export type UseSchoolContextType = {
-  schools: SchoolType[],
+  schools: SchoolType[];
+  setSchools: Dispatch<SetStateAction<SchoolType[]>>;
 };
 
 const initContextState: UseSchoolContextType = {
   schools: [],
+  setSchools: () => {}
 };
 
 export const SchoolsContext = createContext<UseSchoolContextType>(initContextState);
@@ -20,6 +26,10 @@ export const SchoolsContext = createContext<UseSchoolContextType>(initContextSta
 function SchoolProvider({ children }: ChildrenPropsType ) {
   //salvar as escolas em um estado local
   const [schools, setSchools] = useState<SchoolType[]>(initState);
+
+  //user data
+  const { user } = useUser();
+  const { data: session } = useSession();
 
   //get schools
   useEffect(() => {
@@ -36,11 +46,14 @@ function SchoolProvider({ children }: ChildrenPropsType ) {
       }
       return [];
     }
-    getSchools();
-  }, []);
+
+    if (user || session) {
+      getSchools();
+    }
+  }, [user, session]);
 
   return (
-    <SchoolsContext.Provider value={{schools}}>
+    <SchoolsContext.Provider value={{schools, setSchools}}>
       {
         children
       }

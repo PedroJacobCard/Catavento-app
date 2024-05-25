@@ -6,12 +6,21 @@ import prisma from "@/lib/prismadb";
 
 
 //obter todas as escolas
-export async function GET() {
+export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
 
-  if (session) {
+  if (!session) {
+    return NextResponse.json({ message: "Você não está altenticado."}, { status: 401 });
+  }
+
+  const url = new URL(req.url);
+  const take = Number(url.searchParams.get('take')) || 1;
+  const skip = Number(url.searchParams.get('skip')) || 0;
+
     try {
       const response = await prisma.school.findMany({
+        take,
+        skip,
         orderBy: {
           createdAt: "asc"
         }
@@ -25,7 +34,4 @@ export async function GET() {
     } catch (error) {
       console.log("Error ao adquirir escolas do banco de dados: ", error)
     }
-  } else {
-    return NextResponse.json({ message: "Você não está altenticado."}, { status: 401 });
-  }
 }

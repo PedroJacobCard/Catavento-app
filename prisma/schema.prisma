@@ -55,7 +55,7 @@ enum Role {
 
 model Profile {
   id                  String         @id @default(auto()) @map("_id") @db.ObjectId
-  user                User           @relation(fields: [userId, userName], references: [id, name])
+  user                User           @relation(fields: [userId, userName], references: [id, name], onDelete: Cascade)
   userId              String         @db.ObjectId
   userName            String         @unique
   connectedToCalender Boolean?
