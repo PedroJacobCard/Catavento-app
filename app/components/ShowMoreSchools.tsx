@@ -39,7 +39,7 @@ function ShowMoreSchools() {
   }, [increment, setSchools])
 
   return (
-    <button type="button" className="w-[50%] py-2 mb-5 underline hover:text-slate-500 duration-300" onClick={() => setIncrement(prev => prev + 1)}>
+    <button type="button" className="w-[50%] py-2 mb-5 underline hover:text-slate-500 duration-300" onClick={() => setIncrement(prev => prev + 5)}>
       Carregar mais escolas
     </button>
   );

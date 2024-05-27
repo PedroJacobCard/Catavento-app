@@ -14,7 +14,7 @@ export async function GET(req: Request) {
   }
 
   const url = new URL(req.url);
-  const take = Number(url.searchParams.get('take')) || 1;
+  const take = Number(url.searchParams.get('take')) || 5;
   const skip = Number(url.searchParams.get('skip')) || 0;
 
     try {

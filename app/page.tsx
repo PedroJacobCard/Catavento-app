@@ -35,14 +35,10 @@ export default function Home() {
   const { status, data: session } = useSession();
 
   //import school data
-  const { schools } = useSchool();
+  const { userSchools } = useSchool();
 
   //import user data
   const { user } = useUser();
-  
-  //funcionalidades para adiquirir apenas as escolas das quais o usuário trabalha
-  const userSchools = user?.school.map((s) => s.schoolName);
-  const filteredSchools = schools?.filter((s) => userSchools?.includes(s.name));
   
   //Funcionalidades para display do campo de lembretes
   const [isRememberOpen, setIsRememberOpen] = useState<boolean>(false);
@@ -114,8 +110,8 @@ export default function Home() {
           )}
         </ShowShadow>
 
-        {filteredSchools &&
-          filteredSchools.map((school, index) => (
+        {userSchools &&
+          userSchools.map((school, index) => (
             <section
               key={index}
               className={`dark:bg-darkMode bg-primaryBlue ${
