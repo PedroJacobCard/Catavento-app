@@ -42,7 +42,7 @@ type EditSchoolPropType = {
 
 function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
   //import school data
-  const { schools } = useSchool();
+  const { schools, setUserSchools } = useSchool();
   //import user data
   const { user } = useUser();
   
@@ -123,18 +123,44 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
       //se não for o formulário das outras escolas, não será renderizado
       if (!showForm) return null;
     
-    const onSubmit: SubmitHandler<FieldValuesEditSchool> = (data) => {
+    const onSubmit: SubmitHandler<FieldValuesEditSchool> = async (data) => {
       const form = {
         ...data,
         shift:
           selectedShifts.length > 0
             ? selectedShifts
             : userSchoolShifts?.map((sh) => sh),
-          address: addressToSimpleString,
+        address: addressToSimpleString,
       };
-    console.log(form);
-    setShowForm(!showForm);
-    toast.success("Escola editada com sucesso!")
+    
+      try {
+        const response = await fetch(`/api/school/${schoolName}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          cache: "no-store",
+          body: JSON.stringify(form),
+        })
+
+        if (!response.ok) {
+          throw new Error("Erro ao atualizar escola");
+        }
+
+        const data = await response.json();
+
+        setUserSchools(prev => {
+          const filterDiferentSchools = prev.filter(s => s.name !== data.schoolName);
+
+          return [...filterDiferentSchools, data];
+        })
+
+        setShowForm(!showForm);
+        toast.success("Escola editada com sucesso!");
+      } catch (error) {
+        console.error("Error ao atualizar a escola: ", error);
+        toast.error("Hum... Algo deu errado...")
+      }
   }
 
   return (

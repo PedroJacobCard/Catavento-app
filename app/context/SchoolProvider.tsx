@@ -14,12 +14,14 @@ export type UseSchoolContextType = {
   schools: SchoolType[];
   setSchools: Dispatch<SetStateAction<SchoolType[]>>;
   userSchools: SchoolType[];
+  setUserSchools: Dispatch<SetStateAction<SchoolType[]>>;
 };
 
 const initContextState: UseSchoolContextType = {
   schools: [],
   setSchools: () => {},
   userSchools: [],
+  setUserSchools: () => {}
 };
 
 export const SchoolsContext = createContext<UseSchoolContextType>(initContextState);
@@ -99,7 +101,7 @@ function SchoolProvider({ children }: ChildrenPropsType ) {
   }, [user])
 console.log(userSchools)
   return (
-    <SchoolsContext.Provider value={{schools, setSchools, userSchools}}>
+    <SchoolsContext.Provider value={{schools, setSchools, userSchools, setUserSchools}}>
       {
         children
       }
