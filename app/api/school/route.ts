@@ -35,3 +35,39 @@ export async function GET(req: Request) {
       console.log("Error ao adquirir escolas do banco de dados: ", error)
     }
 }
+
+//create
+export async function POST(req: Request) {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    return NextResponse.json({ message: "Você não está autenticado" }, { status: 401 });
+  }
+
+  const { ...data } = await req.json();
+
+  try {
+    const response = await prisma.school.create({
+      data: {
+        ...data,
+      }
+    });
+
+    if (!response) {
+      return NextResponse.json({ message: "Não foi possível criar a escola" }, { status: 401 });
+    }
+
+    await prisma.schoolOnUser.create({
+      data: {
+        userId: data.creatorId,
+        schoolName: response.name,
+        shifts: { set: response.shift }
+      }
+    })
+
+    return NextResponse.json(response);
+  } catch (error) {
+    console.error("Error on creating the school: ", error);
+    return NextResponse.json({ message: "Não foi possível criar a escola." }, { status: 500 });
+  }
+}

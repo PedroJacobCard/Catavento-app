@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prismadb";
 import { authOptions } from "@/utils/authOptions";
+import { SchoolType } from "@/utils/Types";
 
 export async function GET() {
   const session = await getServerSession(authOptions);
@@ -240,11 +241,23 @@ export async function DELETE() {
 
     const userProfile = await prisma.profile.findUnique({
       where: { userName: user?.name },
+      include: {
+        schoolCreated: {
+          select: {
+            name: true
+          }
+        }
+      }
     });
   
     if (user && userProfile) {
       await prisma.school.deleteMany({ where: { creatorId: userProfile.id } });
-      await prisma.schoolOnUser.deleteMany({ where: { userId: userProfile.id } });
+
+      //deleta as escolas nos usuários que têem relação com as escolas criadas pelo usuário deletado
+      userProfile.schoolCreated.map(async (school) => {
+        await prisma.schoolOnUser.deleteMany({ where: { schoolName: school.name } });
+      });
+
       await prisma.remember.deleteMany({ where: { authorId: userProfile.id } });
       await prisma.event.deleteMany({ where: { organizerId: userProfile.id } });
       await prisma.report.deleteMany({ where: { authorName: userProfile.userName } });

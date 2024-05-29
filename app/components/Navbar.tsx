@@ -42,6 +42,9 @@ function Navbar() {
         return <Image src={Moon} alt="Noturno" width={35} priority={true} className="pl-1 pb-4 md:pl-3 md:pb-0" />;
     }
   }
+
+  //definir a ordem em que os turnos serão mostrados
+  const shiftsOrder = ["MATUTINO", "VESPERTINO", 'NOTURNO'];
   
   return (
     <div className="w-full left-0 bottom-0 h-[4rem] md:w-[70px] md:hover:w-[250px] md:top-0 md:left-0 md:h-[100vh] flex md:flex-col overflow-hidden dark:bg-darkMode shadow-md hover:shadow-blueShadow dark:hover:shadow-xl bg-primaryBlue fixed z-[999] duration-500 opacity-effect">
@@ -148,23 +151,33 @@ function Navbar() {
                 </div>
               </Link>
 
-              {shiftToLowerCase.map((shift, index) => (
-                <Link key={index} href={`/temas/${shift}`}>
-                  <div
-                    className={`w-[4rem] h-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${
-                      router === `/temas/${shift}`
-                        ? "dark:bg-darkModeBgColor bg-secondaryBlue opacity-100"
-                        : "transparent"
-                    }`}
-                  >
-                    {renderShiftIcon(shift)}
+              {
+                shiftsOrder.map(shift => {
+                  const shiftIndex = shiftToLowerCase.indexOf(shift.toLowerCase());
 
-                    <h2 className="hidden sm:block font-bold text-xl my-auto mx-auto">
-                      {shift.charAt(0).toLocaleUpperCase() + shift.slice(1)}
-                    </h2>
-                  </div>
-                </Link>
-              ))}
+                  if (shiftIndex <= -1) {
+                    return null;
+                  }
+
+                  return (
+                    <Link key={shiftIndex} href={`/temas/${shiftToLowerCase[shiftIndex]}`}>
+                      <div
+                        className={`w-[4rem] h-[4rem] md:min-w-[250px] flex items-center px-4 py-4    dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${
+                          router === `/temas/${shiftToLowerCase[shiftIndex]}`
+                            ? "dark:bg-darkModeBgColor bg-secondaryBlue opacity-100"
+                            : "transparent"
+                        }`}
+                      >
+                        {renderShiftIcon(shiftToLowerCase[shiftIndex])}
+                      
+                        <h2 className="hidden sm:block font-bold text-xl my-auto mx-auto">
+                          {shiftToLowerCase[shiftIndex] && shiftToLowerCase[shiftIndex].charAt(0).toLocaleUpperCase() + shiftToLowerCase[shiftIndex].slice(1)}
+                        </h2>
+                      </div>
+                    </Link>
+                  )
+                })
+              }
             </div>
           )}
         </div>

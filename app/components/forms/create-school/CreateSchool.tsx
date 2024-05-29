@@ -21,6 +21,9 @@ import { Shift } from "@/utils/Enums";
 //import toaster
 import toast from "react-hot-toast";
 
+//import costume hooks
+import useSchool from "@/app/hooks/useSchool";
+
 //funcionalidade para transformar Shift em array
 let shiftArray: string[] = [];
 for (const key in Shift) {
@@ -32,10 +35,11 @@ for (const key in Shift) {
 //props type
 type CreateSchoolPropsType = {
   showCreateSchoolForm: boolean,
-  setShowCreateSchoolForm: Dispatch<SetStateAction<boolean>>
+  setShowCreateSchoolForm: Dispatch<SetStateAction<boolean>>,
+  creatorId: string
 }
 
-function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateSchoolPropsType) {
+function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm, creatorId }: CreateSchoolPropsType) {
 
   const [selectedShifts, setSelectedShifts] =
     useState<string[]>([]);
@@ -89,17 +93,45 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm }: CreateS
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValuesCreateSchool> = (data) => {
+  //import função de setar escolas do usuário
+  const { setUserSchools } = useSchool();
+
+  const onSubmit: SubmitHandler<FieldValuesCreateSchool> = async (data) => {
     if (hasNoShift) return;
     const form = {
       ...data,
+      creatorId: creatorId,
       shift: selectedShifts,
       address: addressToSimpleString,
     };
+
+
+    try {
+      const response = await fetch('/api/school', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+        body: JSON.stringify(form),
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao atualizar escola");
+      }
+
+      const data = await response.json();
+
+      setUserSchools((prev) => [...prev, data]);
+
+      setShowCreateSchoolForm(!showCreateSchoolForm);
+      reset();
+      toast.success("Escola criada com sucesso!")
+    } catch (error) {
+      console.error("Error ao atualizar a escola: ", error);
+      toast.error("Hum... Algo deu errado...");
+    }
     console.log(form);
-    reset();
-    setShowCreateSchoolForm(!showCreateSchoolForm);
-    toast.success("Escola criada com sucesso!")
   };
 
   return (

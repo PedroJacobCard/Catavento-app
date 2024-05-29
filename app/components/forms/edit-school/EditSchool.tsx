@@ -150,7 +150,7 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
         const data = await response.json();
 
         setUserSchools(prev => {
-          const filterDiferentSchools = prev.filter(s => s.name !== data.schoolName);
+          const filterDiferentSchools = prev.filter(s => s.name !== data.name);
 
           return [...filterDiferentSchools, data];
         })
@@ -161,6 +161,37 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
         console.error("Error ao atualizar a escola: ", error);
         toast.error("Hum... Algo deu errado...")
       }
+  }
+
+  //deletar escola
+  const handleDeleteSchool = async (schoolName: string | undefined) => {
+    try {
+      const response = await fetch(`/api/school/${schoolName}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error("Erro ao deletar escola");
+      }
+
+      const data = await response.json();
+
+      setUserSchools((prev) => {
+        const filterDiferentSchools = prev.filter((s) => s.name !== data.name);
+
+        return [...filterDiferentSchools];
+      });
+
+      setShowForm(!showForm);
+      toast.success("Escola deletada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao deletar escola: ", error)
+      toast.error("Hum... Algo deu errado...")
+    }
   }
 
   return (
@@ -183,6 +214,7 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
           <button
             type="button"
             className="w-[11rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
+            onClick={() => handleDeleteSchool(schoolName)}
           >
             <Image
               src={Bin}
