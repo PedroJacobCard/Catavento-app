@@ -22,7 +22,7 @@ export async function GET(req: Request) {
         take,
         skip,
         orderBy: {
-          createdAt: "asc"
+          name: "asc"
         }
       });
 

@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react";
 import Image from 'next/image';
+import { useRouter } from "next/navigation";
 
 //import icons
 import Close from '@/public/Cancel.svg';
@@ -21,9 +22,11 @@ import { schema, FieldValuesEditUser } from "./ValidationSchemaEditUser";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+//import components
+import ShowMoreSchools from "../../ShowMoreSchools";
+
 //import toaster
 import toast from "react-hot-toast";
-import ShowMoreSchools from "../../ShowMoreSchools";
 
 //funcionalidade para transformar Role em array
 let roleArray: string[] = [];
@@ -35,10 +38,13 @@ for (const key in Role) {
 
 function EditUser({ showForm, setShowForm }: EditPropType) {
   //import user data
-  const { user, setUserUpdated } = useUser();
+  const { user, setUser, setUserUpdated } = useUser();
 
   //import school data
   const { schools } = useSchool();
+
+  //router
+  const router = useRouter();
 
   //funcionalidade para checar se o usuário está conectado com o calendário e mudar o valor
   const [isConnected, setIsConnected] = useState<boolean | undefined>(user?.connectedToCalender ? true : false);
@@ -155,7 +161,9 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
       });
 
       if (response.ok) {
+        setUser(null);
         toast.success("Conta deletada com sucesso!");
+        router.push("/sign-in");
         setShowForm(!showForm)
       }
     } catch (error) {

@@ -13,6 +13,7 @@ import Plus from "@/public/Plus.svg";
 
 //import components
 import CoordinatorAddSchool from "../components/CoordinatorAddSchool";
+import ShowMoreSchools from "../components/ShowMoreSchools";
 
 //import react-form-hooks e schema para validação 
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -223,7 +224,9 @@ function Profile() {
         onSubmit={handleSubmit(onSubmit)}
         className="dark:bg-darkModeGlass bg-primaryBlueGlass w-[95vw] h-[80vh] md:w-[65vw] lg:w-[50vw] lg:h-[100vh] p-[2rem] flex flex-col justify-center items-center fixed lg:relative rounded-md lg:rounded-none overflow-hidden"
       >
-        <h1 className="title text-center mb-5">Vamos concluir a criação de teu perfil!</h1>
+        <h1 className="title text-center mb-5">
+          Vamos concluir a criação de teu perfil!
+        </h1>
 
         <section className="px-3 flex flex-col items-start justify-start overflow-y-scroll">
           <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3   relative">
@@ -344,6 +347,8 @@ function Profile() {
                   Selecione uma escola e turno
                 </p>
               )}
+
+              <ShowMoreSchools />
             </>
           ) : (
             selectedRole.length !== 0 &&
@@ -397,6 +402,8 @@ function Profile() {
                       Selecione uma escola de atuação
                     </p>
                   )}
+
+                <ShowMoreSchools />
               </div>
             )
           )}

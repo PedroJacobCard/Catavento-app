@@ -15,6 +15,7 @@ const initContextState: UseUserContextType = {
   user: null,
   setFetchProfile: () => {},
   setUserUpdated: () => {},
+  setUser: () => {}
 };
 
 export const UserContext = createContext<UseUserContextType>(initContextState);
@@ -100,7 +101,7 @@ function UserProvider({ children }: ChildrenPropsType) {
   }, [session, fetchProfile, router, userUpdated, routerPath]);
 
   return ( 
-    <UserContext.Provider value={{ user, setFetchProfile, setUserUpdated }}>
+    <UserContext.Provider value={{ user, setUser, setFetchProfile, setUserUpdated }}>
       {
         children
       }

@@ -36,28 +36,6 @@ function SchoolProvider({ children }: ChildrenPropsType ) {
 
   //user data
   const { user } = useUser();
-  const { data: session } = useSession();
-
-  //get schools
-  useEffect(() => {
-    const getSchools = async (): Promise<SchoolType[]> => {
-      try {
-        const response = await fetch('/api/school');
-        if (response.ok) {
-          const data = await response.json();
-          setSchools(data)
-          return data;
-        }
-      } catch (error) {
-        console.log('error:', error)
-      }
-      return [];
-    }
-
-    if (user || session) {
-      getSchools();
-    }
-  }, [user, session]);
 
   //get schools from the user
   useEffect(() => {
@@ -99,7 +77,7 @@ function SchoolProvider({ children }: ChildrenPropsType ) {
 
     getUserSchools();
   }, [user])
-console.log(userSchools)
+  
   return (
     <SchoolsContext.Provider value={{schools, setSchools, userSchools, setUserSchools}}>
       {

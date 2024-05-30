@@ -96,7 +96,8 @@ function Equipe() {
                 </div>
                 {users &&
                   users
-                    .filter((u) =>
+                    .filter((u) => 
+                      u.school &&
                       u.school.some((s) => s.schoolName === school.schoolName)
                     )
                     .map((user, i) => (
@@ -104,13 +105,13 @@ function Equipe() {
                         key={i}
                         className="flex flex-col lg:flex-row items-center mx-2 mt-5 gap-3 border lg:border-none   border-slate-300 dark:border-gray-600 rounded-md p-3 lg:py-0"
                       >
-                        {user.image ? (
+                        {user.user.image ? (
                           <Image
-                            src={user.image}
+                            src={user.user.image}
                             alt="User foto"
-                            width={100}
-                            height={100}
-                            className="h-[10vw] w-[7.2vh] md:h-[7vh] object-cover rounded-full"
+                            width={35}
+                            height={35}
+                            className="object-cover rounded-full"
                           />
                         ) : (
                           <Image
@@ -121,7 +122,7 @@ function Equipe() {
                             priority={true}
                           />
                         )}
-                        <p>{user.name}</p>
+                        <p>{user.user.name}</p>
                         <p className="font-bold">{user.role}</p>
                         {user.school
                           .filter((sch) => sch.schoolName === school.schoolName)

@@ -50,7 +50,7 @@ export async function POST(req: Request) {
   });
   
   try {
-    if (user && school && schoolCreated) {
+    if (user && role === "COORDENADOR_A" && school && schoolCreated) {
       const createSchoolOnUser = await Promise.all(
         school.map( async (schoolData: {schoolName: string, shifts: string[]}) => {
           const data = await prisma.schoolOnUser.create({
@@ -94,9 +94,36 @@ export async function POST(req: Request) {
       
       
       return NextResponse.json(userProfile);
-    } else {
+    } else if (user && school) {
+      const createSchoolOnUser = await Promise.all(
+        school.map( async (schoolData: {schoolName: string, shifts: string[]}) => {
+          const data = await prisma.schoolOnUser.create({
+            data: {
+              schoolName: schoolData.schoolName,
+              shifts: { set: schoolData.shifts},
+              userId: user.id
+            }
+          })
+          return data;
+        })
+      );
+      
+      const userProfile = await prisma.profile.create({
+        data: {
+          userId: user.id,
+          userName: user.name as string,
+          connectedToCalender,
+          role,
+          school: {
+            connect: createSchoolOnUser.map(school => ({ id: school.id }))
+          },
+          schoolCreated: {
+            connect: []
+          }
+        }
+      });
 
-      return NextResponse.json({ message: "You are not logged in" });
+      return NextResponse.json(userProfile);
     }
   } catch (error) {
 
@@ -128,7 +155,7 @@ export async function PUT(req: Request) {
       await prisma.schoolOnUser.deleteMany({
         where: {
           userId: user.id,
-          schoolName: { notIn: school.map((school: {schoolName: string, shifts: string[]}) => school.schoolName) }
+          schoolName: { in: school.map((school: {schoolName: string, shifts: string[]}) => school.schoolName) }
         }
       });
 
@@ -138,7 +165,7 @@ export async function PUT(req: Request) {
         try {
           const updateSchoolOnUser = await prisma.schoolOnUser.update({
             where: {
-              schoolName: school.schoolName,
+              userId: user.id,
             },
             data: {
               schoolName: school.schoolName,
@@ -168,7 +195,6 @@ export async function PUT(req: Request) {
               name: school.schoolName,
             },
             data: {
-              name: school.schoolName,
               shift: { set: school.shifts }
             }
           });

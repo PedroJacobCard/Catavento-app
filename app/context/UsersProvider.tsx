@@ -2,12 +2,12 @@
 import { createContext, useEffect, useState } from "react";
 
 //import types
-import { ChildrenPropsType, UseUsersContextType, UserType } from "@/utils/Types";
+import { ChildrenPropsType, UseUsersContextType, ProfileType } from "@/utils/Types";
 
 //import hooks
 import useUser from "../hooks/useUser";
 
-const initState: UserType[] = [];
+const initState: ProfileType[] = [];
 
 const initContextState: UseUsersContextType = {
   users: null,
@@ -20,37 +20,50 @@ function UsersProvider({ children }: ChildrenPropsType) {
   const { user } = useUser();
 
   //iniciar as funcionalidades para adiquirir dados dos usuários.
-  const [users, setUsers] = useState<UserType[] | null>(initState);
+  const [users, setUsers] = useState<ProfileType[] | null>(initState);
 
   useEffect(() => {
-    const getUsers = async (): Promise<UserType[]> => {
+    const getUsers = async (): Promise<ProfileType[]> => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/users`
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-
-          //funcionalidades para adiquirir os usuários que participam das mesmas escolas e turnos que o usuário logado
-          const userSchools = user?.school.map(({ schoolName, shifts }) => ({ schoolName, shifts }));
-
-          const filteredData = data.filter((u: UserType) => 
-            u.school.some(({ schoolName, shifts }) => 
-              userSchools?.some(({schoolName: userSchoolName, shifts: userShifts }) => 
-                schoolName === userSchoolName && 
-                shifts.some((shift) => 
-                  userShifts.some(userSchift => 
-                    userSchift === shift
-                  )
-                )
-              ) 
-            )
-          )
+        //funcionalidades para adiquirir os usuários que participam das mesmas escolas e turnos que o usuário logado
+        const userSchools = user?.school.map((school) => school.schoolName);
+        
+        if (userSchools) {
+          const usersResponses = await Promise.all(userSchools.map(async (schoolName) => {
+            const response = await fetch(`/api/profile/${schoolName}`, {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              cache: "no-store"
+            });
+            
+            if (!response.ok) {
+              return null;
+            }
+            
+            const data = await response.json();
+            return data;
+          }));
           
-          setUsers(filteredData);
-          return filteredData;
+          const validResponses = usersResponses.flat().filter(res => res !== null)
+          setUsers(validResponses);
         }
+          //const filteredData = data.filter((u: ProfileType) => 
+          //  u.school.some(({ schoolName, shifts }) => 
+          //    userSchools?.some(({schoolName: userSchoolName, shifts: userShifts }) => 
+          //      schoolName === userSchoolName && 
+          //      shifts.some((shift) => 
+          //        userShifts.some(userSchift => 
+          //          userSchift === shift
+          //        )
+          //      )
+          //    ) 
+          //  )
+          //)
+          //
+          //setUsers(filteredData);
+          //return filteredData;
       } catch (error) {
         console.error("Error:", error);
       }
