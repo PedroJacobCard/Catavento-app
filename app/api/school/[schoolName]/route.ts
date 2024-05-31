@@ -63,8 +63,7 @@ export async function PUT(req: Request, { params }: { params: { schoolName: stri
         schoolName: schoolName
       },
       data: {
-        schoolName: response.name,
-        shifts: { set: response.shift}
+        schoolName: response.name
       }
     })
 
