@@ -128,7 +128,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
         }
       }),
     }
-    
+    console.log(formData)
     try {
       const response = await fetch('/api/profile', {
         method: 'PUT',
@@ -163,7 +163,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
       if (response.ok) {
         setUser(null);
         toast.success("Conta deletada com sucesso!");
-        router.push("/sign-in");
+        router.push("/");
         setShowForm(!showForm)
       }
     } catch (error) {

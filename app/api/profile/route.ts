@@ -154,11 +154,9 @@ export async function PUT(req: Request) {
       //elas são marcadas altomaticamente, mas não são retornadas se o usuário desmarcar.
       await prisma.schoolOnUser.deleteMany({
         where: {
-          userId: user.id,
-          schoolName: { in: school.map((school: {schoolName: string, shifts: string[]}) => school.schoolName) }
+          userId: user.id
         }
       });
-
 
       //edita a escola no usuário e a escola criada
       const updateSchoolOnUserPromises = school.map(async (school: {schoolName: string, shifts: string[]}) => {
@@ -175,6 +173,7 @@ export async function PUT(req: Request) {
           
           return updateSchoolOnUser;
         } catch (error) {
+
           //verifica se não existe e então cria uma nova
           const createSchoolOnUser = await prisma.schoolOnUser.create({
             data: {
@@ -183,14 +182,14 @@ export async function PUT(req: Request) {
               userId: user?.id,
             }
           });
+
           return createSchoolOnUser;
         }
       });
 
-
       const updateSchoolCreatedPromises = school.map(async (school: {schoolName: string, shifts: string[]}) => {
         try {
-          const updateSchool = await prisma.school.update({
+          const updateSchool = user.role === "COORDENADOR_A" && await prisma.school.update({
             where: {
               name: school.schoolName,
             },
@@ -201,14 +200,16 @@ export async function PUT(req: Request) {
 
           return updateSchool;
         } catch (error) {
+
           //verifica se não existe e então cria uma nova
-          const createSchool = await prisma.school.create({
+          const createSchool = user.role === "COORDENADOR_A" && await prisma.school.create({
             data: {
               name: school.schoolName,
               shift: { set: school.shifts },
               creatorId: user?.id
             }
           })
+
           return createSchool;
         }
       });
@@ -245,7 +246,6 @@ export async function PUT(req: Request) {
 
       return NextResponse.json(updateProfile);
     }
-
   } catch (error) {
     console.log("Error on updating the user profile: ", error);
     return NextResponse.json({ message: "Error on updating the user profile" })

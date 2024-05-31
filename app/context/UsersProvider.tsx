@@ -46,24 +46,19 @@ function UsersProvider({ children }: ChildrenPropsType) {
             return data;
           }));
           
-          const validResponses = usersResponses.flat().filter(res => res !== null)
-          setUsers(validResponses);
+          const validResponses: ProfileType[] = usersResponses.flat().filter(res => res !== null)
+          const uniqueValues: ProfileType[] = [];
+          const userIds: Set<string> = new Set();
+          console.log(userIds)
+
+          validResponses.forEach(value => {
+            if (!userIds.has(value.id)) {
+              uniqueValues.push(value);
+              userIds.add(value.id);
+            }
+          })
+          setUsers(uniqueValues);
         }
-          //const filteredData = data.filter((u: ProfileType) => 
-          //  u.school.some(({ schoolName, shifts }) => 
-          //    userSchools?.some(({schoolName: userSchoolName, shifts: userShifts }) => 
-          //      schoolName === userSchoolName && 
-          //      shifts.some((shift) => 
-          //        userShifts.some(userSchift => 
-          //          userSchift === shift
-          //        )
-          //      )
-          //    ) 
-          //  )
-          //)
-          //
-          //setUsers(filteredData);
-          //return filteredData;
       } catch (error) {
         console.error("Error:", error);
       }
