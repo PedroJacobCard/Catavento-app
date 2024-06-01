@@ -49,7 +49,6 @@ function UsersProvider({ children }: ChildrenPropsType) {
           const validResponses: ProfileType[] = usersResponses.flat().filter(res => res !== null)
           const uniqueValues: ProfileType[] = [];
           const userIds: Set<string> = new Set();
-          console.log(userIds)
 
           validResponses.forEach(value => {
             if (!userIds.has(value.id)) {

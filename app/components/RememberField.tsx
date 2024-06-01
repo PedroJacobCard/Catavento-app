@@ -53,6 +53,14 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
   //importar dados do usuário logado
   const { user } = useUser();
 
+  //funcionalidades para settar o campo da escola em que será postado um lembrete
+  const [schoolData, setSchoolData] = useState<{
+    schoolName: string;
+    shift: string;
+  }>({
+    schoolName: user ? user.school[0].schoolName : "",
+    shift: user ? user.school[0].shifts[0].toString() : "",
+  });
   //funcionalidades para filtrar os remembers por escola ou turno
   const [filteredRemembers, setFilteredRemembers] = useState<RememberType[] | null>(null);
 
@@ -65,6 +73,7 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
   const handleShiftClick = (schoolName: string, shift: string) => {
     setFilteredRemembers(remembers);
     setFilteredRemembers(prev => prev!.filter(item => item.shift === shift && item.schoolName === schoolName))
+    setSchoolData({schoolName, shift});
   }
 
   //funcionalidades para abrir o formulario de edição do remember
@@ -146,7 +155,7 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
             >
               <div className="flex justify-between mb-1">
                 <p className="font-bold">{rem.authorName}</p>
-                {user && user.name === rem.authorName ? (
+                {user && user.user.name === rem.authorName ? (
                   <Image
                     src={Marker}
                     alt="Editor"
@@ -170,7 +179,7 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
         }
       </section>
       
-      <CreateRemember />
+      <CreateRemember schoolData={schoolData} />
     </div>
   );
 }

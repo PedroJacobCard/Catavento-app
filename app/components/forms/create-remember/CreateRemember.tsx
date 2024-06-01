@@ -13,11 +13,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 //import costume hooks
 import useUser from "@/app/hooks/useUser";
+import useRemember from "@/app/hooks/useRemember";
+
+//import toaster
 import toast from "react-hot-toast";
 
-function CreateRemember() {
+type CreateRememberPropsType = {
+  schoolData: {
+    schoolName: string,
+    shift: string
+  }
+}
+
+function CreateRemember({ schoolData }: CreateRememberPropsType) {
   //importar dados do usuário logado
   const { user } = useUser();
+
+  //importar state function
+  const { setRemembers } = useRemember();
 
   //funcionalidades para aumentar a caixa de texto
   const [grow, setGrow] = useState<boolean>(false);
@@ -51,25 +64,53 @@ function CreateRemember() {
     resolver: zodResolver(schema),
     defaultValues: {
       authorId: user?.id,
-      authorName: user?.name,
+      authorName: user?.user.name,
+      schoolName: schoolData.schoolName,
+      shift: schoolData.shift,
       content: ''
     },
   })
 
-  const onSubmit: SubmitHandler<FieldValuesCreateRemember> = (data) => {
+  const onSubmit: SubmitHandler<FieldValuesCreateRemember> = async (data) => {
     const formData = {
       ...data,
       authorId: user?.id,
-      authorName: user?.name
+      authorName: user?.user.name,
+      schoolName: schoolData.schoolName,
+      shift: schoolData.shift
     }
-    console.log(formData)
-    setGrow(prev => !prev);
-    reset()
+
+    try {
+      const response = await fetch('/api/remember', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        cache: "no-store",
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        throw new Error('Não foi possível criar o lembrete');
+      }
+
+      const data = await response.json();
+
+      setRemembers(prev => prev ? [...prev, data] : [data]);
+      
+      setGrow(prev => !prev);
+      reset()
+    } catch (error) {
+      console.error("Erro ao criar lembrete: ", error)
+    }
   }
 
   useEffect(() => {
     if (errors.content) { 
       toast.error(`Ops! ${errors.content.message}`);
+    }
+    if (errors.schoolName) { 
+      toast.error(`Ops! ${errors.schoolName?.message}`);
     }
   }, [errors])
 

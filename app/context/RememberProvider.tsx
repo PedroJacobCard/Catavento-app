@@ -11,6 +11,7 @@ const initState: RememberType[] = [];
 
 export const initContextState: UseRemeberContextType = {
   remembers: null,
+  setRemembers: () => {}
 }
 
 export const RememberContext = createContext<UseRemeberContextType>(initContextState);
@@ -25,26 +26,38 @@ function RememberProvider({ children }: ChildrenPropsType) {
   
   useEffect(() => {
     const getRemembers = async (): Promise<RememberType[]> => {
+    //filtrar as escolas e turnos em que o usuário participa e obter os remembers referentes
+    const userSchools = user?.school.map(({ schoolName, shifts }) => ({ schoolName, shifts }));
+
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/remember`
-        );
+        if (userSchools) {
+          const remembersResponse = Promise.all(userSchools.map(async school => {
+            const response = await fetch(
+              `/api/remember?schoolName=${school.schoolName}&shifts=${school.shifts}`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                cache: "no-store"
+              }
+            );
 
-        if (response.ok) {
-          const data = await response.json();
+            if (!response.ok) {
+              return null;
+            }
 
-          //filtrar as escolas e turnos em que o usuário participa e obter os remembers referentes
-          const userSchools = user?.school.map(({ schoolName, shifts }) => ({ schoolName, shifts }));
-          
-          const filteredData = data.filter((remember: RememberType) => 
-            userSchools?.some(({ schoolName, shifts }) => 
-              schoolName === remember.schoolName &&
-              shifts.some(shift => shift === remember.shift)
-            )
-          );
-
-          setRemembers(filteredData);
-          return filteredData;
+              const data = await response.json();
+              //const filteredData = data.filter((remember: RememberType) => 
+              //  userSchools?.some(({ schoolName, shifts }) => 
+              //    schoolName === remember.schoolName &&
+              //    shifts.some(shift => shift === remember.shift)
+              //  )
+              //);
+              return data;
+          }))
+          const validData = (await remembersResponse).flat().filter(re => re !== null);
+          setRemembers(validData);
         }
       } catch (error) {
         console.error('Error:', error)
@@ -57,7 +70,7 @@ function RememberProvider({ children }: ChildrenPropsType) {
 
 
   return (
-    <RememberContext.Provider value={{remembers}}>
+    <RememberContext.Provider value={{remembers, setRemembers}}>
       {children}
     </RememberContext.Provider>
   );

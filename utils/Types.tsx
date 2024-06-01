@@ -166,7 +166,8 @@ export type UseUsersContextType = {
 
 export type UseRemeberContextType = {
   remembers: RememberType[] | null;
-}
+  setRemembers: Dispatch<SetStateAction<RememberType[] | null>>;
+};
 
 export type UseEventContextType = {
   events: EventType[] | null;
