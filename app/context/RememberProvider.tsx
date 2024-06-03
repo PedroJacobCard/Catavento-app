@@ -1,11 +1,17 @@
 'use client'
 import { createContext, useEffect, useState } from "react";
 
+//import pusher client
+import Pusher from "pusher-js";
+
 //import types
 import { ChildrenPropsType, RememberType, UseRemeberContextType } from "@/utils/Types";
 
 //import hooks
 import useUser from "../hooks/useUser";
+
+//import pusher
+import { pusher } from "@/lib/Pusher";
 
 const initState: RememberType[] = [];
 
@@ -23,6 +29,24 @@ function RememberProvider({ children }: ChildrenPropsType) {
   //funcionalidades para adiquirir os dados dos lembretes de 
   //acordo com a escola e turno que o usuário logado participa
   const [remembers, setRemembers] = useState<RememberType[] | null>(initState);
+
+  useEffect(() => {
+    //initiate pusher
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_KEY as string, {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_CLUSTER as string,
+    });
+
+    //obter realtime mensagens
+    pusher.subscribe("remember").bind("content", (data: RememberType) => {
+      setRemembers((prev) => {
+        if (prev !== null) {
+          const filterData = prev.filter(re => re.id !== data.id);
+          return [...filterData, data];
+        }
+        return []
+      });
+    });
+  }, []);
   
   useEffect(() => {
     const getRemembers = async (): Promise<RememberType[]> => {
@@ -56,6 +80,7 @@ function RememberProvider({ children }: ChildrenPropsType) {
               //);
               return data;
           }))
+
           const validData = (await remembersResponse).flat().filter(re => re !== null);
           setRemembers(validData);
         }

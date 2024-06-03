@@ -29,9 +29,6 @@ function CreateRemember({ schoolData }: CreateRememberPropsType) {
   //importar dados do usuário logado
   const { user } = useUser();
 
-  //importar state function
-  const { setRemembers } = useRemember();
-
   //funcionalidades para aumentar a caixa de texto
   const [grow, setGrow] = useState<boolean>(false);
   const divRef = useRef<HTMLDivElement | null>(null);
@@ -93,10 +90,6 @@ function CreateRemember({ schoolData }: CreateRememberPropsType) {
       if (!response.ok) {
         throw new Error('Não foi possível criar o lembrete');
       }
-
-      const data = await response.json();
-
-      setRemembers(prev => prev ? [...prev, data] : [data]);
       
       setGrow(prev => !prev);
       reset()
@@ -104,6 +97,8 @@ function CreateRemember({ schoolData }: CreateRememberPropsType) {
       console.error("Erro ao criar lembrete: ", error)
     }
   }
+
+  console.log(schoolData)
 
   useEffect(() => {
     if (errors.content) { 

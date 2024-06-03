@@ -68,7 +68,8 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
     if (remembers) {
       setFilteredRemembers(remembers.filter(rem => rem.shift === user?.school[0].shifts[0]));
     }
-  }, [remembers, user]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleShiftClick = (schoolName: string, shift: string) => {
     setFilteredRemembers(remembers);

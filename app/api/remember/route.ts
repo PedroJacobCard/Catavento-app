@@ -1,3 +1,4 @@
+import { pusher } from "@/lib/Pusher";
 import prisma from "@/lib/prismadb";
 import { authOptions } from "@/utils/authOptions";
 import { getServerSession } from "next-auth";
@@ -52,6 +53,10 @@ export async function POST(req: Request) {
     if (!postRemember) {
       return NextResponse.json({ message: "Erro ao criar lembrança" }, { status: 400 });
     }
+
+          
+      //set pusher
+      await pusher.trigger('remember', 'content', postRemember);
 
     return NextResponse.json(postRemember);
   } catch (error) {
