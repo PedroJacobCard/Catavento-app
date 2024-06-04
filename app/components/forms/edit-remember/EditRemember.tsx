@@ -10,6 +10,8 @@ import Close from '@/public/Cancel.svg';
 import { schema, FiledsValuesEditRemember } from "./ValidationSchemaEditRemember";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import useRemember from "@/app/hooks/useRemember";
 
 type EditRememberPropsType = {
   showForm: boolean;
@@ -19,6 +21,9 @@ type EditRememberPropsType = {
 };
 
 function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememberPropsType) {
+
+  //importar o setter para alterar ou deletar do array
+  const { setRemembers } = useRemember();
   
   //funcionalidades para enviar os dados do formulário
   const {
@@ -42,6 +47,38 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
     console.log(formData)
   }
 
+  //funcionalidades para deletar lembretes
+  const handleDelelteRemember = async () => {
+    try {
+      const response = await fetch(`/api/remember/${rememberId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        cache: "no-store"
+      });
+
+      if (!response) {
+        toast.error('Hum... Erro ao deletar lembrete...')
+      }
+
+      const data = await response.json();
+
+      setRemembers(prev => {
+        if (prev !== null) {
+          const filteredData = prev?.filter(re => re.id !== data.id);
+          return [...filteredData]
+        }
+        return []
+      })
+
+      toast.success("Lembrete deletado!");
+      setShowForm(!showForm);
+    } catch (error) {
+      console.log("Error ao deletar lembrete: ", error)
+    }
+  }
+
   return (
     <div
       className={`w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-50 ${
@@ -62,6 +99,7 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
           <button
             type="button"
             className="w-[11rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
+            onClick={handleDelelteRemember}
           >
             <Image
               src={Bin}
@@ -92,7 +130,7 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
 
           <button
             type="submit"
-            className="w-[50%] mx-auto my-1 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] mx-auto my-1 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
           </button>

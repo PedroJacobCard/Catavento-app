@@ -37,14 +37,28 @@ function RememberProvider({ children }: ChildrenPropsType) {
     });
 
     //obter realtime mensagens
-    pusher.subscribe("remember").bind("content", (data: RememberType) => {
-      setRemembers((prev) => {
-        if (prev !== null) {
-          const filterData = prev.filter(re => re.id !== data.id);
-          return [...filterData, data];
-        }
-        return []
-      });
+    pusher.subscribe("remember").bind("content", (incoming: {verb: string, data: RememberType}) => {
+      if (incoming.verb === "POST" || incoming.verb === "PUT") {
+        setRemembers((prev) => {
+          if (prev !== null) {
+            const filterData = prev.filter((re) => re.id !== incoming.data.id);
+
+            return [...filterData, incoming.data];
+          }
+
+          return [];
+        });
+      } else {
+        setRemembers((prev) => {
+          if (prev !== null) {
+            const filterData = prev.filter((re) => re.id !== incoming.data.id);
+
+            return [...filterData];
+          }
+
+          return [];
+        });
+      }
     });
   }, []);
   

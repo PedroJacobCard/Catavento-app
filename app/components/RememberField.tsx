@@ -62,14 +62,15 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
     shift: user ? user.school[0].shifts[0].toString() : "",
   });
   //funcionalidades para filtrar os remembers por escola ou turno
-  const [filteredRemembers, setFilteredRemembers] = useState<RememberType[] | null>(null);
+  const [filteredRemembers, setFilteredRemembers] = useState<
+    RememberType[] | null
+  >(remembers && remembers.filter((rem) => rem.shift === user?.school[0].shifts[0]));
 
   useEffect(() => {
     if (remembers) {
-      setFilteredRemembers(remembers.filter(rem => rem.shift === user?.school[0].shifts[0]));
+      setFilteredRemembers(remembers.filter(rem => rem.schoolName === schoolData.schoolName && rem.shift === schoolData.shift));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, remembers, schoolData]);
 
   const handleShiftClick = (schoolName: string, shift: string) => {
     setFilteredRemembers(remembers);

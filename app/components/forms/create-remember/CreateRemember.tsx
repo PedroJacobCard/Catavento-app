@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 //import icons
 import Plane from "@/public/Plane.svg";
@@ -13,7 +13,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 //import costume hooks
 import useUser from "@/app/hooks/useUser";
-import useRemember from "@/app/hooks/useRemember";
 
 //import toaster
 import toast from "react-hot-toast";
@@ -90,7 +89,7 @@ function CreateRemember({ schoolData }: CreateRememberPropsType) {
       if (!response.ok) {
         throw new Error('Não foi possível criar o lembrete');
       }
-      
+
       setGrow(prev => !prev);
       reset()
     } catch (error) {

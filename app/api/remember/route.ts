@@ -53,10 +53,14 @@ export async function POST(req: Request) {
     if (!postRemember) {
       return NextResponse.json({ message: "Erro ao criar lembrança" }, { status: 400 });
     }
+    
+    const pusherData = {
+      verb: 'POST',
+      data: postRemember
+    }
 
-          
       //set pusher
-      await pusher.trigger('remember', 'content', postRemember);
+      await pusher.trigger('remember', 'content', pusherData);
 
     return NextResponse.json(postRemember);
   } catch (error) {
