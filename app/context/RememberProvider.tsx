@@ -10,9 +10,6 @@ import { ChildrenPropsType, RememberType, UseRemeberContextType } from "@/utils/
 //import hooks
 import useUser from "../hooks/useUser";
 
-//import pusher
-import { pusher } from "@/lib/Pusher";
-
 const initState: RememberType[] = [];
 
 export const initContextState: UseRemeberContextType = {
@@ -38,12 +35,39 @@ function RememberProvider({ children }: ChildrenPropsType) {
 
     //obter realtime mensagens
     pusher.subscribe("remember").bind("content", (incoming: {verb: string, data: RememberType}) => {
-      if (incoming.verb === "POST" || incoming.verb === "PUT") {
+      if (incoming.verb === "POST") {
         setRemembers((prev) => {
           if (prev !== null) {
             const filterData = prev.filter((re) => re.id !== incoming.data.id);
 
             return [...filterData, incoming.data];
+          }
+
+          return [];
+        });
+
+        //enviar notificação do navegador
+        if (Notification.permission === 'granted') {
+          new Notification(`${incoming.data.authorName} enviou um lembrete: ${incoming.data.content}`);
+        } else if (Notification.permission === 'denied') {
+          Notification.requestPermission().then(permission => {
+            if (permission === 'granted') {
+              new Notification(
+                `${incoming.data.authorName} enviou um lembrete: ${incoming.data.content}`
+              );
+            }
+          })
+        }
+      } else if (incoming.verb === "PUT") {
+        setRemembers((prev) => {
+          if (prev !== null) {
+            const uptodatedIndex = prev.findIndex((re) => re.id === incoming.data.id);
+
+            return [
+              ...prev.slice(0, uptodatedIndex), 
+              incoming.data, 
+              ...prev.slice(uptodatedIndex + 1)
+            ];
           }
 
           return [];
@@ -86,12 +110,6 @@ function RememberProvider({ children }: ChildrenPropsType) {
             }
 
               const data = await response.json();
-              //const filteredData = data.filter((remember: RememberType) => 
-              //  userSchools?.some(({ schoolName, shifts }) => 
-              //    schoolName === remember.schoolName &&
-              //    shifts.some(shift => shift === remember.shift)
-              //  )
-              //);
               return data;
           }))
 

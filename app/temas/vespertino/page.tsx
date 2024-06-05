@@ -76,7 +76,7 @@ function Vespertino() {
   const { classes } = useClass();
 
   //import schools data
-  const { schools } = useSchool();
+  const { userSchools } = useSchool();
 
   //import user data
   const { user } = useUser();
@@ -87,8 +87,8 @@ function Vespertino() {
   );
 
   //filtrar escolas das classes do período vespertino
-  const filteredSchools = schools.filter((sch) =>
-    filterEveningClasses?.some((cla) => cla.schoolName === sch.name)
+  const filteredSchools = userSchools.filter((sch) =>
+    sch.shift.some((shi) => shi.toString() === "VESPERTINO")
   );
 
   //verifica o status da seção

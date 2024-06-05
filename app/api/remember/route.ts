@@ -18,7 +18,7 @@ export async function GET(req: Request) {
   try {
     const getRemembers = await prisma.remember.findMany({
       where: {
-        schoolName: schoolName,
+        schoolName: schoolName && schoolName !== null ? schoolName : '',
         shift: {equals: shifts}
       }
     });

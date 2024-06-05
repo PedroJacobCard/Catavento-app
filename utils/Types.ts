@@ -179,6 +179,7 @@ export type UseReportContextType = {
 
 export type UseClassContextTypes = {
   classes: ClassType[] | null;
+  setClasses: Dispatch<SetStateAction<ClassType[] | null>>;
 };
 
 export type InitSchoolOnUserType = {

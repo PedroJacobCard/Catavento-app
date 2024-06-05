@@ -11,6 +11,7 @@ const initState: ClassType[] = [];
 
 export const initContextState: UseClassContextTypes = {
   classes: null,
+  setClasses: () => {}
 }
 
 export const ClassContext = createContext<UseClassContextTypes>(initContextState);
@@ -25,17 +26,30 @@ function ClassProvider({ children }: ChildrenPropsType) {
   useEffect(() => {
     const getClasses = async (): Promise<ClassType[] | null> => {
       try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}/class`
-        );
-
-        if (response.ok) {
-          const data = await response.json();
-
+        if (user && user !== null) {
           //funcionalidades para adiquirir apenas classes das escolas que o usuário logado participa
-          const filteredData = data?.filter((cla: ClassType) => user?.school.some(s => s.schoolName === cla.schoolName));
-          setClasses(filteredData);
-          return filteredData;
+          const userSchools = user.school.map(({schoolName, shifts}) => ({schoolName, shifts}));
+
+          const classesResponse = await Promise.all(userSchools.map(async (school) => {
+            const response = await fetch(`/api/class?schoolName=${school.schoolName}&shifts=${school.shifts}`, {
+              method: "GET",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              cache: "no-store"
+            });
+
+            if (!response.ok) {
+              return null;
+            }
+
+            const data = await response.json();
+            return data;
+          }))
+
+          const validatedData = classesResponse.filter(cla => cla !== null).flat();
+  
+          setClasses(validatedData);
         }
       } catch (error) {
         console.error("Error:", error)
@@ -46,7 +60,7 @@ function ClassProvider({ children }: ChildrenPropsType) {
   }, [user])
 
   return ( 
-    <ClassContext.Provider value={{classes}}>
+    <ClassContext.Provider value={{classes, setClasses}}>
       { children }
     </ClassContext.Provider>
    );

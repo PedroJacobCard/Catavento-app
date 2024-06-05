@@ -39,12 +39,26 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
   //se não form o formulário do remember selecionado o componente não redenriza
   if(!showForm) return null;
 
-  const onSubmit: SubmitHandler<FiledsValuesEditRemember> = (data) => {
-    const formData = {
-      ...data,
-      id: rememberId
+  const onSubmit: SubmitHandler<FiledsValuesEditRemember> = async (data) => {
+    try {
+      const response = await fetch(`/api/remember/${rememberId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        cache: 'no-store',
+        body: JSON.stringify(data)
+      });
+
+      if (!response) {
+        return;
+      }
+
+      setShowForm(!showForm);
+    } catch (error) {
+      console.error("Erro ao alterar o conteúdo do lembrete: ", error);
+      toast.error("Hum... Algo deu errado...")
     }
-    console.log(formData)
   }
 
   //funcionalidades para deletar lembretes

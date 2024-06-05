@@ -1,5 +1,6 @@
 'use client'
 import { Dispatch, SetStateAction, useState } from "react";
+import Image from "next/image";
 
 //import icons
 import Close from "@/public/Cancel.svg";
@@ -8,8 +9,12 @@ import Close from "@/public/Cancel.svg";
 import { SubmitHandler, Controller, useForm } from "react-hook-form";
 import { schema, FieldValuesCreateClass } from './ValidationSchemaCreateClass';
 import { zodResolver } from "@hookform/resolvers/zod";
-import Image from "next/image";
+
+//import toaster
 import toast from "react-hot-toast";
+
+//import costume hooks
+import useClass from "@/app/hooks/useClass";
 
 //props type
 type CreateClassPropsType = {
@@ -23,6 +28,9 @@ type CreateClassPropsType = {
 function CreateClass({ showCreateClassForm, setShowCreateClassForm, schoolName, theme, shift }: CreateClassPropsType) {
   //funcionalidades para enviar se a classe já fez a temática ou não
   const [classDone, setClassDone] = useState<boolean>(false);
+
+  //import setter classes state
+  const { setClasses } = useClass();
 
   //funcionalidades para enviar os dados do formulário
   const {
@@ -42,15 +50,42 @@ function CreateClass({ showCreateClassForm, setShowCreateClassForm, schoolName, 
     },
   });
 
-  const onSubmit: SubmitHandler<FieldValuesCreateClass> = (data) => {
+  const onSubmit: SubmitHandler<FieldValuesCreateClass> = async (data) => {
     const formData = {
       ...data,
       done: classDone,
     };
-    setShowCreateClassForm(!setShowCreateClassForm);
-    reset();
-    toast.success("Classe criada com sucesso!");
-    console.log(formData);
+
+    try {
+      const response = await fetch('/api/class', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'apllication/json'
+        },
+        cache: 'no-store',
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        return;
+      }
+
+      const data = await response.json();
+
+      setClasses(prev => {
+        if (prev !== null && data !== null) {
+          return [...prev, data]
+        }
+        return [data]
+      })
+
+      setShowCreateClassForm(!setShowCreateClassForm);
+      reset();
+      toast.success("Classe criada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao criar classe");
+      toast.error("Hum... Algo deu errado...")
+    }
   };
 
   return (
@@ -137,7 +172,7 @@ function CreateClass({ showCreateClassForm, setShowCreateClassForm, schoolName, 
 
           <button
             type="submit"
-            className="w-[50%] mx-auto mb-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] mx-auto mb-2 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
           </button>

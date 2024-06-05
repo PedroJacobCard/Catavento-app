@@ -34,7 +34,7 @@ function GoogleMaps({ address }: GoogleMapsPropsType) {
       };
 
       //marker
-      const { Marker } = (await loader.importLibrary('marker')) as google.maps.MarkerLibrary;
+      const { AdvancedMarkerElement } = (await loader.importLibrary('marker')) as google.maps.MarkerLibrary;
 
       const options: google.maps.MapOptions = {
         center: locationInMap,
@@ -45,7 +45,7 @@ function GoogleMaps({ address }: GoogleMapsPropsType) {
       const map = new Map(mapRef.current as HTMLDivElement, options)
 
       //adicionar maker no mapa
-      const marker = new Marker({
+      new AdvancedMarkerElement({
         map: map,
         position: locationInMap
       })

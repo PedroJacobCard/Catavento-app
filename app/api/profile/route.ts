@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import prisma from "@/lib/prismadb";
 import { authOptions } from "@/utils/authOptions";
-import { SchoolType } from "@/utils/Types";
 
 export async function GET() {
   const session = await getServerSession(authOptions);

@@ -157,7 +157,7 @@ model Class {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   students   Int
-  theme      Theme    @unique
+  theme      Theme
   school     School   @relation(fields: [schoolName], references: [name])
   schoolName String
   shift      Shift

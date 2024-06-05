@@ -76,7 +76,7 @@ function Matutino() {
   const { classes } = useClass();
 
   //import schools data
-  const { schools } = useSchool();
+  const { userSchools } = useSchool();
 
   //import user data
   const { user } = useUser();
@@ -87,9 +87,7 @@ function Matutino() {
   );
 
   //filtrar escolas das classes do período matutino
-  const filteredSchools = schools.filter((sch) =>
-    filterMorningClasses?.some((cla) => cla.schoolName === sch.name)
-  );
+  const filteredSchools = userSchools.filter((sch) => sch.shift.some(shi => shi.toString() === 'MATUTINO'));
 
   //verifica o status da seção
   if (status === "loading") {

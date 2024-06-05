@@ -97,8 +97,6 @@ function CreateRemember({ schoolData }: CreateRememberPropsType) {
     }
   }
 
-  console.log(schoolData)
-
   useEffect(() => {
     if (errors.content) { 
       toast.error(`Ops! ${errors.content.message}`);
