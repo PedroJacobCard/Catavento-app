@@ -17,20 +17,26 @@ import toast from "react-hot-toast";
 //import types
 import { ClassType } from "@/utils/Types";
 
+//import costume hooks
+import useClass from "@/app/hooks/useClass";
+
 //props type
-type CreateClassPropsType = {
+type EditClassPropsType = {
   showEditClassForm: boolean;
   setShowEditClassForm: Dispatch<SetStateAction<boolean>>;
   cla: ClassType;
 };
 
-function CreateClass({
+function EditClass({
   showEditClassForm,
   setShowEditClassForm,
   cla
-}: CreateClassPropsType) {
+}: EditClassPropsType) {
   //funcionalidades para enviar se a classe já fez a temática ou não
   const [classDone, setClassDone] = useState<boolean>(cla.done);
+
+  //importar setter do array de dados de classes
+  const { setClasses } = useClass();
 
   //funcionalidades para enviar os dados do formulário
   const {
@@ -53,17 +59,84 @@ function CreateClass({
   //não renderiza o component se não for a classe chamada
   if (!showEditClassForm) return null;
 
-  const onSubmit: SubmitHandler<FieldValuesEditClass> = (data) => {
+  const onSubmit: SubmitHandler<FieldValuesEditClass> = async (data) => {
     const formData = {
       ...data,
-      id: cla.id,
       done: classDone,
     };
-    setShowEditClassForm(!setShowEditClassForm);
-    reset();
-    toast.success("Classe editada com sucesso!");
-    console.log(formData);
+
+    try {
+      const response = await fetch(`/api/class/${cla.id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        cache: "no-store",
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        toast.error('Hum... Algo deu errado...')
+        return;
+      }
+
+      const data = await response.json();
+
+      setClasses(prev => {
+        if (prev !== null) {
+          const classIndex = prev.findIndex(cla => cla.id === data.id);
+          return [
+            ...prev.slice(0, classIndex),
+            data,
+            ...prev.slice(classIndex + 1)
+          ];
+        }
+        return null;
+      })
+
+      setShowEditClassForm(!setShowEditClassForm);
+      reset();
+      toast.success("Classe editada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao editar classe.")
+      toast.error('Hum... Não foi possível alter classe...')
+    }
   };
+
+  //funcionalidades para deletar classes
+  const handleDeleteClass = async () => {
+    try {
+      const response = await fetch(`/api/class/${cla.id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        toast.error("Hum... Algo deu errado...");
+        return;
+      }
+
+      const data = await response.json();
+
+      setClasses((prev) => {
+        if (prev !== null) {
+          const filterClasses = prev.filter((cla) => cla.id !== data.id);
+          return [...filterClasses];
+        }
+        return null;
+      });
+
+      setShowEditClassForm(!setShowEditClassForm);
+      reset();
+      toast.success("Classe deletada com sucesso!");
+    } catch (error) {
+      console.error("Erro ao deletar classe.");
+      toast.error("Hum... Não foi possível deletar classe...");
+    }
+  }
 
   return (
     <div
@@ -86,6 +159,7 @@ function CreateClass({
           <button
             type="button"
             className="w-[10rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
+            onClick={handleDeleteClass}
           >
             <Image
               src={Bin}
@@ -163,7 +237,7 @@ function CreateClass({
 
           <button
             type="submit"
-            className="w-[50%] mx-auto mb-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] mx-auto mb-2 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
           </button>
@@ -173,4 +247,4 @@ function CreateClass({
   );
 }
 
-export default CreateClass;
+export default EditClass;

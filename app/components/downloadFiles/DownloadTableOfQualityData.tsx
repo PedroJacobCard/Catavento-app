@@ -47,7 +47,7 @@ function DownloadTableOfQualityData({
         body: schoolsDataOnTable.map((schoolData) => {
           return [
             schoolData.name, 
-            schoolData.uniqueThemes, 
+            schoolData.accomplishedThemes, 
             schoolData.totalStudents, 
             schoolData.notAccomplishedThemes,
             schoolData.totalStudentsNotDone,
@@ -81,7 +81,7 @@ function DownloadTableOfQualityData({
   return (
     <button
       type="button"
-      className="p-2 flex items-center justify-center w-[10rem] gap-3 py-1 px-2 mt-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+      className="p-2 flex items-center justify-center w-[10rem] gap-3 py-1 px-2 my-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
       onClick={generate}
     >
       <Image

@@ -190,10 +190,10 @@ export type InitSchoolOnUserType = {
 //tipos do objeto que será feito para o download da tabela de dados qualitativos
 export  type DownloadDataTableOfQualityType = {
   name: string;
-  uniqueThemes: string;
+  accomplishedThemes: string;
   totalStudents: number;
   notAccomplishedThemes: string;
   totalStudentsNotDone: number;
   shift: string;
-  coordinatorName?: string
+  coordinatorName?: string | null
 };

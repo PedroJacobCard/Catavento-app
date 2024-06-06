@@ -45,7 +45,7 @@ export async function PUT(req: Request, { params }: { params : { rememberId: str
 }
 
 //DELETE
-export async function DELETE( { params }: { params : { rememberId: string }}) {
+export async function DELETE(req: Request, { params }: { params : { rememberId: string }}) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
@@ -53,6 +53,7 @@ export async function DELETE( { params }: { params : { rememberId: string }}) {
   }
 
   const rememberId = params.rememberId;
+  console.log(rememberId)
 
   try {
     const deleteRemember = await prisma.remember.delete({

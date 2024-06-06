@@ -359,7 +359,7 @@ function Vespertino() {
           </div>
         ))}
 
-        <section className="overflow-x-scroll mt-7 mx-2 md:mx-[2rem]">
+        <section className="overflow-x-scroll mt-7 mx-2 md:mx-[2rem] shadow-md px-5">
           <TableOfQualityData shift="VESPERTINO" />
         </section>
 
