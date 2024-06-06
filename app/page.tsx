@@ -96,7 +96,7 @@ export default function Home() {
           {status === "authenticated" && (
             <button
               onClick={() => signOut()}
-              className="flex gap-3 absolute right-2 md:right-[19rem] lg:right-[22rem] py-2 px-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+              className="flex gap-3 absolute top-3 right-2 md:right-[19rem] lg:right-[22rem] py-2 px-2 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
             >
               <Image
                 src={Logout}
