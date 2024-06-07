@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 //import costume hooks
 import useUser from "@/app/hooks/useUser";
+import useReport from "@/app/hooks/useReport";
 
 //import toaster
 import toast from "react-hot-toast";
@@ -31,6 +32,9 @@ type CreateReportPropsType = {
 function CreateReport({ showCreateReportForm, setShowCreateReportForm, theme, schoolName, shift }: CreateReportPropsType) {
   //importar dados do usuário logado
   const { user } = useUser();
+
+  //importar setter do array de relatórios
+  const { setReports } = useReport();
   
   //funcionalidades para adquirir o valor de atividades realizadas
   const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
@@ -89,7 +93,7 @@ function CreateReport({ showCreateReportForm, setShowCreateReportForm, theme, sc
   } = useForm<FieldValuesCreateReport>({
     resolver: zodResolver(schema),
     defaultValues: {
-      authorName: user?.name || '',
+      authorName: user?.user.name || '',
       schoolName: schoolName || '',
       classAndShift: '',
       theme: theme || '',
@@ -104,24 +108,55 @@ function CreateReport({ showCreateReportForm, setShowCreateReportForm, theme, sc
   //não renderiza o componente se não for o relatório selecionado
   if(!showCreateReportForm) return null;
 
-  const onSubmit: SubmitHandler<FieldValuesCreateReport> = (data) => {
+  const onSubmit: SubmitHandler<FieldValuesCreateReport> = async (data) => {
     if (hasNoActivities) return;
     setShowCreateReportForm(!showCreateReportForm)
     const { classAndShift } = data;
     const formData = {
       ...data,
-      authorName: user?.name,
+      authorName: user?.user.name,
       schoolName: schoolName,
       theme: theme,
       activitiesDone: selectedActivities,
       resources: selectedResources,
       classAndShift: classAndShift?.concat(', ' + shift)
     }
-    console.log(formData);
+
+    try {
+      const response = await fetch('/api/report', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        cache: "no-store",
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        toast.error("Hum... Algo deu errado...");
+        return;
+      }
+
+      const data = await response.json();
+
+      setReports(prev => {
+        if (!!prev) {
+          return [
+            ...prev,
+            data
+          ];
+        }
+        return [];
+      })
+
     toast.success("Relatório enviado com sucesso!");
     reset();
     resetActivitieOnSubmit();
     resetResourcesOnSubmit();
+    } catch (error) {
+      console.error("Erro ao criar relatório");
+      toast.error("Ops! Não deu para criar o relatório...")
+    }
   }
 
   return (
@@ -287,7 +322,7 @@ function CreateReport({ showCreateReportForm, setShowCreateReportForm, theme, sc
           <button
             type="submit"
             onClick={() => setHasNoActivities(selectedActivities.length === 0)}
-            className="w-[50%] mx-auto mb-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] mx-auto mb-2 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
           </button>

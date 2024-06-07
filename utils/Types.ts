@@ -175,6 +175,7 @@ export type UseEventContextType = {
 
 export type UseReportContextType = {
   reports: ReportType[] | null;
+  setReports: Dispatch<SetStateAction<ReportType[] | null>>
 }
 
 export type UseClassContextTypes = {

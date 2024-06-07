@@ -5,6 +5,7 @@ import { ReportType } from "@/utils/Types";
 
 //import bilioteca
 import jsPDF from "jspdf";
+import { DF } from "@/lib/DateFormat";
 
 //import icons
 import Download from "@/public/Download.svg";
@@ -40,7 +41,7 @@ function DownloadReport({ report }: DownloadReportPropsType) {
 
     const answers = [
       report.schoolName,
-      report.createdAt,
+      DF.format(new Date(report.createdAt)),
       report.authorName,
       report.theme.toString(),
       report.classAndShift,

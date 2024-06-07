@@ -230,7 +230,7 @@ model Report {
   authorName            String
   school                School       @relation(fields: [schoolName], references: [name])
   schoolName            String
-  classAndshift         String
+  classAndShift         String
   theme                 Theme
   activitiesDone        Activities[]
   coworkers             Int

@@ -13,9 +13,11 @@ import RememberField from "@/app/components/RememberField";
 import Footer from "../components/Footer";
 import DownloadReportTable from "../components/downloadFiles/DownloadReportTable";
 import Loading from "../components/Loading";
+import ShowMoreReports from "../components/ShowMoreReports";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
+import { DF } from "@/lib/DateFormat";
 
 //import custome hooks
 import useReport from "../hooks/useReport";
@@ -88,7 +90,7 @@ function Report() {
                   <h1 className="max-w-[300px] md:max-w-[350px] font-bold text-xl">
                     {report.schoolName}
                   </h1>
-                  <p className="font-bold">{report.createdAt}</p>
+                  <p className="font-bold">{report.createdAt && DF.format(new Date(report.createdAt))}</p>
                 </div>
 
                 <div className="flex flex-col items-start mx-2 mt-5 gap-3 p-3 lg:py-0">
@@ -110,7 +112,7 @@ function Report() {
                   </p>
                   <p className="font-bold flex flex-wrap">
                     Etapas realizadas nesta temática:
-                    {report.activitiesDone.map((activity, activityIndex) => (
+                    {report.activitiesDone && report.activitiesDone.map((activity, activityIndex) => (
                       <span key={activityIndex} className="font-normal ml-3">
                         {activityIndex === report.activitiesDone.length - 1
                           ? `${activity}`
@@ -124,7 +126,7 @@ function Report() {
                   </p>
                   <p className="font-bold flex flex-wrap">
                     Materiais utilizados:
-                    {report.resources.map((resource, resourceIndex) => (
+                    {report.resources && report.resources.map((resource, resourceIndex) => (
                       <span key={resourceIndex} className="font-normal ml-3">
                         {resourceIndex === report.resources.length - 1
                           ? `${resource}`
@@ -149,6 +151,7 @@ function Report() {
               <DownloadReportTable report={report} />
             </div>
           ))}
+        <ShowMoreReports />
 
         <Footer />
       </div>

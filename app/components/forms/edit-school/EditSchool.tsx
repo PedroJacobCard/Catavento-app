@@ -42,12 +42,12 @@ type EditSchoolPropType = {
 
 function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
   //import school data
-  const { schools, setUserSchools } = useSchool();
+  const { userSchools, setUserSchools } = useSchool();
   //import user data
   const { user } = useUser();
   
   //funcionalidades para criar um array de turnos existentes da escola chamada
-  const selectedSchoolData = schools.filter(s => s.name === schoolName)[0];
+  const selectedSchoolData = userSchools.filter(s => s.name === schoolName)[0];
   const initSelectedState: string[] = (() => {
     if (selectedSchoolData) {
       let userSchoolShifts: string[] = []; 

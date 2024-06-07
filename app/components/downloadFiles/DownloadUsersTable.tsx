@@ -39,7 +39,7 @@ function DownloadUsersTable({ school }: DownloadUsersTablePropsType) {
           const shift = currentSchool.map((sc) => sc.shifts).flat(1).join(", ");
 
           return [
-            user.name, user.role, user.email, shift
+            user.user.name, user.role, user.user.email, shift
           ]
         }),
         styles: {

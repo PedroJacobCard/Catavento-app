@@ -26,7 +26,7 @@ function ClassProvider({ children }: ChildrenPropsType) {
   useEffect(() => {
     const getClasses = async (): Promise<ClassType[] | null> => {
       try {
-        if (user && user !== null) {
+        if (user && !!user) {
           //funcionalidades para adiquirir apenas classes das escolas que o usuário logado participa
           const userSchools = user.school.map(({schoolName, shifts}) => ({schoolName, shifts}));
 
