@@ -18,7 +18,7 @@ function GoogleMaps({ address }: GoogleMapsPropsType) {
   useEffect(() => {
     const initMap = async () => {
       const loader = new Loader({
-        apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+        apiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string,
         version: "quarterly",
       });
       

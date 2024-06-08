@@ -26,33 +26,69 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
   //importar dados do usuário logado
   const { user } = useUser();
 
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+  
   //funcionalidades para enviar os dados do formulário
   const {
     handleSubmit,
     control,
     formState: { errors },
     reset,
-    register
-  } = useForm<FieldValidationCreateEvent>({
-    resolver: zodResolver(schema),
-    defaultValues: {
-      title: "",
-      subject: "",
-      location: "",
-      startTime: "",
-      endTime: "",
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    register,
+    } = useForm<FieldValidationCreateEvent>({
+      resolver: zodResolver(schema),
+      defaultValues: {
+        title: "",
+        subject: "",
+        location: "",
+        startTime: Intl.DateTimeFormat().resolvedOptions().hour,
+        endTime: Intl.DateTimeFormat().resolvedOptions().hour,
+        timeZone: timeZone,
       date: "",
       organizerId: user?.id,
-      organizerSchool: ''
-    },
-  });
+      organizerSchool: "",
+      },
+      });
+      
+  const onSubmit: SubmitHandler<FieldValidationCreateEvent> = async (data) => {
+    const startTime = new Date(data.startTime);
+    const endTime = new Date(data.endTime);
+    const date = Intl.DateTimeFormat(data.date).resolvedOptions().day;
 
-  const onSubmit: SubmitHandler<FieldValidationCreateEvent> = (data) => {
-    console.log(data)
-    reset();
-    setShowCreateEventForm(!showCreateEventForm);
-    toast.success("Evento criado com sucesso!")
+    const formData = {
+      title: data.title,
+      subject: data.subject,
+      location: data.location,
+      date,
+      organizerId: user?.id,
+      organizerSchool: data.organizerSchool,
+      timeZone: timeZone,
+      startTime,
+      endTime,
+    }
+
+    try {
+      const response = await fetch('/api/event', {
+        method: 'POST',
+        headers: {
+          "Content-Type": 'application/json'
+        },
+        cache: "no-store",
+        body: JSON.stringify(formData)
+      });
+
+      if (!response.ok) {
+        toast.error("Hum... Algo deu errado...");
+        return;
+      }
+        
+      reset();
+      setShowCreateEventForm(!showCreateEventForm);
+      toast.success("Evento criado com sucesso!")
+    } catch (error) {
+      console.error("Erro ao criar evento: ", error);
+      toast.error("Hum... Algo deu errado...");
+    }
   }
 
   return (
@@ -237,7 +273,7 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
 
           <button
             type="submit"
-            className="w-[50%] mx-auto mb-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] mx-auto mb-2 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
           </button>

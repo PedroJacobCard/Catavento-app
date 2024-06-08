@@ -152,7 +152,9 @@ function Calendario() {
         {user?.role?.toString() !== "VOLUNTARIO_A" ? (
           <button
             type="button"
-            className="flex items-center w-[8rem] gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue     rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+            className={`flex items-center w-[8rem] ${
+              events && events?.length < 1 ? "mt-[5rem]" : "mt-0"
+            } gap-3 m-auto py-1 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300`}
             onClick={() => setShowCreateEventForm((prev) => !prev)}
           >
             <Image src={Plus} width={15} height={15} alt="Adicionar" />

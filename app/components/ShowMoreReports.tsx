@@ -48,8 +48,8 @@ function ShowMoreReports() {
             setReports((prev) => {
               if (!!prev) {
                 const diferentReports = reportResponses
-                  .filter((re) => !prev.some((pre) => pre.id !== re.id))
-                  .flat();
+                  .flat()
+                  .filter((re) => !prev.some((pre) => pre.id === re.id));
                 return [...prev, ...diferentReports];
               }
               return null;
