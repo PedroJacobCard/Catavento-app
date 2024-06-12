@@ -198,3 +198,33 @@ export  type DownloadDataTableOfQualityType = {
   shift: string;
   coordinatorName?: string | null
 };
+
+//google event type
+export type GoogleEventData = {
+  summary: string,
+  location: string,
+  description: string,
+  start: {
+    dateTime: string,
+    timeZone: string
+  },
+  end: {
+    dateTime: string,
+    timeZone: string
+  },
+  recurrence: [
+    "RRULE:FREQ=DAILY;COUNT=2"
+  ],
+  attendees: [
+    {
+      email: string
+    }
+  ],
+  reminders: {
+    useDefault: boolean,
+    overrides: [
+      { method: string, minutes: number},
+      { method: string, minutes: number }
+    ]
+  }
+};

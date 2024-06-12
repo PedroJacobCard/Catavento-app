@@ -125,8 +125,8 @@ model Authenticator {
 }
 
 model School {
-  id                  String     @id @default(auto()) @map("_id") @db.ObjectId
-  name                String     @unique
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  name                String   @unique
   shift               Shift[]
   principal           String?
   coordinator_morning String?
@@ -136,13 +136,10 @@ model School {
   telephone           String?
   address             String?
   class               Class[]
-  remember            Remember[]
-  event               Event[]
-  report              Report[]
-  creator             Profile    @relation(fields: [creatorId], references: [id])
-  creatorId           String     @db.ObjectId
-  createdAt           DateTime   @default(now())
-  updatedAt           DateTime   @updatedAt
+  creator             Profile  @relation(fields: [creatorId], references: [id])
+  creatorId           String   @db.ObjectId
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@map("schools")
 }
@@ -187,7 +184,6 @@ model Remember {
   authorId   String   @db.ObjectId
   authorName String
   content    String
-  school     School   @relation(fields: [schoolName], references: [name])
   schoolName String
   shift      Shift
   createdAt  DateTime @default(now())
@@ -205,7 +201,6 @@ model Event {
   date            DateTime
   organizer       Profile  @relation(fields: [organizerId], references: [id], onDelete: Cascade)
   organizerId     String   @db.ObjectId
-  school          School   @relation(fields: [organizerSchool], references: [name])
   organizerSchool String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -228,7 +223,6 @@ model Report {
   id                    String       @id @default(auto()) @map("_id") @db.ObjectId
   author                Profile      @relation(fields: [authorName], references: [userName], onDelete: Cascade)
   authorName            String
-  school                School       @relation(fields: [schoolName], references: [name])
   schoolName            String
   classAndShift         String
   theme                 Theme

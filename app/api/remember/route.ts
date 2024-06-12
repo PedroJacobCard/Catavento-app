@@ -14,12 +14,13 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const schoolName = url.searchParams.get("schoolName");
   const shifts = url.searchParams.get("shifts");
+  const shiftsToArray = shifts?.split(',');
 
   try {
     const getRemembers = await prisma.remember.findMany({
       where: {
         schoolName: schoolName && schoolName !== null ? schoolName : '',
-        shift: {equals: shifts}
+        shift: {in: shiftsToArray}
       }
     });
 

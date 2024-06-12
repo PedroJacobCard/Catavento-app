@@ -276,7 +276,27 @@ export async function DELETE() {
     });
   
     if (user && userProfile) {
-      await prisma.school.deleteMany({ where: { creatorId: userProfile.id } });
+      const schoolsCreated = await prisma.school.findMany({
+        where: {
+          creatorId: userProfile.id
+        }
+      });
+
+      if (schoolsCreated) {
+        schoolsCreated.map(async (school) => {
+          await prisma.class.deleteMany({
+            where: {
+              schoolName: school.name
+            }
+          });
+
+          await prisma.school.delete({
+            where: {
+              name: school.name
+            }
+          })
+        })
+      }
 
       //deleta as escolas nos usuários que têem relação com as escolas criadas pelo usuário deletado
       userProfile.schoolCreated.map(async (school) => {

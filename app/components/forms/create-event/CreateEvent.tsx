@@ -51,9 +51,11 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
       });
       
   const onSubmit: SubmitHandler<FieldValidationCreateEvent> = async (data) => {
-    const startTime = new Date(data.startTime);
-    const endTime = new Date(data.endTime);
-    const date = Intl.DateTimeFormat(data.date).resolvedOptions().day;
+    const startTime = new Date(`${data.date}T${data.startTime}`);
+    const endTime = new Date(`${data.date}T${data.endTime}`);
+    const date = new Date(data.date);
+
+    console.log(startTime, endTime)
 
     const formData = {
       title: data.title,
