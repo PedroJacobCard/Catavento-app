@@ -171,6 +171,7 @@ export type UseRemeberContextType = {
 
 export type UseEventContextType = {
   events: EventType[] | null;
+  setEvents: Dispatch<SetStateAction<EventType[] | null>>
 }
 
 export type UseReportContextType = {
@@ -213,13 +214,9 @@ export type GoogleEventData = {
     timeZone: string
   },
   recurrence: [
-    "RRULE:FREQ=DAILY;COUNT=2"
+    string
   ],
-  attendees: [
-    {
-      email: string
-    }
-  ],
+  attendees: { email: string | null }[],
   reminders: {
     useDefault: boolean,
     overrides: [

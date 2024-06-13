@@ -19,6 +19,7 @@ import Loading from "../components/Loading";
 
 //import lib functions
 import ShowShadow from "@/lib/ShowShadow";
+import { DFOnlyHour, DFSimple } from "@/lib/DateFormat";
 
 //import costume hooks
 import useEvent from "../hooks/useEvent";
@@ -90,7 +91,7 @@ function Calendario() {
           <h1 className="title mx-2 md:ml-[2rem] pb-3">Calendário</h1>
         </ShowShadow>
 
-        {events &&
+        {events && events.length > 0 &&
           events.map((event, eventIndex) => (
             <section
               key={eventIndex}
@@ -99,8 +100,8 @@ function Calendario() {
               } mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md`}
             >
               <div className="flex items-center justify-start lg:justify-center gap-8 relative">
-                <p className="absolute left-5 top-[80%] lg:top-0 text-xl font-bold">
-                  {event.date}
+                <p className="w-[14rem] absolute left-5 top-[80%] lg:top-0 text-xl font-bold">
+                  {DFSimple.format(new Date(event.date))}
                 </p>
                 <h1 className="max-w-[300px] lg:max-w-[350px] pb-5 pl-5 lg:pl-0 font-bold">
                   {event.organizerSchool}
@@ -128,17 +129,17 @@ function Calendario() {
 
               <div className="flex flex-col items-start mx-2 mt-5 gap-3 p-3 lg:py-0">
                 <p className="font-bold">
-                  Título: <span className="font-normal">{event.title}</span>
+                  Título: <span className="font-normal ml-1">{event.title}</span>
                 </p>
                 <p className="font-bold">
-                  Assunto: <span className="font-normal">{event.subject}</span>
+                  Assunto: <span className="font-normal ml-1">{event.subject}</span>
                 </p>
                 <p className="font-bold">
-                  Local: <span className="font-normal">{event.location}</span>
+                  Local: <span className="font-normal ml-1">{event.location}</span>
                 </p>
                 <p className="font-bold">
                   Horário:{" "}
-                  <span className="font-normal">{`${event.startTime} - ${event.endTime}`}</span>
+                  <span className="font-normal ml-1">{`${DFOnlyHour.format(new Date(event.startTime))} - ${DFOnlyHour.format(new Date(event.endTime))}`}</span>
                 </p>
               </div>
               <EditEvent

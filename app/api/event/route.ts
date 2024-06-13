@@ -16,21 +16,17 @@ export async function POST(req: Request) {
   const body: EventType = await req.json();
   
   try {
-    const usersAccessToken = await prisma.profile.findMany({
+    const userAccessToken = await prisma.profile.findUnique({
       where: {
-        connectedToCalender: true,
-        school: {
-          some: {
-            schoolName: body.organizerSchool
-          }
-        },
+        userName: session.user?.name,
+        connectedToCalender: true
       },
       include: {
         user: {
           include: {
             accounts: {
               select: {
-                access_token: true
+                refresh_token: true
               }
             }
           }
@@ -38,78 +34,92 @@ export async function POST(req: Request) {
       }
     });
                     
-    if (usersAccessToken) {
-      console.log(usersAccessToken.map(user => user.userName))
-
-      await Promise.all(
-      usersAccessToken.map(async (user) => {
-
-        if (user && !!user) {
-          const eventOnCalender = await Promise.all(user.user.accounts.map(async (acc) => {
-
-            if (acc && !!acc.access_token) {
-              const googleEventData: GoogleEventData = {
-                summary: body.title || '',
-                location: body.location|| '',
-                description: body.subject|| '',
-                start: {
-                  dateTime: body.startTime || '',
-                  timeZone: body.timeZone || ''
-                },
-                end: {
-                  dateTime: body.endTime || '',
-                  timeZone: body.timeZone || ''
-                },
-                recurrence: [
-                  "RRULE:FREQ=DAILY;COUNT=2"
-                ],
-                attendees: [
-                  {
-                    email: user.user.email || ''
-                  }
-                ],
-                reminders: {
-                  useDefault: false,
-                  overrides: [
-                    { method: "email", minutes: 24 * 60},
-                    { method: "popup", minutes: 10 }
-                  ]
+    if (userAccessToken) {
+      if (userAccessToken && !!userAccessToken) {
+        const eventOnCalendar = await Promise.all(userAccessToken.user.accounts.map(async (acc) => {
+          const participants = await prisma.profile.findMany({
+            where: {
+              connectedToCalender: true,
+              school: {
+                some: {
+                  schoolName: body.organizerSchool
                 }
-              };
-
-              await createEvent(acc.access_token, googleEventData);
+              }
+            },
+            include: {
+              user: {
+                select: {
+                  email: true
+                }
+              }
             }
-          }));
+          });
+        
+          if (acc && !!acc.refresh_token && participants.length > 0) {
+            const googleEventData: GoogleEventData = {
+              summary: body.title || '',
+              location: body.location || '',
+              description: body.subject || '',
+              start: {
+                dateTime: body.startTime || '',
+                timeZone: body.timeZone || ''
+              },
+              end: {
+                dateTime: body.endTime || '',
+                timeZone: body.timeZone || ''
+              },
+              recurrence: [
+                "RRULE:FREQ=DAILY;COUNT=1"
+              ],
+              attendees: participants.map(par => ({
+                 email: par.user.email
+              })),
+              reminders: {
+                useDefault: false,
+                overrides: [
+                  { method: "email", minutes: 24 * 60 },
+                  { method: "popup", minutes: 10 }
+                ]
+              }
+            };
+          
+            const googleCalendarEvent = await createEvent(acc.refresh_token, googleEventData);
 
-          console.log(eventOnCalender);
-          return eventOnCalender;
-        }
-      }));
-      
-      const createEventOnDatabase = await prisma.event.create({
-        data: {
-          title: body.title,
-          subject: body.subject,
-          location: body.location,
-          date: body.date,
-          timeZone: body.timeZone,
-          startTime: body.startTime,
-          endTime: body.endTime,
-          organizer: {
-            connect: {
-              id: body.organizerId
-            }
-          },
-          organizerSchool: body.organizerSchool
-        },
-      });
-
-      if (!createEventOnDatabase) {
-        return NextResponse.json({ message: "Erro ao criar evento." }, { status: 400 });
+            if (googleCalendarEvent) {
+              console.log("Event created on Google Calendar");
+              return googleCalendarEvent; // Return the event data
+            } else {
+              throw new Error("Error creating event on Google Calendar.");
+            } 
+          }
+        }));
       }
-
-      return NextResponse.json(createEventOnDatabase);
     }
+
+    // Create event in the database
+    const createEventOnDatabase = await prisma.event.create({
+      data: {
+        title: body.title,
+        subject: body.subject,
+        location: body.location,
+        date: body.date,
+        timeZone: body.timeZone,
+        startTime: body.startTime,
+        endTime: body.endTime,
+        organizer: {
+          connect: {
+            id: body.organizerId
+          }
+        },
+        organizerSchool: body.organizerSchool
+      },
+    });
+
+    if (!createEventOnDatabase) {
+      return NextResponse.json({ message: "Erro ao criar evento no banco de dados." }, { status: 500 });
+    }
+
+    return NextResponse.json(createEventOnDatabase, { status: 201 });
   } catch (error) {
     console.error("Error on creating event: ", error);
     return NextResponse.json({ message: "Não foi possível criar evento." }, { status: 500 });

@@ -44,9 +44,9 @@ function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
   } = useForm<FieldValuesEditEvent>({
     resolver: zodResolver(schema),
     defaultValues: {
-      organizerSchool: selectedEvent?.[0]?.organizerSchool || "",
-      organizerId: selectedEvent?.[0]?.organizerId || user!.id!,
-      title: selectedEvent?.[0]?.title || "",
+      organizerSchool: selectedEvent?.[0].organizerSchool || "",
+      organizerId: selectedEvent?.[0].organizerId || user!.id!,
+      title: selectedEvent?.[0].title || "",
       subject: selectedEvent?.[0].subject || "",
       location: selectedEvent?.[0].location || "",
       startTime: selectedEvent?.[0].startTime || "",

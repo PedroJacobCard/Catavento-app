@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 //import costume hooks
 import useUser from "@/app/hooks/useUser";
+import useEvent from "@/app/hooks/useEvent";
 
 //import toaster
 import toast from "react-hot-toast";
@@ -25,6 +26,9 @@ type CreateEventPropsType = {
 function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEventPropsType) {
   //importar dados do usuário logado
   const { user } = useUser();
+
+  //importar setter do array de eventos
+  const { setEvents } = useEvent();
 
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   
@@ -83,6 +87,14 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
         toast.error("Hum... Algo deu errado...");
         return;
       }
+
+      const data = await response.json();
+      setEvents(prev => {
+        if (!!prev) {
+          return [...prev, data];
+        }
+        return [data];
+      })
         
       reset();
       setShowCreateEventForm(!showCreateEventForm);

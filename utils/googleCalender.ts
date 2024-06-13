@@ -7,23 +7,14 @@ const oauth2Client = new google.auth.OAuth2(
   process.env.NEXTAUTH_URL
 );
 
-const calendar = google.calendar({ version: 'v3', auth: process.env.NEXT_PUBLIC_GOOGLE_API_KEY});
-const scopes: string[] = [
-  'https://www.googleapis.com/auth/calendar.events'
-];
+const calendar = google.calendar({ version: 'v3', auth: oauth2Client});
 
-export const createEvent = async (accessToken: string, event: GoogleEventData) => {
+export const createEvent = async (refreshToken: string, event: GoogleEventData) => {
 
-  oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: scopes
-  });
-
-  oauth2Client.setCredentials({ access_token: accessToken });
+  oauth2Client.setCredentials({ refresh_token: refreshToken });
 
   try {
     const response = await calendar.events.insert({
-      auth: oauth2Client,
       calendarId: 'primary',
       requestBody: {
         ...event,
@@ -34,8 +25,6 @@ export const createEvent = async (accessToken: string, event: GoogleEventData) =
     if (!(response.status === 200)) {
       console.log("Error");
     }
-
-    console.log("Event created: ", response.data);
 
     return response.data;
   } catch (error) {

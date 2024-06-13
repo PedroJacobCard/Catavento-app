@@ -11,6 +11,7 @@ const initState: EventType[] = [];
 
 export const initContextState: UseEventContextType = {
   events: null,
+  setEvents: () => {}
 }
 
 export const EventContext = createContext<UseEventContextType>(initContextState);
@@ -22,33 +23,51 @@ function EventProvider({ children }: ChildrenPropsType) {
   //importar dados do usuário logado
   const { user } = useUser();
 
-  //useEffect(() => {
-  //  const getEvents = async (): Promise<EventType[] | //null> => {
-  //    try {
-  //      const response = await fetch(
-  //        `${process.env.NEXT_PUBLIC_BASE_URL_DEV_API}///event`
-  //      );
-//
-  //      if (response.ok) {
-  //        const data = await response.json();
-//
-  //        //filtrar eventos que sejam para a equipe //que o usuário logado participa
-  //        const userSchools = user?.school.map(({ //schoolName }) => ({ schoolName }))
-  //        const filteredData = data.filter((event: //EventType) => userSchools?.some(s => s.//schoolName === event.organizerSchool));
-  //        setEvents(filteredData);
-  //        return filteredData;
-  //      }
-  //    } catch (error) {
-  //      console.error("Error:", error);
-  //    }
-//
-  //    return null;
-  //  };
-  //  getEvents();
-  //}, [user]);
+  useEffect(() => {
+    const getEvents = async (): Promise<EventType[] | null> => {
+      try {
+        //filtrar eventos que sejam para a equipe que o usuário logado participa
+        const userSchools = user?.school.map(({ schoolName }) => ({ schoolName }));
 
+        if (userSchools && !!userSchools) {
+          const eventsResponses = await Promise.all(userSchools.map(async (school) => {
+            const response = await fetch(`/api/event/${school.schoolName}`, {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              cache: "no-store",
+            });
+    
+            if (!response.ok) {
+              return null;
+            }
+
+            const data = await response.json();
+            return data;
+          }));
+
+          if (!eventsResponses) {
+            return null;
+          }
+
+          const validEvents = eventsResponses.flat().filter(event => event !== null);
+          setEvents(validEvents)
+          return validEvents;
+        }
+
+      } catch (error) {
+        console.error("Error:", error);
+      }
+
+      return null;
+    };
+    getEvents();
+  }, [user]);
+
+  console.log(events)
   return (
-    <EventContext.Provider value={{ events }}>{children}</EventContext.Provider>
+    <EventContext.Provider value={{ events, setEvents }}>{children}</EventContext.Provider>
   );
 }
 
