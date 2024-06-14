@@ -15,7 +15,7 @@ export type ProfileType = {
   id: string;
   userId: string;
   userName?: string | null;
-  connectedToCalender: boolean | null;
+  connectedToCalendar: boolean | null;
   role: Role | null;
   user: UserType;
   schoolCreated: SchoolType[];

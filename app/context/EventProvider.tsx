@@ -65,7 +65,6 @@ function EventProvider({ children }: ChildrenPropsType) {
     getEvents();
   }, [user]);
 
-  console.log(events)
   return (
     <EventContext.Provider value={{ events, setEvents }}>{children}</EventContext.Provider>
   );

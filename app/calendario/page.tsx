@@ -13,12 +13,12 @@ import Plus from '@/public/Plus.svg';
 import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "../components/Footer";
+import ShowShadow from "@/app/components/ShowShadow";
 import CreateEvent from "../components/forms/create-event/CreateEvent";
 import EditEvent from "../components/forms/edit-event/EditEvent";
 import Loading from "../components/Loading";
 
 //import lib functions
-import ShowShadow from "@/lib/ShowShadow";
 import { DFOnlyHour, DFSimple } from "@/lib/DateFormat";
 
 //import costume hooks

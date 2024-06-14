@@ -14,6 +14,7 @@ import Form from "@/public/Form.svg";
 import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
+import ShowShadow from "@/app/components/ShowShadow";
 import DownloadThemeFile from "@/app/components/downloadFiles/DownloadThemeFile";
 import CreateClass from "@/app/components/forms/create-class/CreateClass";
 import EditClass from "@/app/components/forms/edit-class/EditClass";
@@ -22,7 +23,6 @@ import TableOfQualityData from "@/app/components/TableOfQualityData";
 import Loading from "@/app/components/Loading";
 
 //import lib functions
-import ShowShadow from "@/lib/ShowShadow";
 import { themeArray } from "@/lib/EnumsToArray";
 
 //import costume hooks

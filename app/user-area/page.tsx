@@ -13,6 +13,7 @@ import User from '@/public/User.svg';
 import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "@/app/components/Footer";
+import ShowShadow from "@/app/components/ShowShadow";
 import EditUser from "../components/forms/edit-user/EditUser";
 import Loading from "../components/Loading";
 
@@ -20,7 +21,6 @@ import Loading from "../components/Loading";
 import useUser from "../hooks/useUser";
 
 //import lib functions
-import ShowShadow from "@/lib/ShowShadow";
 
 //session and redirection
 import { useSession } from "next-auth/react";

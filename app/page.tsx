@@ -14,12 +14,12 @@ import Logout from "@/public/Logout.svg";
 import Navbar from "./components/Navbar";
 import RememberField from "./components/RememberField";
 import Footer from "./components/Footer";
+import ShowShadow from "@/app/components/ShowShadow";
 import EditSchool from "./components/forms/edit-school/EditSchool";
 import CreateSchool from "./components/forms/create-school/CreateSchool";
 import Loading from "./components/Loading";
 
 //import lib functions
-import ShowShadow from "@/lib/ShowShadow";
 import GoogleMaps from "@/lib/GoogleMaps";
 
 //import hooks
@@ -29,6 +29,7 @@ import useUser from "./hooks/useUser";
 //import session
 import { useSession, signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
+import ShowEditSchoolRemember from "./components/ShowEditSchoolRemember";
 
 export default function Home() {
   //session
@@ -65,6 +66,7 @@ export default function Home() {
 
   return (
     <>
+      <ShowEditSchoolRemember/>
       <Navbar />
       <RememberField
         isRememberOpen={isRememberOpen}

@@ -86,7 +86,7 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
     <div
       className={`${
         isRememberOpen ? "w-[100vw] flex" : "lg:w-[250px] md:w-[200px] hidden"
-      } h-[100vh] right-0 md:flex flex-col overflow-hidden dark:bg-darkMode shadow-md hover:shadow-blueShadow dark:hover:shadow-xl bg-primaryBlue fixed top-0 duration-300 z-[999]`}
+      } h-[100vh] right-0 md:flex flex-col overflow-hidden dark:bg-darkMode shadow-md hover:shadow-blueShadow dark:hover:shadow-xl bg-primaryBlue fixed top-0 duration-300 z-[599]`}
     >
       <div className="w-full flex justify-center items-center gap-2 py-4 shadow-md z-50 relative">
         <Image

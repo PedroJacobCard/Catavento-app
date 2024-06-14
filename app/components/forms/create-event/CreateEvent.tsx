@@ -1,9 +1,10 @@
 'use client'
 import Image from "next/image";
-import { Dispatch, SetStateAction} from "react";
+import { Dispatch, SetStateAction, useState} from "react";
 
 //import icons
 import Close from '@/public/Cancel.svg';
+import Logo from '@/public/Logo-principal.svg';
 
 //import react-hook-form e schema de validação
 import { SubmitHandler, Controller, useForm } from "react-hook-form";
@@ -24,6 +25,9 @@ type CreateEventPropsType = {
 }
 
 function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEventPropsType) {
+  //criar lógica de loading para criação do evento
+  const [loading, setLoading] = useState<boolean>(false);
+
   //importar dados do usuário logado
   const { user } = useUser();
 
@@ -73,6 +77,8 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
       endTime,
     }
 
+    setLoading(true);
+
     try {
       const response = await fetch('/api/event', {
         method: 'POST',
@@ -98,6 +104,7 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
         
       reset();
       setShowCreateEventForm(!showCreateEventForm);
+      setLoading(false);
       toast.success("Evento criado com sucesso!")
     } catch (error) {
       console.error("Erro ao criar evento: ", error);
@@ -107,9 +114,11 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
 
   return (
     <div
-      className={`${showCreateEventForm ? 'block' : 'hidden'} w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-50`}
+      className={`flex justify-center items-center w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-[999] ${
+        showCreateEventForm ? "block" : "hidden"
+      }`}
     >
-      <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[55vw] lg:w-[35vw] h-[50vh] mx-2 lg:mx-[20rem] rounded-md pt-5 pb-3 overflow-y-scroll fixed top-[20vh] left-[0vw] md:left-[13vw] lg:left-[0vw]">
+      <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[50vw] h-[80vh] mx-2 rounded-md pt-5 pb-5 overflow-y-scroll">
         <div className="flex justify-between items-center px-5">
           <Image
             src={Close}
@@ -289,7 +298,18 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
             type="submit"
             className="w-[50%] mx-auto mb-2 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
-            Enviar
+            {loading ? (
+              <Image
+                src={Logo}
+                alt="Catavento loading"
+                width={30}
+                height={30}
+                priority={true}
+                className="animate-spin m-auto"
+              />
+            ) : (
+              "Enviar"
+            )}
           </button>
         </form>
       </div>

@@ -93,6 +93,10 @@ td, th {
   padding: 10px; /* Adjust the padding as needed */
 }
 
+.map {
+  height: 400px;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

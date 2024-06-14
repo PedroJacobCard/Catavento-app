@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ message: "Not authenticated"}, { status: 401 });
   }
   
-  const {connectedToCalender, role, school, schoolCreated } = await req.json();
+  const {connectedToCalendar, role, school, schoolCreated } = await req.json();
   
   const user = await prisma.user.findUnique({
     where: { email: session.user!.email },
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
         data: {
           userId: user.id,
           userName: user.name as string,
-          connectedToCalender,
+          connectedToCalendar,
           role,
           school: {
             connect: createSchoolOnUser.map(school => ({ id: school.id }))
@@ -111,7 +111,7 @@ export async function POST(req: Request) {
         data: {
           userId: user.id,
           userName: user.name as string,
-          connectedToCalender,
+          connectedToCalendar,
           role,
           school: {
             connect: createSchoolOnUser.map(school => ({ id: school.id }))

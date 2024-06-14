@@ -58,7 +58,7 @@ model Profile {
   user                User           @relation(fields: [userId, userName], references: [id, name], onDelete: Cascade)
   userId              String         @db.ObjectId
   userName            String         @unique
-  connectedToCalender Boolean?
+  connectedToCalendar Boolean?
   role                Role?
   schoolCreated       School[]
   school              SchoolOnUser[]
@@ -202,6 +202,7 @@ model Event {
   organizer       Profile  @relation(fields: [organizerId], references: [id], onDelete: Cascade)
   organizerId     String   @db.ObjectId
   organizerSchool String
+  googleEventId   String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }

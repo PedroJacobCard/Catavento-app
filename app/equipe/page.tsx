@@ -12,11 +12,9 @@ import User from "@/public/User.svg";
 import Navbar from "@/app/components/Navbar";
 import RememberField from "@/app/components/RememberField";
 import Footer from "../components/Footer";
+import ShowShadow from "@/app/components/ShowShadow";
 import DownloadUsersTable from "../components/downloadFiles/DownloadUsersTable";
 import Loading from "../components/Loading";
-
-//import lib functions
-import ShowShadow from "@/lib/ShowShadow";
 
 //import hooks
 import useUsers from "../hooks/useUsers";

@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     const userAccessToken = await prisma.profile.findUnique({
       where: {
         userName: session.user?.name,
-        connectedToCalender: true
+        connectedToCalendar: true
       },
       include: {
         user: {
@@ -33,13 +33,15 @@ export async function POST(req: Request) {
         }
       }
     });
+
+    let googleEventId: string = '';
                     
     if (userAccessToken) {
       if (userAccessToken && !!userAccessToken) {
         const eventOnCalendar = await Promise.all(userAccessToken.user.accounts.map(async (acc) => {
           const participants = await prisma.profile.findMany({
             where: {
-              connectedToCalender: true,
+              connectedToCalendar: true,
               school: {
                 some: {
                   schoolName: body.organizerSchool
@@ -85,7 +87,8 @@ export async function POST(req: Request) {
           
             const googleCalendarEvent = await createEvent(acc.refresh_token, googleEventData);
 
-            if (googleCalendarEvent) {
+            if (googleCalendarEvent && googleCalendarEvent.id) {
+              googleEventId = googleCalendarEvent.id;
               console.log("Event created on Google Calendar");
               return googleCalendarEvent; // Return the event data
             } else {
@@ -111,7 +114,8 @@ export async function POST(req: Request) {
             id: body.organizerId
           }
         },
-        organizerSchool: body.organizerSchool
+        organizerSchool: body.organizerSchool,
+        googleEventId
       },
     });
 

@@ -67,11 +67,11 @@ function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
   }
   return (
     <div
-      className={`w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-50 ${
+      className={`flex justify-center items-center w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-[999] ${
         showForm ? "block" : "hidden"
       }`}
     >
-      <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] h-[50vh] md:w-[55vw] lg:w-[35vw] mx-2 lg:mx-[20rem] rounded-md pt-5 pb-5 overflow-y-scroll fixed top-[20vh] left-[0vw] md:left-[13vw] lg:left-[0vw]">
+      <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[50vw] h-[80vh] mx-2 rounded-md pt-5 pb-5 overflow-y-scroll">
         <div className="flex justify-between items-center px-5">
           <Image
             src={Close}
@@ -262,7 +262,7 @@ function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
 
           <button
             type="submit"
-            className="w-[50%] mx-auto my-1 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] mx-auto my-1 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
           </button>

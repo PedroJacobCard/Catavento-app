@@ -47,7 +47,7 @@ function Navbar() {
   const shiftsOrder = ["MATUTINO", "VESPERTINO", 'NOTURNO'];
   
   return (
-    <div className="w-full left-0 bottom-0 h-[4rem] md:w-[70px] md:hover:w-[250px] md:top-0 md:left-0 md:h-[100vh] flex md:flex-col overflow-hidden dark:bg-darkMode shadow-md hover:shadow-blueShadow dark:hover:shadow-xl bg-primaryBlue fixed z-[999] duration-500 opacity-effect">
+    <div className="w-full left-0 bottom-0 h-[4rem] md:w-[70px] md:hover:w-[250px] md:top-0 md:left-0 md:h-[100vh] flex md:flex-col overflow-hidden dark:bg-darkMode shadow-md hover:shadow-blueShadow dark:hover:shadow-xl bg-primaryBlue fixed z-[599] duration-500 opacity-effect">
       <div className="hidden md:flex justify-center items-center px-2 py-2 shadow-md">
         <Link href={"/"}>
           <Image
