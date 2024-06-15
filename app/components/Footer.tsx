@@ -2,6 +2,7 @@ import Image from "next/image";
 
 //import logos
 import CataventoLogo from '@/public/images/Catavento-logo-footer.png';
+import MpcLogo from "@/public/images/logo-mpc.png";
 
 function Footer() {
   //Obter ano atual
@@ -17,10 +18,10 @@ function Footer() {
           width={200}
         />
         <Image
-          src={CataventoLogo}
+          src={MpcLogo}
           alt="Logo Catavento"
-          height={100}
-          width={200}
+          height={80}
+          width={100}
         />
       </div>
       <p className="text-sm mt-4 font-light flex justify-center">

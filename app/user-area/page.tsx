@@ -126,7 +126,7 @@ function UserArea() {
                   <span className="font-bold mr-3">
                     Conexão com Google Agenda:
                   </span>
-                  {user.connectedToCalender ? "Sim" : "Não"}
+                  {user.connectedToCalendar ? "Sim" : "Não"}
                 </p>
                 <p className="mb-1">
                   <span className="font-bold mr-3">Escolas de atuação:</span>

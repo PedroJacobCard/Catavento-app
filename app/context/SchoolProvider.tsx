@@ -87,17 +87,22 @@ function SchoolProvider({ children }: ChildrenPropsType ) {
       };
 
       getUserSchools();
-    }, [user]);
 
-    if (userSchools.length > 0) {
+      
+    }, [user]);
+    
+    useEffect(() => {
       if (
-    (user?.role?.toString() === "COORDENADOR_A" &&
-      userSchools.every((school) => school.address === "")) ||
-      (user?.role?.toString() === "SECRETARIO_A" &&
+      (user?.role?.toString() === "COORDENADOR_A" &&
+        userSchools.every((school) => school.address === "")) ||
+        (user?.role?.toString() === "SECRETARIO_A" &&
         userSchools.every((school) => school.address === ""))) {
           return setEditSchoolRemember(true);
-        }
-    }
+      } else {
+        return setEditSchoolRemember(false);
+      } 
+    }, [user, userSchools]);
+
   
   return (
     <SchoolsContext.Provider value={{

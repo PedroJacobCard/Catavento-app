@@ -87,6 +87,7 @@ export type EventType = {
   date: string;
   organizerId: string;
   organizerSchool: string;
+  googleEventId: string;
   createdAt: string;
   updatedAt: string;
 };

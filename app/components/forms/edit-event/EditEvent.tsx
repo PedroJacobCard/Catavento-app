@@ -1,5 +1,5 @@
 'use client'
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 
 //import schema de validação e react-hook-form
@@ -10,6 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 //import icons
 import Close from "@/public/Cancel.svg";
 import Bin from "@/public/Bin.svg";
+import Logo from "@/public/Logo-principal.svg";
 
 //import toaster
 import toast from "react-hot-toast";
@@ -23,16 +24,23 @@ import useEvent from "@/app/hooks/useEvent";
 type EditEventPropsType = {
   showForm: boolean,
   setShowForm: Dispatch<SetStateAction<boolean>>,
-  eventId: string
+  eventId: string,
+  googleEventId: string
 }
 
-function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
+function EditEvent({ showForm, setShowForm, eventId, googleEventId }: EditEventPropsType) {
+  //criar lógica de loading para edição do evento
+  const [loading, setLoading] = useState<boolean>(false);
+  const [loadingDelete, setLoadingDelete] = useState<boolean>(false);
+  
   //import dados do usuário logado
   const { user } = useUser();
 
   //import dados do evento selecionado
-  const { events } = useEvent();
-  const selectedEvent = events?.filter(event => event.id === eventId);
+  const { events, setEvents } = useEvent();
+  const selectedEvent = events?.filter((event) => event.id === eventId);
+
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   //funcionalidades para eviar os dados do formulário
   const {
@@ -51,7 +59,7 @@ function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
       location: selectedEvent?.[0].location || "",
       startTime: selectedEvent?.[0].startTime || "",
       endTime: selectedEvent?.[0].endTime || "",
-      timeZone: selectedEvent?.[0].timeZone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timeZone: selectedEvent?.[0].timeZone || timeZone,
       date: selectedEvent?.[0].date || "",
     },
   });
@@ -59,12 +67,107 @@ function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
   //se não for o evento selecionado para edição, a cópia do formulário não renderiza
   if (!showForm) return null;
 
-  const onSubmit: SubmitHandler<FieldValuesEditEvent> = (data) => {
-    console.log(data);
-    reset();
-    setShowForm(!showForm);
-    toast.success("Evento editado com sucesso!")
+  const onSubmit: SubmitHandler<FieldValuesEditEvent> = async (data) => {
+    const startTime = new Date(`${data.date}T${data.startTime}`);
+    const endTime = new Date(`${data.date}T${data.endTime}`);
+    const date = new Date(data.date as string);
+
+    const formData = {
+      title: data.title,
+      subject: data.subject,
+      location: data.location,
+      date,
+      organizerId: user?.id,
+      organizerSchool: data.organizerSchool,
+      timeZone: timeZone,
+      startTime,
+      endTime,
+    };
+
+    setLoading(true);
+
+    try {
+      const response = await fetch(
+        `/api/event?eventId=${eventId}&googleEventId=${googleEventId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          cache: "no-store",
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (!response.ok) {
+        toast.error("Hum... Algo deu errado...");
+        setLoading(false);
+        return;
+      }
+
+      const data = await response.json();
+
+      setEvents((prev) => {
+        if (prev && !!prev) {
+          const index = prev?.findIndex((event) => event.id === data.id);
+
+          return [...prev.slice(0, index), data, ...prev.slice(index + 1)];
+        }
+        return [data];
+      });
+
+      reset();
+      setShowForm(!showForm);
+      setLoading(false);
+      toast.success("Evento editado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao alterar evento: ", error);
+      toast.error("Não foi possível alterar evento... Tente novamente.");
+    }
+  };
+
+  //delete event
+  const handleDeleteEvent = async () => {
+    setLoadingDelete(true);
+
+    try {
+      const response = await fetch(`/api/event?eventId=${eventId}&googleEventId=${googleEventId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        cache: "no-store"
+      });
+
+      if (!response.ok) {
+        toast.error("Hum... Algo deu errado...");
+        setLoadingDelete(false);
+        return;
+      }
+
+      const data = await response.json();
+
+      setEvents(prev => {
+        if (prev && !!prev) {
+          const index = prev.findIndex(event => event.id === data.id);
+
+          return [
+            ...prev.slice(0, index),
+            ...prev.slice(index + 1)
+          ]
+        }
+        return null
+      })
+
+      reset()
+      setLoadingDelete(false);
+      setShowForm(!showForm);
+    } catch (error) {
+      toast.error("Hum... Naão foi possível deletar evento.")
+      console.log("Erro ao deletar evento:", error);
+    }
   }
+
   return (
     <div
       className={`flex justify-center items-center w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-[999] ${
@@ -84,7 +187,8 @@ function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
           />
           <button
             type="button"
-            className="w-[10rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300"
+            className={`w-[10rem] flex items-center gap-3 rounded-md p-2 shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(168,66,66)] hover:bg-red-200  hover:border-red-600 duration-300 ${loadingDelete ? "bg-dark:bg-[rgb(168,66,66)] bg-red-200  border-red-600": ''}`}
+            onClick={handleDeleteEvent}
           >
             <Image
               src={Bin}
@@ -93,7 +197,18 @@ function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
               height={20}
               priority={true}
             />
-            Deletar Evento
+            {loadingDelete ? (
+              <Image
+                src={Logo}
+                alt="Catavento loading"
+                width={30}
+                height={30}
+                priority={true}
+                className="animate-spin m-auto"
+              />
+            ) : (
+              "Deletar Evento"
+            )}
           </button>
         </div>
 
@@ -262,9 +377,20 @@ function EditEvent({ showForm, setShowForm, eventId }: EditEventPropsType) {
 
           <button
             type="submit"
-            className="w-[50%] mx-auto my-1 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] mx-auto my-2 py-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
-            Enviar
+            {loading ? (
+              <Image
+                src={Logo}
+                alt="Catavento loading"
+                width={30}
+                height={30}
+                priority={true}
+                className="animate-spin m-auto"
+              />
+            ) : (
+              "Enviar"
+            )}
           </button>
         </form>
       </div>

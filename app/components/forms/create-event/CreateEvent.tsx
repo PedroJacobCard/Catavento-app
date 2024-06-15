@@ -63,8 +63,6 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
     const endTime = new Date(`${data.date}T${data.endTime}`);
     const date = new Date(data.date);
 
-    console.log(startTime, endTime)
-
     const formData = {
       title: data.title,
       subject: data.subject,
@@ -91,6 +89,7 @@ function CreateEvent({ showCreateEventForm, setShowCreateEventForm }: CreateEven
 
       if (!response.ok) {
         toast.error("Hum... Algo deu errado...");
+        setLoading(false);
         return;
       }
 

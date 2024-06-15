@@ -146,6 +146,7 @@ function Calendario() {
                 showForm={editEventIndex === eventIndex && showForm}
                 setShowForm={setShowForm}
                 eventId={event.id}
+                googleEventId={event.googleEventId}
               />
             </section>
           ))}
