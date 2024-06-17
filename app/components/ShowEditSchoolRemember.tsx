@@ -11,7 +11,6 @@ function ShowEditSchoolRemember() {
   //importar variável e setter para a lógica de lembrete de edição
   const { editSchoolRemember, setEditSchoolRemember } = useSchool();
 
-  console.log(editSchoolRemember)
   return (
     <div
       className={`w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-[999] flex justify-center items-top ${

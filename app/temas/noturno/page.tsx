@@ -241,6 +241,7 @@ function Noturno() {
                               type="checkbox"
                               checked={cla.done}
                               unselectable="off"
+                              readOnly
                             />
 
                             {user?.role?.toString() === "COORDENADOR_A" ||

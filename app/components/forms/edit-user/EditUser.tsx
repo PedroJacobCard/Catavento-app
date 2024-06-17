@@ -47,7 +47,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   const router = useRouter();
 
   //funcionalidade para checar se o usuário está conectado com o calendário e mudar o valor
-  const [isConnected, setIsConnected] = useState<boolean | undefined>(user?.connectedToCalender ? true : false);
+  const [isConnected, setIsConnected] = useState<boolean | undefined>(user?.connectedToCalendar ? true : false);
 
   //essa função servirá como estado inicial das escolas selecionadas as quais seram as que o usuário já participa
   const initSelectedState: InitSchoolOnUserType[] = (() => {
@@ -107,7 +107,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   } = useForm<FieldValuesEditUser>({
     resolver: zodResolver(schema),
     defaultValues: {
-      connectedToCalender: user?.connectedToCalender || false,
+      connectedToCalendar: user?.connectedToCalendar || false,
       school: userSchools?.map(s => {
         return {
           schoolName: s.schoolName,
@@ -242,7 +242,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
           />
 
           <Controller
-            name="connectedToCalender"
+            name="connectedToCalendar"
             control={control}
             render={({ field }) => (
               <div className="flex gap-3">

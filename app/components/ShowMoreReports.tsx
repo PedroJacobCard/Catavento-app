@@ -41,7 +41,6 @@ function ShowMoreReports() {
             }
             
             const data = await response.json();
-            console.log(data)
             return data;
             }));
             
@@ -69,12 +68,10 @@ function ShowMoreReports() {
      }
   }, [increment, setReports, user]);
 
-  console.log(reports)
-
   return (
     <button
       type="button"
-      className={`w-[50%] py-2 mb-5 ${reports && reports?.length < 1 ? 'mt-10' : 'mt-0'} underline hover:text-slate-500 duration-300`}
+      className={`w-[50%] py-2 mb-5 ${reports && reports?.length < 1 ? 'mt-[5rem]' : 'mt-0'} underline hover:text-slate-500 duration-300`}
       onClick={() => setIncrement((prev) => prev + 5)}
     >
       Carregar mais relatórios

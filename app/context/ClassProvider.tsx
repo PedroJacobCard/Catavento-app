@@ -47,7 +47,7 @@ function ClassProvider({ children }: ChildrenPropsType) {
             return data;
           }))
 
-          const validatedData = classesResponse.filter(cla => cla !== null).flat();
+          const validatedData = classesResponse.flat().filter(cla => cla !== null);
   
           setClasses(validatedData);
         }

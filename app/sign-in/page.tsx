@@ -1,26 +1,21 @@
 'use client'
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 //import icons
 import LoginPicture from '@/public/images/sign-picture.png';
 import Logo from "@/public/Logo-navabar-extended.svg";
+import MpcLogo from "@/public/images/logo-mpc.png";
 import GoogleLogo from '@/public/Google.svg';
 
 //import signIn functions
 import { signIn, useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
-
-//import user hook
-import useUser from "../hooks/useUser";
 
 //import session functions
 
 function SignIn() {
   //session
   const { data: session } = useSession();
-
-  //verificar se existe profile
-  const { user } = useUser();
 
   if (session) {
     redirect("/")
@@ -39,7 +34,11 @@ function SignIn() {
         />
       </div>
       <div className="dark:bg-darkModeGlass bg-primaryBlueGlass w-[95vw] md:w-[65vw] lg:w-[50vw] lg:h-[100vh] p-[2rem] flex flex-col justify-center items-center fixed lg:relative rounded-md lg:rounded-none">
-        <Image src={Logo} alt="logo" width={200} />
+        <div className="flex justify-center items-center">
+        <Image src={Logo} alt="logo" width={150} />
+        <Image src={MpcLogo} alt="logo" width={150} />
+        </div>
+
         <button
           onClick={() => signIn("google")}
           type="button"

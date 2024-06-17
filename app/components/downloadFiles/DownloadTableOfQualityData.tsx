@@ -10,9 +10,6 @@ import { DownloadDataTableOfQualityType } from "@/utils/Types";
 //importar icons
 import Download from "@/public/Download.svg";
 
-//import custom hooks
-import useUsers from "@/app/hooks/useUsers";
-
 //import toaster
 import toast from "react-hot-toast";
 

@@ -46,40 +46,48 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
     const updatedData: DownloadDataTableOfQualityType[] = userSchools
       .filter((school) => school.shift.some((shi) => shi === shift))
       .map((school) => {
-        let accomplishedThemes: string[] = [];
-        let notAccomplishedThemes: string[] = [];
+        let accomplishedThemes: { theme:string, done: boolean }[] = [];
+        let notAccomplishedThemes: { theme: string; done: boolean }[] = [];
         const schoolName = school.name;
         const themeValues = Object.values(Theme);
 
         for (const theme of themeValues) {
           if (isNaN(Number(theme))) {
-            const filteredClasses = classes?.some(
+            const filteredClasses = classes?.filter(
               (cla) =>
                 cla.done &&
                 cla.shift === shift &&
                 cla.schoolName === schoolName &&
                 cla.theme.toString() === theme
             );
-            if (filteredClasses) {
-              accomplishedThemes.push(theme.toString());
-            } else {
-              const filteredClassesNotDone = classes?.some(
-                (cla) =>
-                  !cla.done &&
-                  cla.shift === shift &&
-                  cla.schoolName === schoolName &&
-                  cla.theme.toString() === theme
-              );
+            filteredClasses?.map(cla => {
+              accomplishedThemes.push({theme: cla.theme.toString(), done: cla.done});
+            });
 
-              if (filteredClassesNotDone) {
-                notAccomplishedThemes.push(theme.toString());
-              }
-            }
+            const filteredClassesNotDone = classes?.filter(
+              (cla) =>
+                !cla.done &&
+              cla.shift === shift &&
+              cla.schoolName === schoolName &&
+              cla.theme.toString() === theme
+            );
+
+            filteredClassesNotDone?.map(cla => {
+              notAccomplishedThemes.push({
+                theme: cla.theme.toString(),
+                done: cla.done,
+              });
+            })
           }
         }
 
-        //const allThemes = [...accomplishedThemes, ...notAccomplishedThemes];
-        //const themeCounts = allThemes.reduce((acc, theme) => {
+        const allThemes = [...accomplishedThemes, ...notAccomplishedThemes];
+        const allThemesNotAccomplished = allThemes.filter((obj) => !obj.done);
+        const allThemesAccomplished = allThemes.filter(obj => obj.done && allThemesNotAccomplished.every(obj2 => obj2.theme !== obj.theme));
+
+        const allThemesAccomplishedAndNotRepeated: string[] = Array.from(new Set(allThemesAccomplished.map(obj => obj.theme)));
+        const allThemesNotAccomplishedAndNotRepeated: string[] = Array.from(new Set(allThemesNotAccomplished.map(obj => obj.theme)));
+                //const themeCounts = allThemes.reduce((acc, theme) => {
         //  acc[theme] = (acc[theme] || 0) + 1;
         //  return acc;
         //}, {} as Record<string, number>);
@@ -109,9 +117,10 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
 
         return {
           name: schoolName,
-          accomplishedThemes: accomplishedThemes.join(", "),
+          accomplishedThemes: allThemesAccomplishedAndNotRepeated.join(", "),
           totalStudents: totalStudents || 0,
-          notAccomplishedThemes: notAccomplishedThemes.join(", "),
+          notAccomplishedThemes:
+            allThemesNotAccomplishedAndNotRepeated.join(", "),
           totalStudentsNotDone: totalStudentsNotDone || 0,
           shift: shift,
           coordinatorName: coordinator ? coordinator.user.name : "",
@@ -137,7 +146,7 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
         <Table
           sx={{
             minWidth: 650,
-            border: 0
+            border: 0,
           }}
           aria-label="dense table"
         >
@@ -151,7 +160,7 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
                   borderLeft: 1,
                   borderBottom: 1,
                 },
-                "& th:first-child": { borderLeft: 0 },
+                "& th:first-of-type": { borderLeft: 0 },
               }}
             >
               <TableCell sx={{ borderBottom: 1, fontWeight: 600 }}>
@@ -197,11 +206,11 @@ function TableOfQualityData({ shift }: TableOfQualityDataPropsType) {
           </TableHead>
           <TableBody
             sx={{
-              "& tr:nth-child(odd)": {
+              "& tr:nth-of-type(odd)": {
                 backgroundColor: "#f3f3f3",
               },
               "@media (prefers-color-scheme: dark)": {
-                "& tr:nth-child(odd)": {
+                "& tr:nth-of-type(odd)": {
                   backgroundColor: "#454545",
                 },
               },

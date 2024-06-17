@@ -83,7 +83,7 @@ function Report() {
             <div key={reportIndex}>
               <section
                 className={`dark:bg-darkMode bg-primaryBlue ${
-                  reportIndex === 0 ? "mt-[5rem]" : "mt-5"
+                  reportIndex === 0 ? "mt-[9rem] md:mt-[5rem]" : "mt-5"
                 } mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md`}
               >
                 <div className="flex flex-col items-start mx-5 gap-3 lg:flex-row lg:justify-between lg:items-top">
