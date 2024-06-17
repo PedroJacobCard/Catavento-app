@@ -128,7 +128,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
         }
       }),
     }
-    console.log(formData)
+    
     try {
       const response = await fetch('/api/profile', {
         method: 'PUT',
