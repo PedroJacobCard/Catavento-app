@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from 'next/image';
 import { useRouter } from "next/navigation";
 
@@ -47,21 +47,26 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   const router = useRouter();
 
   //funcionalidade para checar se o usuário está conectado com o calendário e mudar o valor
-  const [isConnected, setIsConnected] = useState<boolean | undefined>(user?.connectedToCalendar ? true : false);
+  const [isConnected, setIsConnected] = useState<boolean | undefined>(false);
 
-  //essa função servirá como estado inicial das escolas selecionadas as quais seram as que o usuário já participa
-  const initSelectedState: InitSchoolOnUserType[] = (() => {
-    if (user && user.school) {
-      return user.school.map((s) => ({
+  const [selectedShiftAndSchool, setSelectedShiftAndSchool] =  useState<InitSchoolOnUserType[]>([]);
+
+  useEffect(() => {
+    if (user && !!user.connectedToCalendar && user.connectedToCalendar && user.school) {
+      setIsConnected(true);
+      setSelectedShiftAndSchool(
+        user.school.map((s) => ({
         schoolName: s.schoolName,
         shifts: s.shifts,
-      }));
+      })));
     } else {
-      return [];
+      return;
     }
-  })();
+  
+    //essa função servirá como estado inicial das escolas selecionadas as quais seram as que o usuário já participa
+  }, [user]);
 
-  const [selectedShiftAndSchool, setSelectedShiftAndSchool] =  useState<InitSchoolOnUserType[]>(initSelectedState);
+
   
   const handleCheckboxChange = (checked: boolean, schoolName: string, shift: string) => {
     setSelectedShiftAndSchool(prev => {
@@ -152,23 +157,27 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   
   //funcionalidades para deletar conta
   const handleDeleteAccount = async () => {
-    try {
-      const response = await fetch("/api/profile", {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const confirm = window.confirm("Tem certeza que deseja deletar tua conta?");
 
-      if (response.ok) {
-        setUser(null);
-        toast.success("Conta deletada com sucesso!");
-        router.push("/");
-        setShowForm(!showForm)
+    if (confirm) {
+      try {
+        const response = await fetch("/api/profile", {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        if (response.ok) {
+          setUser(null);
+          toast.success("Conta deletada com sucesso!");
+          router.push("/");
+          setShowForm(!showForm)
+        }
+      } catch (error) {
+        console.error("Erro ao deletar perfil");
+        toast.error("Uhm... Algo deu errado...");
       }
-    } catch (error) {
-      console.error("Erro ao deletar perfil");
-      toast.error("Uhm... Algo deu errado...");
     }
   }
   

@@ -165,32 +165,36 @@ function EditSchool({ showForm, setShowForm, schoolName }: EditSchoolPropType) {
 
   //deletar escola
   const handleDeleteSchool = async (schoolName: string | undefined) => {
-    try {
-      const response = await fetch(`/api/school/${schoolName}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      });
+    const confirm = window.confirm(`Tem certeza que deseja deletar a escola ${schoolName}?`);
 
-      if (!response.ok) {
-        throw new Error("Erro ao deletar escola");
+    if (confirm) {
+      try {
+        const response = await fetch(`/api/school/${schoolName}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          cache: "no-store",
+        });
+  
+        if (!response.ok) {
+          throw new Error("Erro ao deletar escola");
+        }
+  
+        const data = await response.json();
+  
+        setUserSchools((prev) => {
+          const filterDiferentSchools = prev.filter((s) => s.name !== data.name);
+  
+          return [...filterDiferentSchools];
+        });
+  
+        setShowForm(!showForm);
+        toast.success("Escola deletada com sucesso!");
+      } catch (error) {
+        console.error("Erro ao deletar escola: ", error)
+        toast.error("Hum... Algo deu errado...")
       }
-
-      const data = await response.json();
-
-      setUserSchools((prev) => {
-        const filterDiferentSchools = prev.filter((s) => s.name !== data.name);
-
-        return [...filterDiferentSchools];
-      });
-
-      setShowForm(!showForm);
-      toast.success("Escola deletada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao deletar escola: ", error)
-      toast.error("Hum... Algo deu errado...")
     }
   }
 

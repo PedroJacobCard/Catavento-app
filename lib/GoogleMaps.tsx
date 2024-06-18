@@ -55,7 +55,7 @@ function GoogleMaps({ address }: GoogleMapsPropsType) {
       })
     }
 
-    if (address) {
+    if (address && mapRef) {
       initMap();
     }
   }, [address, opencageApiKey])

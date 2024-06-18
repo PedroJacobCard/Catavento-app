@@ -91,7 +91,8 @@ function Calendario() {
           <h1 className="title mx-2 md:ml-[2rem] pb-3">Calendário</h1>
         </ShowShadow>
 
-        {events && events.length > 0 &&
+        {events &&
+          events.length > 0 &&
           events.map((event, eventIndex) => (
             <section
               key={eventIndex}
@@ -129,17 +130,22 @@ function Calendario() {
 
               <div className="flex flex-col items-start mx-2 mt-5 gap-3 p-3 lg:py-0">
                 <p className="font-bold">
-                  Título: <span className="font-normal ml-1">{event.title}</span>
+                  Título:{" "}
+                  <span className="font-normal ml-1">{event.title}</span>
                 </p>
                 <p className="font-bold">
-                  Assunto: <span className="font-normal ml-1">{event.subject}</span>
+                  Assunto:{" "}
+                  <span className="font-normal ml-1">{event.subject}</span>
                 </p>
                 <p className="font-bold">
-                  Local: <span className="font-normal ml-1">{event.location}</span>
+                  Local:{" "}
+                  <span className="font-normal ml-1">{event.location}</span>
                 </p>
                 <p className="font-bold">
                   Horário:{" "}
-                  <span className="font-normal ml-1">{`${DFOnlyHour.format(new Date(event.startTime))} - ${DFOnlyHour.format(new Date(event.endTime))}`}</span>
+                  <span className="font-normal ml-1">{`${DFOnlyHour.format(
+                    new Date(event.startTime)
+                  )} - ${DFOnlyHour.format(new Date(event.endTime))}`}</span>
                 </p>
               </div>
               <EditEvent

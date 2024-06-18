@@ -431,7 +431,7 @@ function CreateSchool({ showCreateSchoolForm, setShowCreateSchoolForm, creatorId
           <button
             onClick={() => setHasNoShift(selectedShifts.length === 0)}
             type="submit"
-            className="w-[50%] mx-auto rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+            className="w-[50%] mx-auto py-2 mb-2 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           >
             Enviar
           </button>

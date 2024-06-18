@@ -63,33 +63,37 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
 
   //funcionalidades para deletar lembretes
   const handleDelelteRemember = async () => {
-    try {
-      const response = await fetch(`/api/remember/${rememberId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        cache: "no-store"
-      });
+    const confirm = window.confirm(`Tem certeza que deseja deletar este lembrete?`);
 
-      if (!response) {
-        toast.error('Hum... Erro ao deletar lembrete...')
-      }
-
-      const data = await response.json();
-
-      setRemembers(prev => {
-        if (prev !== null) {
-          const filteredData = prev?.filter(re => re.id !== data.id);
-          return [...filteredData]
+    if (confirm) {
+      try {
+        const response = await fetch(`/api/remember/${rememberId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          cache: "no-store"
+        });
+  
+        if (!response) {
+          toast.error('Hum... Erro ao deletar lembrete...')
         }
-        return []
-      })
-
-      toast.success("Lembrete deletado!");
-      setShowForm(!showForm);
-    } catch (error) {
-      console.log("Error ao deletar lembrete: ", error)
+  
+        const data = await response.json();
+  
+        setRemembers(prev => {
+          if (prev !== null) {
+            const filteredData = prev?.filter(re => re.id !== data.id);
+            return [...filteredData]
+          }
+          return []
+        })
+  
+        toast.success("Lembrete deletado!");
+        setShowForm(!showForm);
+      } catch (error) {
+        console.log("Error ao deletar lembrete: ", error)
+      }
     }
   }
 
@@ -99,7 +103,7 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
         showForm ? "block" : "hidden"
       }`}
     >
-      <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[50vw] h-[50vh] mx-2 rounded-md pt-5 pb-5 overflow-y-scroll">
+      <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[50vw] h-[60vh] mx-2 rounded-md pt-5 pb-5 overflow-y-scroll">
         <div className="flex justify-between items-center px-5">
           <Image
             src={Close}
@@ -128,14 +132,14 @@ function EditRemember({ showForm, setShowForm, rememberId, content }: EditRememb
 
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col justify-start px-5 mt-9 overflow-y-scroll"
+          className="flex flex-col justify-center px-5 mt-5 h-full my-auto overflow-y-scroll"
         >
           <Controller
             name="content"
             control={control}
             render={({ field }) => (
               <textarea
-                rows={4}
+                rows={7}
                 {...field}
                 className="px-2 py-1 rounded-md shadow-md outline-none focus:border focus:border-slate-400 mb-5 dark:bg-darkModeBgColor"
               />

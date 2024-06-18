@@ -70,7 +70,7 @@ function EditEvent({ showForm, setShowForm, eventId, googleEventId }: EditEventP
   const onSubmit: SubmitHandler<FieldValuesEditEvent> = async (data) => {
     const startTime = new Date(`${data.date}T${data.startTime}`);
     const endTime = new Date(`${data.date}T${data.endTime}`);
-    const date = new Date(data.date as string);
+    const date = new Date(`${data.date}T${data.startTime}`);
 
     const formData = {
       title: data.title,
@@ -128,43 +128,49 @@ function EditEvent({ showForm, setShowForm, eventId, googleEventId }: EditEventP
 
   //delete event
   const handleDeleteEvent = async () => {
+    const confirm = window.confirm(`Tem certeza que deseja deletar este evento?`);
+
     setLoadingDelete(true);
 
-    try {
-      const response = await fetch(`/api/event?eventId=${eventId}&googleEventId=${googleEventId}`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        cache: "no-store"
-      });
-
-      if (!response.ok) {
-        toast.error("Hum... Algo deu errado...");
-        setLoadingDelete(false);
-        return;
-      }
-
-      const data = await response.json();
-
-      setEvents(prev => {
-        if (prev && !!prev) {
-          const index = prev.findIndex(event => event.id === data.id);
-
-          return [
-            ...prev.slice(0, index),
-            ...prev.slice(index + 1)
-          ]
+    if (confirm) {
+      try {
+        const response = await fetch(`/api/event?eventId=${eventId}&googleEventId=${googleEventId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          cache: "no-store"
+        });
+  
+        if (!response.ok) {
+          toast.error("Hum... Algo deu errado...");
+          setLoadingDelete(false);
+          return;
         }
-        return null
-      })
-
-      reset()
+  
+        const data = await response.json();
+  
+        setEvents(prev => {
+          if (prev && !!prev) {
+            const index = prev.findIndex(event => event.id === data.id);
+  
+            return [
+              ...prev.slice(0, index),
+              ...prev.slice(index + 1)
+            ]
+          }
+          return null
+        })
+  
+        reset()
+        setLoadingDelete(false);
+        setShowForm(!showForm);
+      } catch (error) {
+        toast.error("Hum... Naão foi possível deletar evento.")
+        console.log("Erro ao deletar evento:", error);
+      }
+    } else {
       setLoadingDelete(false);
-      setShowForm(!showForm);
-    } catch (error) {
-      toast.error("Hum... Naão foi possível deletar evento.")
-      console.log("Erro ao deletar evento:", error);
     }
   }
 

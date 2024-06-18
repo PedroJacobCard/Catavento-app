@@ -105,36 +105,40 @@ function EditClass({
 
   //funcionalidades para deletar classes
   const handleDeleteClass = async () => {
-    try {
-      const response = await fetch(`/api/class/${cla.id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store"
-      });
+    const confirm = window.confirm("Tem certeza de que deseja deletar esta classe?");
 
-      if (!response.ok) {
-        toast.error("Hum... Algo deu errado...");
-        return;
-      }
-
-      const data = await response.json();
-
-      setClasses((prev) => {
-        if (prev !== null) {
-          const filterClasses = prev.filter((cla) => cla.id !== data.id);
-          return [...filterClasses];
+    if (confirm) {
+      try {
+        const response = await fetch(`/api/class/${cla.id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          cache: "no-store"
+        });
+  
+        if (!response.ok) {
+          toast.error("Hum... Algo deu errado...");
+          return;
         }
-        return null;
-      });
-
-      setShowEditClassForm(!setShowEditClassForm);
-      reset();
-      toast.success("Classe deletada com sucesso!");
-    } catch (error) {
-      console.error("Erro ao deletar classe.");
-      toast.error("Hum... Não foi possível deletar classe...");
+  
+        const data = await response.json();
+  
+        setClasses((prev) => {
+          if (prev !== null) {
+            const filterClasses = prev.filter((cla) => cla.id !== data.id);
+            return [...filterClasses];
+          }
+          return null;
+        });
+  
+        setShowEditClassForm(!setShowEditClassForm);
+        reset();
+        toast.success("Classe deletada com sucesso!");
+      } catch (error) {
+        console.error("Erro ao deletar classe.");
+        toast.error("Hum... Não foi possível deletar classe...");
+      }
     }
   }
 
