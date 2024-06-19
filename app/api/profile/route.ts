@@ -157,6 +157,20 @@ export async function PUT(req: Request) {
         }
       });
 
+      //deletar todos os lembretes das escolas que o usuário não participará mais
+      await prisma.remember.deleteMany({
+        where: {
+          NOT:{
+            OR: school.map((school: { schoolName: string, shifts: string[] }) => ({
+              AND: [
+                { schoolName: school.schoolName },
+                { shift: { in: school.shifts } }
+              ]
+            }))
+          }
+        }
+      })
+
       //edita a escola no usuário e a escola criada
       const updateSchoolOnUserPromises = school.map(async (school: {schoolName: string, shifts: string[]}) => {
         try {
@@ -191,6 +205,9 @@ export async function PUT(req: Request) {
           const updateSchool = user.role === "COORDENADOR_A" && await prisma.school.update({
             where: {
               name: school.schoolName,
+              AND: {
+                creatorId: user.id
+              }
             },
             data: {
               shift: { set: school.shifts }
@@ -201,6 +218,16 @@ export async function PUT(req: Request) {
         } catch (error) {
 
           //verifica se não existe e então cria uma nova
+          const existingSchool = await prisma.school.findUnique({
+            where: {
+              name: school.schoolName
+            }
+          });
+
+          if(existingSchool) {
+            return null;
+          }
+
           const createSchool = user.role === "COORDENADOR_A" && await prisma.school.create({
             data: {
               name: school.schoolName,

@@ -4,10 +4,6 @@ import { Loader } from '@googlemaps/js-api-loader';
 
 //import lib function
 import geocode from "./Geocode";
-import Image from "next/image";
-
-//import icons
-import NoLocation from "@/public/No-location.svg";
 
 interface GoogleMapsPropsType {
   address: string | undefined,
@@ -55,17 +51,13 @@ function GoogleMaps({ address }: GoogleMapsPropsType) {
       })
     }
 
-    if (address && mapRef) {
+    if (address) {
       initMap();
     }
   }, [address, opencageApiKey])
 
   return (
-      address ? (
-        <div className="map rounded-md"  ref={mapRef}/>
-      ) : (
-        <Image src={NoLocation} alt="Endereço não encontrado." height={100} width={100} className="m-auto"/>
-      )
+      <div className="map rounded-md"  ref={mapRef}/>
    );
 }
 

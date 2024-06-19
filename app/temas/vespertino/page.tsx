@@ -88,7 +88,15 @@ function Vespertino() {
 
   //filtrar escolas das classes do período vespertino
   const filteredSchools = userSchools.filter((sch) =>
-    sch.shift.some((shi) => shi.toString() === "VESPERTINO")
+    user?.school.some(
+      (school) =>
+        school.schoolName === sch.name &&
+        sch.shift.some(
+          (shi) =>
+            shi.toString() === "VESPERTINO" &&
+            school.shifts.some((shif) => shif.toString() === "VESPERTINO")
+        )
+    )
   );
 
   //verifica o status da seção

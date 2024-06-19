@@ -58,13 +58,13 @@ function RememberField({ isRememberOpen, setIsRememberOpen }: RememberFieldProps
     schoolName: string;
     shift: string;
   }>({
-    schoolName: user ? user.school[0].schoolName : "",
-    shift: user ? user.school[0].shifts[0].toString() : "",
+    schoolName: user ? user.school[0]?.schoolName : "",
+    shift: user ? user.school[0]?.shifts[0].toString() : "",
   });
   //funcionalidades para filtrar os remembers por escola ou turno
   const [filteredRemembers, setFilteredRemembers] = useState<
     RememberType[] | null
-  >(remembers && remembers.filter((rem) => rem.shift === user?.school[0].shifts[0]));
+  >(remembers && remembers.filter((rem) => rem.shift === user?.school[0]?.shifts[0]));
 
   useEffect(() => {
     if (remembers) {

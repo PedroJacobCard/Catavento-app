@@ -9,12 +9,12 @@ import useSchool from "../hooks/useSchool";
 
 function ShowEditSchoolRemember() {
   //importar variável e setter para a lógica de lembrete de edição
-  const { editSchoolRemember, setEditSchoolRemember } = useSchool();
+  const { editSchoolRemember, setEditSchoolRemember, userSchools } = useSchool();
 
   return (
     <div
       className={`w-full h-full bg-[rgba(0,0,0,0.5)] backdrop-blur-[5px] fixed top-0 left-0 z-[999] flex justify-center items-top ${
-        editSchoolRemember ? "block" : "hidden"
+        userSchools.length > 0 && editSchoolRemember ? "block" : "hidden"
       }`}
     >
       <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[55vw] lg:w-[35vw] h-[20vh] md:h-[27vh] mx-2 lg:mx-[20rem] rounded-md mt-5 p-5 relative">

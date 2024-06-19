@@ -87,7 +87,17 @@ function Matutino() {
   );
 
   //filtrar escolas das classes do período matutino
-  const filteredSchools = userSchools.filter((sch) => sch.shift.some(shi => shi.toString() === 'MATUTINO'));
+  const filteredSchools = userSchools.filter((sch) =>
+    user?.school.some(
+      (school) =>
+        school.schoolName === sch.name &&
+        sch.shift.some(
+          (shi) =>
+            shi.toString() === "MATUTINO" &&
+            school.shifts.some((shif) => shif.toString() === "MATUTINO")
+        )
+    )
+  );
 
   //verifica o status da seção
   if (status === "loading") {

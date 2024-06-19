@@ -87,7 +87,16 @@ function Noturno() {
 
   //filtrar escolas das classes do período noturno
   const filteredSchools = userSchools.filter((sch) =>
-    sch.shift.some((shi) => shi.toString() === "NOTURNO")
+    user?.school.some(
+      (school) =>
+        school.schoolName === sch.name &&
+        sch.shift.some(
+          (shi) =>
+            shi.toString() === "NOTURNO" &&
+            school.shifts.some((shif) => 
+              shif.toString() === "NOTURNO")
+        )
+    )
   );
 
   //verifica o status da seção

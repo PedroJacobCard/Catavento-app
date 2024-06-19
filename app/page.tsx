@@ -9,6 +9,7 @@ import Link from "next/link";
 import Marker from "@/public/Marker.svg";
 import Plus from "@/public/Plus.svg";
 import Logout from "@/public/Logout.svg";
+import NoLocation from "@/public/No-location.svg";
 
 //import components
 import Navbar from "./components/Navbar";
@@ -37,7 +38,7 @@ export default function Home() {
 
   //import school data
   const { userSchools } = useSchool();
-
+  
   //import user data
   const { user } = useUser();
   
@@ -66,7 +67,7 @@ export default function Home() {
 
   return (
     <>
-      <ShowEditSchoolRemember/>
+      <ShowEditSchoolRemember />
       <Navbar />
       <RememberField
         isRememberOpen={isRememberOpen}
@@ -142,7 +143,6 @@ export default function Home() {
                   ""
                 )}
               </div>
-
               <div className="flex flex-col justify-start mx-5 mb-5">
                 <p className="mb-1">
                   <span className="font-bold mr-3">Turnos de atuação:</span>
@@ -177,10 +177,19 @@ export default function Home() {
                   {school.address}
                 </p>
               </div>
-
+              {school.address ? (
               <div className="mx-5">
                 <GoogleMaps address={school.address} />
               </div>
+              ) : (
+              <Image
+                src={NoLocation}
+                alt="Endereço não encontrado."
+                height={100}
+                width={100}
+                className="m-auto"
+              />
+              )}
               <EditSchool
                 showForm={editSchoolIndex === index && showForm}
                 setShowForm={setShowForm}
@@ -208,8 +217,7 @@ export default function Home() {
           ""
         )}
 
-        {user?.role?.toString() === "COORDENADOR_A" &&
-          showCreateSchoolForm ? (
+        {user?.role?.toString() === "COORDENADOR_A" && showCreateSchoolForm ? (
           <CreateSchool
             showCreateSchoolForm={showCreateSchoolForm}
             setShowCreateSchoolForm={setShowCreateSchoolForm}
