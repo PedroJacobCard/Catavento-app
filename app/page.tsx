@@ -122,7 +122,7 @@ export default function Home() {
               } mx-2 md:mx-[2rem] rounded-md overflow-hidden pb-5 shadow-md`}
             >
               <div className="flex justify-center items-center gap-3 mx-5 py-5 relative">
-                <h1 className="max-w-[300px] md:max-w-[310px] lg:max-w-full font-bold">
+                <h1 className="max-w-[230px] md:max-w-[310px] lg:max-w-full font-bold">
                   {school.name}
                 </h1>
                 {user?.role?.toString() === "COORDENADOR_A" ||

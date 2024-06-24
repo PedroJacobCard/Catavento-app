@@ -8,7 +8,7 @@ import Close from '@/public/Cancel.svg';
 import Bin from '@/public/Bin.svg';
 
 //import enum
-import { Role } from "@/utils/Enums";
+import { Role, Shift } from "@/utils/Enums";
 
 //import props types
 import { EditPropType, InitSchoolOnUserType } from "@/utils/Types";
@@ -50,21 +50,41 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   const [isConnected, setIsConnected] = useState<boolean | undefined>(false);
 
   const [selectedShiftAndSchool, setSelectedShiftAndSchool] =  useState<InitSchoolOnUserType[]>([]);
-
+  
+  
   useEffect(() => {
-    if (user && !!user.connectedToCalendar && user.connectedToCalendar && user.school) {
+    //inicializar escolas e seus respectivos turnos do usuário
+    const userSchools = user?.school.map(s => s);
+  
+    const userPriviousValues = userSchools
+        ?.map(({schoolName, shifts}) =>
+          schools.filter(({name, shift}) => {
+            if (schoolName === name) {
+              return {
+                  schoolName,
+                  shifts: shifts.map(sh => shift.filter(shi => shi === sh)).flat(),
+                }
+              }
+            }
+          )
+        ).flat()
+        
+    if (user && !!user.connectedToCalendar && user.connectedToCalendar) {
       setIsConnected(true);
       setSelectedShiftAndSchool(
-        user.school.map((s) => ({
-        schoolName: s.schoolName,
-        shifts: s.shifts,
-      })));
+        userPriviousValues ? 
+        userPriviousValues.map(s => ({schoolName: s.name, shifts: s.shift })) : 
+        [{
+          schoolName: "", 
+          shifts: []
+        }]
+      );
     } else {
       return;
     }
   
     //essa função servirá como estado inicial das escolas selecionadas as quais seram as que o usuário já participa
-  }, [user]);
+  }, [schools, user]);
 
 
   
@@ -104,7 +124,6 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   }
 
   //funcionalidades para enviar os dados do formulário
-  const userSchools = user?.school.map(s => s);
 
   const {
     control,
@@ -113,11 +132,11 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
     resolver: zodResolver(schema),
     defaultValues: {
       connectedToCalendar: user?.connectedToCalendar || false,
-      school: userSchools?.map(s => {
+      school: selectedShiftAndSchool?.map(s => { 
         return {
           schoolName: s.schoolName,
           shifts: s.shifts.map(sh => sh.toString())
-        }
+        } 
       }),
       role: user?.role?.toString() || "VOLUNTARIO",
     }
@@ -126,13 +145,15 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
   const onSubmit: SubmitHandler<FieldValuesEditUser> = async (data) => {
     const formData = {
       ...data,
-      school: selectedShiftAndSchool.length > 0 ? selectedShiftAndSchool : userSchools?.map(s => {
-        return {
-          schoolName: s.schoolName,
-          shifts: s.shifts
-        }
+      school: selectedShiftAndSchool.length > 0 ? selectedShiftAndSchool : user?.school?.map((s) => {
+      return {
+        schoolName: s.schoolName,
+        shifts: s.shifts.map((sh) => sh.toString()),
+      };
       }),
     }
+
+    console.log(formData)
     
     try {
       const response = await fetch('/api/profile', {

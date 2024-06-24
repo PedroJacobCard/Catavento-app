@@ -202,41 +202,32 @@ export async function PUT(req: Request) {
 
       const updateSchoolCreatedPromises = school.map(async (school: {schoolName: string, shifts: string[]}) => {
         try {
-          const updateSchool = user.role === "COORDENADOR_A" && await prisma.school.update({
+          const schoolIsNotUptodate = await prisma.school.findFirst({
             where: {
               name: school.schoolName,
-              AND: {
+              creatorId: user.id
+            }
+          });
+
+          if (schoolIsNotUptodate?.name ===  school.schoolName && schoolIsNotUptodate.shift.every(sh => school.shifts.includes(sh))) {
+            return schoolIsNotUptodate;
+          } else {
+            const updateSchool = user.role === "COORDENADOR_A" && await prisma.school.update({
+              where: {
+                name: school.schoolName,
                 creatorId: user.id
+              },
+              data: {
+                shift: { set: school.shifts }
               }
-            },
-            data: {
-              shift: { set: school.shifts }
-            }
-          });
-
-          return updateSchool;
-        } catch (error) {
-
-          //verifica se não existe e então cria uma nova
-          const existingSchool = await prisma.school.findUnique({
-            where: {
-              name: school.schoolName
-            }
-          });
-
-          if(existingSchool) {
-            return null;
+            });
+  
+            return updateSchool;
           }
-
-          const createSchool = user.role === "COORDENADOR_A" && await prisma.school.create({
-            data: {
-              name: school.schoolName,
-              shift: { set: school.shifts },
-              creatorId: user?.id
-            }
-          })
-
-          return createSchool;
+          
+        } catch (error) {
+          console.log("Não há escolas para alterar.")
+          return NextResponse.json({ message: "Não há o que alterar." }, { status: 200 })
         }
       });
 
@@ -255,13 +246,13 @@ export async function PUT(req: Request) {
       //se vier dados de escola e se o usuário for coordenador, será alterado o perfil e as escolas correspondentes
       if (user?.role?.toString() === 'COORDENADOR_A') {
         profileUpdateData["schoolCreated"] = {
-          connect: updateSchoolCreated.map(school => ({ id: school.id }))
+          connect: updateSchoolCreated.filter(school => school.id !== undefined).map(school => ({ id: school.id}))
         }
       }
 
       const updateProfile = await prisma.profile.update({
         where: {
-          id: user?.id
+          id: user.id
         },
         data: profileUpdateData,
         include: {
