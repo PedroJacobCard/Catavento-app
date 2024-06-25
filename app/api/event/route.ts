@@ -246,7 +246,7 @@ export async function PUT(req: Request) {
           }
         },
         organizerSchool: body.organizerSchool as string,
-        googleEventId
+        googleEventId: !!googleEventId ? googleEventId : ""
       }
     });
 
