@@ -29,18 +29,26 @@ function DownloadTableOfQualityData({
       }
     const doc = new jsPDF();
 
-    if (schoolsDataOnTable && !!schoolsDataOnTable && schoolsDataOnTable !== undefined) {
-      const bodyData: RowInput[] = schoolsDataOnTable.map((schoolData) => {
-            return [
-              schoolData.name,
-              schoolData.accomplishedThemes,
-              schoolData.totalStudents.toString(),
-              schoolData.notAccomplishedThemes,
-              schoolData.totalStudentsNotDone.toString(),
-              schoolData.shift,
-              schoolData.coordinatorName,
-            ];
-          });
+    if (schoolsDataOnTable.length > 0 && !!schoolsDataOnTable && schoolsDataOnTable !== undefined) {
+      const bodyData = schoolsDataOnTable.map(
+        ({
+          name,
+          accomplishedThemes,
+          totalStudents,
+          notAccomplishedThemes,
+          totalStudentsNotDone,
+          shift,
+          coordinatorName,
+        }) => ({
+          name: name || '',
+          accomplishedThemes:     accomplishedThemes || '',
+          totalStudents: totalStudents || '',
+          notAccomplishedThemes:    notAccomplishedThemes || '',
+          totalStudentsNotDone:     totalStudentsNotDone || '',
+          shift: shift || '',
+          coordinatorName: coordinatorName || '',
+        })
+      ).flat();
   
         autoTable(doc, {
           head: [
