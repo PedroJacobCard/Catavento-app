@@ -2,7 +2,7 @@ import Image from "next/image";
 
 //import bibliotecas
 import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
+import autoTable, { RowInput } from "jspdf-autotable";
 
 //import types
 import { DownloadDataTableOfQualityType } from "@/utils/Types";
@@ -29,45 +29,49 @@ function DownloadTableOfQualityData({
       }
     const doc = new jsPDF();
 
-      autoTable(doc, {
-        head: [
-          [
-            "Escola",
-            "Temas concluídos",
-            "Alunos que concluíram",
-            "Temas a concluir",
-            "Alunos a concluir",
-            "Turno",
-            "Coordenador de equipe"
+    if (schoolsDataOnTable && !!schoolsDataOnTable && schoolsDataOnTable !== undefined) {
+      const bodyData: RowInput[] = schoolsDataOnTable.map((schoolData) => {
+            return [
+              schoolData.name,
+              schoolData.accomplishedThemes,
+              schoolData.totalStudents.toString(),
+              schoolData.notAccomplishedThemes,
+              schoolData.totalStudentsNotDone.toString(),
+              schoolData.shift,
+              schoolData.coordinatorName,
+            ];
+          });
+  
+        autoTable(doc, {
+          head: [
+            [
+              "Escola",
+              "Temas concluídos",
+              "Alunos que concluíram",
+              "Temas a concluir",
+              "Alunos a concluir",
+              "Turno",
+              "Coordenador de equipe"
+            ],
           ],
-        ],
-        body: schoolsDataOnTable.map((schoolData) => {
-          return [
-            schoolData.name, 
-            schoolData.accomplishedThemes, 
-            schoolData.totalStudents, 
-            schoolData.notAccomplishedThemes,
-            schoolData.totalStudentsNotDone,
-            schoolData.shift,
-            schoolData.coordinatorName
-          ]
-        }),
-        styles: {
-          fillColor: [255, 255, 255],
-          textColor: "black",
-          font: "helvetica",
-        },
-        headStyles: {
-          fillColor: [227, 245, 255],
-          textColor: [0, 0, 0],
-        },
-        bodyStyles: {
-          fillColor: [243, 243, 243],
-          textColor: [0, 0, 0],
-        },
-        theme: "plain",
-        margin: { top: 20 },
-      });
+          body: bodyData,
+          styles: {
+            fillColor: [255, 255, 255],
+            textColor: "black",
+            font: "helvetica",
+          },
+          headStyles: {
+            fillColor: [227, 245, 255],
+            textColor: [0, 0, 0],
+          },
+          bodyStyles: {
+            fillColor: [243, 243, 243],
+            textColor: [0, 0, 0],
+          },
+          theme: "plain",
+          margin: { top: 20 },
+        });
+    }
 
       const shiftOnData = schoolsDataOnTable.map(schoolData => schoolData.shift);
       const uniqueShift = Array.from(new Set(shiftOnData));
