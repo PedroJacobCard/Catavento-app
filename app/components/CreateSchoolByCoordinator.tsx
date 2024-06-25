@@ -63,7 +63,7 @@ function CreateSchoolByCoordinator({
               value={schoolData.schoolName}
               onChange={(e) => setCoordinatorSchool([
                 ...selectedSchoolAndShifts,
-                { schoolName: e.target.value, shifts: schoolData.shifts}
+                {schoolName: e.target.value, shifts: schoolData.shifts}
               ])}
             />
           )}

@@ -30,7 +30,7 @@ import { rolesArray } from "@/lib/EnumsToArray";
 import useSchool from "../hooks/useSchool";
 
 //import types
-import { InitSchoolOnUserType } from "@/utils/Types";
+import { InitSchoolDataByCoordinatorType } from "@/utils/Types";
 
 //import enums
 import { Shift } from "@/utils/Enums";
@@ -62,7 +62,7 @@ function Profile() {
   const [hasNoSchoolsAndShifts, setHasNoSchoolsAndShifts] = useState<boolean>(false);
 
   //funcionalidades para criar escola no usuário
-  const [selectedSchoolAndShifts, setSelectedSchoolAndShifts] = useState<InitSchoolOnUserType[]>([])
+  const [selectedSchoolAndShifts, setSelectedSchoolAndShifts] = useState<InitSchoolDataByCoordinatorType[]>([])
 
   const handleCheckShift = (checked: boolean, schoolName: string, shift: string) => {
     if (schoolName.length < 1) {
@@ -120,7 +120,7 @@ function Profile() {
   }
 
   //estado inicial para a criação de escola pelo coordenador
-  const [coordinatorSchool, setCoordinatorSchool] = useState<InitSchoolOnUserType[]>([
+  const [coordinatorSchool, setCoordinatorSchool] = useState<InitSchoolDataByCoordinatorType[]>([
     {
       schoolName: '',
       shifts: []

@@ -8,7 +8,7 @@ import CreateSchoolByCoordinator from "./CreateSchoolByCoordinator";
 import { Control } from "react-hook-form";
 
 //import types
-import { InitSchoolOnUserType } from "@/utils/Types";
+import { InitSchoolDataByCoordinatorType } from "@/utils/Types";
 
 //props type
 type CoordinatorAddSchoolPropsType = {
@@ -37,9 +37,9 @@ type CoordinatorAddSchoolPropsType = {
     schoolName: string,
     shift: string
   ) => void;
-  selectedSchoolAndShifts: InitSchoolOnUserType[];
-  coordinatorSchool: InitSchoolOnUserType[];
-  setCoordinatorSchool: Dispatch<SetStateAction<InitSchoolOnUserType[]>>;
+  selectedSchoolAndShifts: InitSchoolDataByCoordinatorType[];
+  coordinatorSchool: InitSchoolDataByCoordinatorType[];
+  setCoordinatorSchool: Dispatch<SetStateAction<InitSchoolDataByCoordinatorType[]>>;
 };
 
 function CoordinatorAddSchool({
