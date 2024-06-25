@@ -46,20 +46,13 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
-enum Role {
-  COORDENADOR_A_GERAL
-  COORDENADOR_A
-  SECRETARIO_A
-  VOLUNTARIO_A
-}
-
 model Profile {
   id                  String         @id @default(auto()) @map("_id") @db.ObjectId
   user                User           @relation(fields: [userId, userName], references: [id, name], onDelete: Cascade)
   userId              String         @db.ObjectId
   userName            String         @unique
   connectedToCalendar Boolean?
-  role                Role?
+  role                String?
   schoolCreated       School[]
   school              SchoolOnUser[]
   remember            Remember[]
@@ -127,7 +120,7 @@ model Authenticator {
 model School {
   id                  String   @id @default(auto()) @map("_id") @db.ObjectId
   name                String   @unique
-  shift               Shift[]
+  shift               String[]
   principal           String?
   coordinator_morning String?
   coordinator_evening String?
@@ -144,38 +137,17 @@ model School {
   @@map("schools")
 }
 
-enum Shift {
-  MATUTINO
-  VESPERTINO
-  NOTURNO
-}
-
 model Class {
   id         String   @id @default(auto()) @map("_id") @db.ObjectId
   name       String
   students   Int
-  theme      Theme
+  theme      String
   school     School   @relation(fields: [schoolName], references: [name])
   schoolName String
-  shift      Shift
+  shift      String
   done       Boolean
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-}
-
-enum Theme {
-  RESPEITO
-  HONESTIDADE
-  SUPERACAO
-  ESPERANCA
-  GRATIDAO
-  COMPAIXAO
-  CORAGEM
-  FE
-  HUMILDADE
-  RESPONSABILIDADE
-  DOMINIO_PROPRIO
-  AMOR
 }
 
 model Remember {
@@ -185,7 +157,7 @@ model Remember {
   authorName String
   content    String
   schoolName String
-  shift      Shift
+  shift      String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
@@ -207,30 +179,17 @@ model Event {
   updatedAt       DateTime @updatedAt
 }
 
-enum Activities {
-  RODA_DE_CONVERSA
-  HISTORIA
-  POST_IT
-}
-
-enum Resources {
-  MATERIAL_DA_RODA_DE_CONVERSA
-  PLACAS_DA_HISTORIA
-  POST_IT
-  IMA
-}
-
 model Report {
-  id                    String       @id @default(auto()) @map("_id") @db.ObjectId
-  author                Profile      @relation(fields: [authorName], references: [userName], onDelete: Cascade)
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  author                Profile  @relation(fields: [authorName], references: [userName], onDelete: Cascade)
   authorName            String
   schoolName            String
   classAndShift         String
-  theme                 Theme
-  activitiesDone        Activities[]
+  theme                 String
+  activitiesDone        String[]
   coworkers             Int
-  resources             Resources[]
+  resources             String[]
   assistedInChaplaincy  Int
   chaplaincyObservation String
-  createdAt             DateTime     @default(now())
+  createdAt             DateTime @default(now())
 }
