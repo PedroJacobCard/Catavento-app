@@ -326,11 +326,13 @@ export async function DELETE() {
       await prisma.event.deleteMany({ where: { organizerId: userProfile.id } });
       await prisma.report.deleteMany({ where: { authorName: userProfile.userName } });
 
-      const deleteProfile = await prisma.profile.delete({ where: { userName: user.name } });
+      const deleteProfile = await prisma.profile.delete({ where: { userName: !!user.name ? user.name : "" } });
+
 
       if (deleteProfile) {
         await prisma.user.delete({
-          where: { id: user.id }
+          where: { id: !!user.id ? user.id : "" }
+
         });
 
         return NextResponse.json({ message: "Perfile deletado com sucesso"}, { status: 200 })
