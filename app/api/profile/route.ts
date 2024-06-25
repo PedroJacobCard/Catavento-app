@@ -283,7 +283,8 @@ export async function DELETE() {
     });
 
     const userProfile = await prisma.profile.findUnique({
-      where: { userName: user?.name },
+      where: { userName: !!user?.name ? user.name : "" },
+
       include: {
         schoolCreated: {
           select: {
