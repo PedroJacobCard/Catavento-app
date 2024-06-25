@@ -32,16 +32,21 @@ function DownloadUsersTable({ school }: DownloadUsersTablePropsType) {
     const doc = new jsPDF();
 
     if (filteredUsers && filteredUsers.length > 0) {
-      autoTable(doc, {
-        head: [['Nome', 'Papel', 'E-mail', 'Turnos']],
-        body: filteredUsers.map((user) => {
+      const bodyData = filteredUsers.map((user) => {
           const currentSchool = user.school.filter(s => s.schoolName === school.schoolName);
           const shift = currentSchool.map((sc) => sc.shifts).flat(1).join(", ");
 
-          return [
-            user.user.name, user.role, user.user.email, shift
-          ]
-        }),
+          return {
+            name: user.user.name || "",
+            role: user.role || "",
+            email: user.user.email || "",
+            shift: shift || ""
+          }
+        }).flat();
+
+      autoTable(doc, {
+        head: [['Nome', 'Papel', 'E-mail', 'Turnos']],
+        body: bodyData,
         styles: {
           fillColor: [255, 255, 255], 
           textColor: 'black', 
