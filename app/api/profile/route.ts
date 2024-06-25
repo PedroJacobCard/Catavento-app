@@ -8,7 +8,7 @@ export async function GET() {
 
   if (session) {
     const profile = await prisma.profile.findUnique({
-      where: { userName: session.user?.name },
+      where: { userName: !!session.user?.name ? session.user.name : "" },
       include: {
         school: true,
         schoolCreated: true,
@@ -45,7 +45,7 @@ export async function POST(req: Request) {
   const {connectedToCalendar, role, school, schoolCreated } = await req.json();
   
   const user = await prisma.user.findUnique({
-    where: { email: session.user!.email },
+    where: { email: !!session.user!.email ? session.user?.email : "" },
   });
   
   try {
@@ -143,7 +143,7 @@ export async function PUT(req: Request) {
     const { school, ...body } = await req.json();
   
     const user = await prisma.profile.findUnique({
-      where: { userName: session.user?.name },
+      where: { userName: !!session.user?.name ? session.user.name : "" },
     });
   
     if (user) {
@@ -279,7 +279,7 @@ export async function DELETE() {
 
   try {
     const user = await prisma.user.findUnique({
-      where: { name: session.user?.name },
+      where: { name: !!session.user?.name ? session.user.name : "" },
     });
 
     const userProfile = await prisma.profile.findUnique({

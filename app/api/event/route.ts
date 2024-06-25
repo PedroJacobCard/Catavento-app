@@ -18,7 +18,7 @@ export async function POST(req: Request) {
   try {
     const userAccessToken = await prisma.profile.findUnique({
       where: {
-        userName: session.user?.name,
+        userName: !!session.user?.name ? session.user?.name : '',
         AND: {
           connectedToCalendar: true
         }
@@ -148,7 +148,7 @@ export async function PUT(req: Request) {
   try {
     const userAccessToken = await prisma.profile.findUnique({
       where: {
-        userName: session.user?.name,
+        userName: !!session.user?.name ? session.user?.name : '',
         AND: {
           connectedToCalendar: true
         }
@@ -233,19 +233,19 @@ export async function PUT(req: Request) {
         id: eventId
       },
       data: {
-        title: body.title,
-        subject: body.subject,
-        location: body.location,
-        date: body.date,
-        timeZone: body.timeZone,
-        startTime: body.startTime,
-        endTime: body.endTime,
+        title: body.title as string,
+        subject: body.subject as string,
+        location: body.location as string,
+        date: body.date as string | Date,
+        timeZone: body.timeZone as string,
+        startTime: body.startTime as string | Date,
+        endTime: body.endTime as string | Date,
         organizer: {
           connect: {
-            id: body.organizerId
+            id: body.organizerId as string
           }
         },
-        organizerSchool: body.organizerSchool,
+        organizerSchool: body.organizerSchool as string,
         googleEventId
       }
     });
@@ -276,7 +276,7 @@ export async function DELETE(req: Request) {
   try {
     const userAccessToken = await prisma.profile.findUnique({
       where: {
-        userName: session.user?.name,
+        userName: !!session.user?.name ? session.user?.name : '',
         AND: {
           connectedToCalendar: true
         }
