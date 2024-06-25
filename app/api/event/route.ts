@@ -308,7 +308,7 @@ export async function DELETE(req: Request) {
 
     const deleteEventOnDatabase = await prisma.event.delete({
       where: {
-        id: eventId
+        id: !!eventId ? eventId : ""
       }
     });
 
