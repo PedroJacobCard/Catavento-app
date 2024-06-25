@@ -230,7 +230,7 @@ export async function PUT(req: Request) {
 
     const updateEventOnDatabase = await prisma.event.update({
       where: {
-        id: eventId
+        id: !!eventId ? eventId : ""
       },
       data: {
         title: body.title as string,
