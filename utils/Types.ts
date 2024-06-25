@@ -191,6 +191,11 @@ export type InitSchoolOnUserType = {
   shifts: (string | Shift)[];
 };
 
+export type InitSchoolDataByCoordinatorType = {
+  schoolName: string;
+  shifts: (string | Shift)[];
+};
+
 //tipos do objeto que será feito para o download da tabela de dados qualitativos
 export  type DownloadDataTableOfQualityType = {
   name: string;

@@ -1,12 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 
 //import types
-import { InitSchoolOnUserType } from "@/utils/Types";
+import { InitSchoolDataByCoordinatorType } from "@/utils/Types";
 
 //import lib functions
 import { shiftsArray } from "@/lib/EnumsToArray";
 import { Control, Controller } from "react-hook-form";
-import { Shift } from "@/utils/Enums";
 
 //props type
 type CreateSchoolByCoordinatorPropsType = {
@@ -35,9 +34,9 @@ type CreateSchoolByCoordinatorPropsType = {
     schoolName: string,
     shift: string
   ) => void;
-  selectedSchoolAndShifts: InitSchoolOnUserType[];
-  schoolData: InitSchoolOnUserType;
-  setCoordinatorSchool: Dispatch<SetStateAction<InitSchoolOnUserType[]>>;
+  selectedSchoolAndShifts: InitSchoolDataByCoordinatorType[];
+  schoolData: InitSchoolDataByCoordinatorType;
+  setCoordinatorSchool: Dispatch<SetStateAction<InitSchoolDataByCoordinatorType[]>>;
 };
 
 function CreateSchoolByCoordinator({
