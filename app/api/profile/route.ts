@@ -172,11 +172,11 @@ export async function PUT(req: Request) {
       })
 
       //edita a escola no usuário e a escola criada
-      const updateSchoolOnUserPromises = school.map(async (school: {schoolName: string, shifts: string[]}) => {
+      const updateSchoolOnUserPromises = school.map(async (school: {id: string, schoolName: string, shifts: string[]}) => {
         try {
           const updateSchoolOnUser = await prisma.schoolOnUser.update({
             where: {
-              userId: user.id,
+              id: school.id
             },
             data: {
               schoolName: school.schoolName,

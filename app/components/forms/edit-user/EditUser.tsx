@@ -73,8 +73,9 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
       setIsConnected(true);
       setSelectedShiftAndSchool(
         userPriviousValues ? 
-        userPriviousValues.map(s => ({schoolName: s.name, shifts: s.shift })) : 
+        userPriviousValues.map(s => ({id: s.id, schoolName: s.name, shifts: s.shift })) : 
         [{
+          id: '',
           schoolName: "", 
           shifts: []
         }]
@@ -88,7 +89,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
 
 
   
-  const handleCheckboxChange = (checked: boolean, schoolName: string, shift: string) => {
+  const handleCheckboxChange = (checked: boolean, schoolName: string, shift: string, id: string) => {
     setSelectedShiftAndSchool(prev => {
       const existingSchoolIndex = prev.findIndex(item => item.schoolName == schoolName);
 
@@ -101,7 +102,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
             ...prev.slice(existingSchoolIndex + 1)
           ];
         } else {
-          return [...prev, { schoolName, shifts: [shift] }];
+          return [...prev, { id, schoolName, shifts: [shift] }];
         }
       } else {
         const updatedShifts = prev[existingSchoolIndex].shifts.filter(
@@ -147,6 +148,7 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
       ...data,
       school: selectedShiftAndSchool.length > 0 ? selectedShiftAndSchool : user?.school?.map((s) => {
       return {
+        id: s.id,
         schoolName: s.schoolName,
         shifts: s.shifts.map((sh) => sh.toString()),
       };
@@ -307,7 +309,8 @@ function EditUser({ showForm, setShowForm }: EditPropType) {
                         handleCheckboxChange(
                           e.target.checked,
                           school.name,
-                          shift.toString()
+                          shift.toString(),
+                          school.id
                         )
                       }
                       checked={selectedShiftAndSchool.some(
