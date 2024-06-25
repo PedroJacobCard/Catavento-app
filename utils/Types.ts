@@ -186,6 +186,7 @@ export type UseClassContextTypes = {
 };
 
 export type InitSchoolOnUserType = {
+  id: string;
   schoolName: string;
   shifts: (string | Shift)[];
 };
