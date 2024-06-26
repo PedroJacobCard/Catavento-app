@@ -48,7 +48,9 @@ function DownloadTableOfQualityData({
           shift: shift || '',
           coordinatorName: coordinatorName || '',
         })
-      ).flat();
+      );
+
+      const values = bodyData.map(data => Object.values(data));
   
         autoTable(doc, {
           head: [
@@ -62,7 +64,7 @@ function DownloadTableOfQualityData({
               "Coordenador de equipe"
             ],
           ],
-          body: bodyData,
+          body: values,
           styles: {
             fillColor: [255, 255, 255],
             textColor: "black",
