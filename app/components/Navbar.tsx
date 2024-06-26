@@ -49,7 +49,7 @@ function Navbar() {
   return (
     <div className="w-full left-0 bottom-0 h-[4rem] md:w-[70px] md:hover:w-[250px] md:top-0 md:left-0 md:h-[100vh] flex md:flex-col overflow-hidden dark:bg-darkMode shadow-md hover:shadow-blueShadow dark:hover:shadow-xl bg-primaryBlue fixed z-[599] duration-500 opacity-effect">
       <div className="hidden md:flex justify-center items-center px-2 py-2 shadow-md">
-        <Link href={"/"}>
+        <Link replace={true} href={"/"}>
           <Image
             src={Logo}
             alt="Catavento logo"
@@ -69,7 +69,7 @@ function Navbar() {
       </div>
 
       <div className="flex md:flex-col overflow-y-hidden overflow-x-scroll md:overflow-y-scroll md:overflow-x-hidden md:mb-[3.7rem] pl-[4rem] pr-[12rem] md:pl-0 md:pr-0">
-        <Link href={"/"}>
+        <Link replace={true} href={"/"}>
           <div
             className={`w-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${
               router === "/"
@@ -84,7 +84,7 @@ function Navbar() {
           </div>
         </Link>
 
-        <Link href={"/calendario"}>
+        <Link replace={true} href={"/calendario"}>
           <div
             className={`w-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue  duration-300  ${
               router === "/calendario"
@@ -99,7 +99,7 @@ function Navbar() {
           </div>
         </Link>
 
-        <Link href={"/equipe"}>
+        <Link replace={true} href={"/equipe"}>
           <div
             className={`w-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue  duration-300  ${
               router === "/equipe"
@@ -115,7 +115,7 @@ function Navbar() {
         </Link>
 
         {user?.role!.toString() === "COORDENADOR_A_GERAL" && (
-          <Link href={"/relatorios"}>
+          <Link replace={true} href={"/relatorios"}>
             <div
               className={`w-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${
                 router === "/relatorios"
@@ -134,7 +134,7 @@ function Navbar() {
         <div className="w-[4rem] md:min-w-[250px] flex flex-col relative">
           {shiftToLowerCase && (
             <div className="group flex md:flex-col">
-              <Link href={`/temas/${shiftToLowerCase[0]}`}>
+              <Link replace={true} href={`/temas/${shiftToLowerCase[0]}`}>
                 <div
                   className={`w-[4rem] md:min-w-[250px] flex items-center px-4 py-4 dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${
                     router === "/temas/matutino" ||
@@ -160,7 +160,7 @@ function Navbar() {
                   }
 
                   return (
-                    <Link key={shiftIndex} href={`/temas/${shiftToLowerCase[shiftIndex]}`}>
+                    <Link replace={true} key={shiftIndex} href={`/temas/${shiftToLowerCase[shiftIndex]}`}>
                       <div
                         className={`w-[4rem] h-[4rem] md:min-w-[250px] flex items-center px-4 py-4    dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300  ${
                           router === `/temas/${shiftToLowerCase[shiftIndex]}`
@@ -183,7 +183,7 @@ function Navbar() {
         </div>
       </div>
 
-      <Link href={"/user-area"}>
+      <Link replace={true} href={"/user-area"}>
         <div
           className={`w-[4rem] md:min-w-[250px] h-[4rem] absolute flex items-center gap-3 px-4 md:px-3 shadow-upShadow left-0 md:bottom-0 ${
             router === "/user-area"
