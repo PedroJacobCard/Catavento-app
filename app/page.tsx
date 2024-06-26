@@ -57,7 +57,7 @@ export default function Home() {
     return <Loading />;
   }
   
-  if (!session) {
+  if (!session?.user) {
     return redirect("/sign-in");
   }
 
