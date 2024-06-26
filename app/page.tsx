@@ -29,7 +29,7 @@ import useUser from "./hooks/useUser";
 
 //import session
 import { useSession, signOut } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import ShowEditSchoolRemember from "./components/ShowEditSchoolRemember";
 
 export default function Home() {
@@ -51,18 +51,22 @@ export default function Home() {
   
   const [showCreateSchoolForm, setShowCreateSchoolForm] =
   useState<boolean>(false);
+
+  const router = useRouter();
   
   //verifica o status da seção
   if (status === "loading") {
     return <Loading />;
-  } else if (status === "unauthenticated") {
-    return redirect("/sign-in");
   }
 
+  if (!session) {
+    return router.back();
+  }
+  
   if (session && !user) {
-    return redirect("/profile");
+    return router.push("/profile");
   }
-
+  
   return (
     <>
       <ShowEditSchoolRemember />
