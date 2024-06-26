@@ -55,9 +55,7 @@ export default function Home() {
   //verifica o status da seção
   if (status === "loading") {
     return <Loading />;
-  }
-  
-  if (!session?.user) {
+  } else if (status === "unauthenticated") {
     return redirect("/sign-in");
   }
 
