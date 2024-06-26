@@ -42,27 +42,28 @@ function DownloadUsersTable({ school }: DownloadUsersTablePropsType) {
             email: user.user.email || "",
             shift: shift || ""
           }
-        }).flat();
-
-      autoTable(doc, {
-        head: [['Nome', 'Papel', 'E-mail', 'Turnos']],
-        body: bodyData,
-        styles: {
-          fillColor: [255, 255, 255], 
-          textColor: 'black', 
-          font: "helvetica" 
-        },
-        headStyles: {
-          fillColor: [227, 245,255],
-          textColor: [0, 0, 0]
-        },
-        bodyStyles: {
-          fillColor: [243, 243, 243],
-          textColor: [0, 0, 0]
-        },
-        theme: 'plain',
-        margin: { top: 20 }
-      });
+        });
+      bodyData.map(data => {
+        autoTable(doc, {
+          head: [['Nome', 'Papel', 'E-mail', 'Turnos']],
+          body: [data],
+          styles: {
+            fillColor: [255, 255, 255], 
+            textColor: 'black', 
+            font: "helvetica" 
+          },
+          headStyles: {
+            fillColor: [227, 245,255],
+            textColor: [0, 0, 0]
+          },
+          bodyStyles: {
+            fillColor: [243, 243, 243],
+            textColor: [0, 0, 0]
+          },
+          theme: 'plain',
+          margin: { top: 20 }
+        });
+      })
       doc.save(`Usuários - ${school.schoolName}.pdf`);
     } else {
       toast.error('Ops... Não deu pra achar os usuários...')
