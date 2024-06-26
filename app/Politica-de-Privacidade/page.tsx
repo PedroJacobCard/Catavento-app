@@ -1,6 +1,6 @@
 function PrivacyPolicy() {
   return (
-    <div className="flex items-center justify-center w-full h-[100vh] dark:bg-darkModeBgColor bg-primaryBlue">
+    <div className="mx-5 flex-col items-center justify-center w-full h-[100vh] dark:bg-darkModeBgColor bg-primaryBlue">
       <p>
         O Catavento é um projeto da MPC{" "}
         <param name="MPC" value="Mocidade para Cristo" /> Goiânia, que visa o
