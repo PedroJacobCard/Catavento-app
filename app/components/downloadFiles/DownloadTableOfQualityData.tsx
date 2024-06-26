@@ -41,10 +41,10 @@ function DownloadTableOfQualityData({
           coordinatorName,
         }) => ({
           name: name || '',
-          accomplishedThemes:     accomplishedThemes || '',
-          totalStudents: totalStudents || '',
-          notAccomplishedThemes:    notAccomplishedThemes || '',
-          totalStudentsNotDone:     totalStudentsNotDone || '',
+          accomplishedThemes:     accomplishedThemes || '-',
+          totalStudents: totalStudents || 0,
+          notAccomplishedThemes:    notAccomplishedThemes || '-',
+          totalStudentsNotDone:     totalStudentsNotDone || 0,
           shift: shift || '',
           coordinatorName: coordinatorName || '',
         })
