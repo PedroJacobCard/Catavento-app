@@ -6,7 +6,8 @@ import { ChildrenPropsType, UseUserContextType, ProfileType } from "@/utils/Type
 
 //import session
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 
 
 const initState: ProfileType | null = null;
@@ -84,9 +85,9 @@ function UserProvider({ children }: ChildrenPropsType) {
           }
           
           if (routerPath === '/profile') {
-            router.push("/");
+            router.replace("/", undefined, { shallow: true });
           } else {
-            router.push(`${routerPath}`);
+            router.replace(`${routerPath}`, undefined, { shallow: true });
           }
         } catch (error) {
           console.log("error:", error);

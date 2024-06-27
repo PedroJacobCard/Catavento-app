@@ -29,7 +29,7 @@ import useUser from "./hooks/useUser";
 
 //import session
 import { useSession, signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import ShowEditSchoolRemember from "./components/ShowEditSchoolRemember";
 
 export default function Home() {
@@ -60,13 +60,11 @@ export default function Home() {
   }
 
   if (!session) {
-    router.refresh();
-    return router.push('/sign-in');
+    return router.replace('/sign-in', undefined, { shallow: true });
   }
   
   if (session && !user) {
-    router.refresh();
-    return router.push("/profile");
+    return router.replace("/profile", undefined, { shallow: true });
   }
   
   return (
