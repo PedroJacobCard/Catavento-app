@@ -54,10 +54,6 @@ export default function Home() {
 
   const router = useRouter();
   
-  useEffect(() => {
-    location.reload();
-  }, [])
-  
   //verifica o status da seção
   if (status === "loading") {
     return <Loading />;
@@ -71,6 +67,8 @@ export default function Home() {
   if (session && !user) {
     router.replace("/profile");
     return null;
+  } else {
+    location.reload();
   }
 
   return (
