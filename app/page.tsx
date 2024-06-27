@@ -60,11 +60,11 @@ export default function Home() {
   }
 
   if (!session) {
-    return router.replace('/sign-in', { scroll: true });
+    return router.replace('/sign-in');
   }
   
   if (session && !user) {
-    return router.replace("/profile", { scroll: true });
+    return router.replace("/profile");
   }
   
   return (
