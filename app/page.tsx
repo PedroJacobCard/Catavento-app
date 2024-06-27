@@ -56,7 +56,7 @@ export default function Home() {
 
   useEffect(() => {
     router.refresh();
-  }, [router])
+  }, [])
   
   //verifica o status da seção
   if (status === "loading") {
