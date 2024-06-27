@@ -83,11 +83,6 @@ function UserProvider({ children }: ChildrenPropsType) {
             setUser(mergeUser);
           }
           
-          if (routerPath === '/profile') {
-            router.replace("/");
-          } else {
-            router.replace(routerPath || "/");
-          }
         } catch (error) {
           console.log("error:", error);
         }
