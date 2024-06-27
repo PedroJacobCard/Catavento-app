@@ -95,11 +95,11 @@ function UserProvider({ children }: ChildrenPropsType) {
     }
   }, [session, fetchProfile, userUpdated]);
 
-  if (routerPath === '/profile') {
-    router.replace("/");
-  } else {
-    router.replace(`${routerPath}`);
-  }
+  //if (routerPath === '/profile') {
+  //  router.replace("/");
+  //} else {
+  //  router.replace(`${routerPath}`);
+  //}
   
   return ( 
     <UserContext.Provider value={{ user, setUser, setFetchProfile, setUserUpdated }}>
