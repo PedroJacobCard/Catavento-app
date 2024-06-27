@@ -39,19 +39,9 @@ import { Shift } from "@/utils/Enums";
 import useUser from "../hooks/useUser";
 
 function Profile() {
-  //session
-  const {data: session } = useSession();
-
-  if (!session) {
-    redirect('/sign-in');
-  }
 
   //import user hook
-  const { user, setFetchProfile } = useUser();
-
-  if (user) {
-    location.assign('/')
-  }
+  const { setFetchProfile } = useUser();
 
   //funcionalidades para conectar com o Google calendário
   const [connect, setConnect] = useState<boolean>(false);

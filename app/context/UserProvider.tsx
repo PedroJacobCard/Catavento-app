@@ -83,6 +83,11 @@ function UserProvider({ children }: ChildrenPropsType) {
             setUser(mergeUser);
           }
           
+          if (routerPath === '/profile') {
+            router.replace("/");
+          } else {
+            router.replace(`${routerPath}`);
+          }
         } catch (error) {
           console.log("error:", error);
         }
@@ -93,13 +98,8 @@ function UserProvider({ children }: ChildrenPropsType) {
       getUser();
       setFetchProfile(false);
     }
-  }, [session, fetchProfile, userUpdated]);
+  }, [session, fetchProfile, userUpdated, routerPath, router]);
 
-  //if (routerPath === '/profile') {
-  //  router.replace("/");
-  //} else {
-  //  router.replace(`${routerPath}`);
-  //}
   
   return ( 
     <UserContext.Provider value={{ user, setUser, setFetchProfile, setUserUpdated }}>
