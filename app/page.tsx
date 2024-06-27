@@ -1,5 +1,5 @@
 'use client'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 //import icons
@@ -54,6 +54,12 @@ export default function Home() {
 
   const router = useRouter();
   
+  useEffect(() => {
+    if (user) {
+      router.refresh();
+    }
+  }, [user, router])
+  
   //verifica o status da seção
   if (status === "loading") {
     return <Loading />;
@@ -68,7 +74,7 @@ export default function Home() {
     router.replace("/profile");
     return null;
   }
-  
+
   return (
     <>
       <ShowEditSchoolRemember />
