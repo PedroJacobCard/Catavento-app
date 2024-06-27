@@ -47,7 +47,11 @@ function Profile() {
   }
 
   //import user hook
-  const { setFetchProfile } = useUser();
+  const { user, setFetchProfile } = useUser();
+
+  if (user) {
+    location.assign('/')
+  }
 
   //funcionalidades para conectar com o Google calendário
   const [connect, setConnect] = useState<boolean>(false);
