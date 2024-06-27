@@ -60,10 +60,12 @@ export default function Home() {
   }
 
   if (!session) {
-    return router.replace('/sign-in');
+    console.log(router.replace('/sign-in'));
+    return router.replace("/sign-in");
   }
   
   if (session && !user) {
+    console.log(router.replace("/profile"));
     return router.replace("/profile");
   }
   

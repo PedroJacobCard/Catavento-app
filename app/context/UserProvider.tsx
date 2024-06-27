@@ -85,8 +85,10 @@ function UserProvider({ children }: ChildrenPropsType) {
           
           if (routerPath === '/profile') {
             router.replace("/");
+            console.log(router)
           } else {
             router.replace(`${routerPath}`);
+            console.log(router);
           }
         } catch (error) {
           console.log("error:", error);
