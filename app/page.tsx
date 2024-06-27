@@ -60,13 +60,13 @@ export default function Home() {
   }
 
   if (!session) {
-    console.log(router.replace('/sign-in'));
-    return router.replace("/sign-in");
+    router.replace('/sign-in');
+    return null;
   }
   
   if (session && !user) {
-    console.log(router.replace("/profile"));
-    return router.replace("/profile");
+    router.replace("/profile");
+    return null;
   }
   
   return (
