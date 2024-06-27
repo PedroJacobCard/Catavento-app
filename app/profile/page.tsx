@@ -39,6 +39,12 @@ import { Shift } from "@/utils/Enums";
 import useUser from "../hooks/useUser";
 
 function Profile() {
+  //session
+  const {data: session } = useSession();
+
+  if (!session) {
+    redirect('/sign-in');
+  }
 
   //import user hook
   const { setFetchProfile } = useUser();
