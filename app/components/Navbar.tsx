@@ -1,8 +1,6 @@
 'use client'
 import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { usePathname, useRouter } from "next/navigation";
 
 //import icons
 import Logo from "@/public/Logo-principal.svg";
@@ -27,7 +25,7 @@ function Navbar() {
   const defineRoute = useRouter();
 
   const handlePageChange = (link: string) => {
-    return defineRoute.replace(link, undefined, { shallow: true })
+    return defineRoute.replace(link, { scroll: true })
   };
 
   //import user data
