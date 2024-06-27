@@ -53,12 +53,6 @@ export default function Home() {
   useState<boolean>(false);
 
   const router = useRouter();
-
-  useEffect(() => {
-    if (userSchools) {
-      location.reload();
-    }
-  }, [])
   
   //verifica o status da seção
   if (status === "loading") {
