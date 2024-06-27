@@ -58,7 +58,7 @@ export default function Home() {
     if (user) {
       location.reload();
     }
-  }, [user])
+  }, [])
   
   //verifica o status da seção
   if (status === "loading") {
