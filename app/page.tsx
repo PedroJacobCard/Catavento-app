@@ -55,7 +55,9 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.refresh();
+    if (userSchools) {
+      location.reload();
+    }
   }, [])
   
   //verifica o status da seção
