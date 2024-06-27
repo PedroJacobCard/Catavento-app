@@ -93,11 +93,10 @@ function UserProvider({ children }: ChildrenPropsType) {
       getUser();
       setFetchProfile(false);
     }
-  }, [session, fetchProfile, router, userUpdated, routerPath]);
+  }, [session, fetchProfile, userUpdated]);
 
   if (routerPath === '/profile') {
     router.replace("/");
-    console.log(router)
   } else {
     router.replace(`${routerPath}`);
   }
