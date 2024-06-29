@@ -37,6 +37,7 @@ import { Shift } from "@/utils/Enums";
 
 //import user custom hook
 import useUser from "../hooks/useUser";
+import StartProfile from "../components/StartProfile";
 
 function Profile() {
   //session
@@ -210,151 +211,94 @@ function Profile() {
   }
 
   return (
-    <div className="w-full h-[100vh] flex flex-col lg:flex-row justify-center items-center">
-      <div className="w-full lg:w-[50vw] h-full flex justify-center items-center">
-        <Image
-          src={LoginPicture}
-          alt="Login Picture"
-          height={100}
-          width={334}
-          className="mx-auto"
-        />
-      </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="dark:bg-darkModeGlass bg-primaryBlueGlass w-[95vw] h-[80vh] md:w-[65vw] lg:w-[50vw] lg:h-[100vh] p-[2rem] flex flex-col justify-center items-center fixed lg:relative rounded-md lg:rounded-none overflow-hidden"
-      >
-        <h1 className="title text-center mb-5">
-          Vamos concluir a criação de teu perfil!
-        </h1>
-
-        <section className="px-3 flex flex-col items-start justify-start overflow-y-scroll">
-          <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3   relative">
-            <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
-            <Image
-              src={Info}
-              alt="informativo"
-              width={24}
-              height={24}
-              className="ml-4"
-            />
-            <p className="text-sm flex flex-col">
-              Ao conectar-se com o Google Agenda, serão salvos no teu
-              calendário, os eventos criados neste App.
-            </p>
-          </div>
-
-          <div className="flex gap-3 items-center mb-3">
-            <input
-              type="checkbox"
-              checked={connect}
-              onChange={(e) => setConnect(e.target.checked)}
-            />
-            <label htmlFor="Connectar com o Google Agenda">
-              Conectar-se com o Google Agenda.
-            </label>
-          </div>
-
-          <Controller
-            control={control}
-            name="role"
-            render={({ field }) => (
-              <>
-                <label className="font-bold text-lg mb-1 mx-auto">
-                  Selecionar papel
-                </label>
-                <select
-                  name="Papel"
-                  className="w-[100%] flex items-center justify-center py-2 mx-auto mb-5 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark dark:bg-darkModeBgColor bg-primaryBlue px-2 cursor-pointer"
-                  onChange={(e) => {
-                    setSelectedSchoolAndShifts([]);
-                    setSelectedRole(e.target.value);
-                    field.onChange(e.target.value);
-                  }}
-                  value={field.value}
-                >
-                  <option>Papel</option>
-                  {rolesArray.map((role, roleIndex) => (
-                    <option key={roleIndex}>{role}</option>
-                  ))}
-                </select>
-                {errors?.role && (
-                  <p className="text-red-600 text-sm font-medium mt-[-1rem] mb-5">
-                    {errors?.role.message}
-                  </p>
-                )}
-                {selectedRole === "Papel" && (
-                  <p className="text-red-600 text-sm font-medium mt-[-1rem] mb-5">
-                    Selecione um papel de atuação
-                  </p>
-                )}
-              </>
-            )}
+    <>
+      <StartProfile/>
+      <div className="w-full h-[100vh] flex flex-col lg:flex-row justify-center items-center">
+        <div className="w-full lg:w-[50vw] h-full flex justify-center items-center">
+          <Image
+            src={LoginPicture}
+            alt="Login Picture"
+            height={100}
+            width={334}
+            className="mx-auto"
           />
+        </div>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="dark:bg-darkModeGlass bg-primaryBlueGlass w-[95vw] h-[80vh] md:w-[65vw] lg:w-[50vw] lg:h-[100vh] p-[2rem]  flex flex-col justify-center items-center fixed lg:relative rounded-md lg:rounded-none overflow-hidden"
+        >
+          <h1 className="title text-center mb-5">
+            Vamos concluir a criação de teu perfil!
+          </h1>
 
-          {(selectedRole.length !== 0 && selectedRole === "SECRETARIO_A") ||
-          (selectedRole.length !== 0 && selectedRole === "VOLUNTARIO_A") ? (
-            <>
-              <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3   relative">
-                <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
-                <Image
-                  src={Info}
-                  alt="informativo"
-                  width={24}
-                  height={24}
-                  className="ml-4"
-                />
-                <p className="text-sm flex flex-col">
-                  Não encontrou uma escola específica? Contate o coordenador que
-                  trabalha nessa escola para registrar-se.
-                </p>
-              </div>
-              <p className="font-bold text-lg mt-3 mx-auto">
-                Escolas e turnos de Atuação
+          <section className="px-3 flex flex-col items-start justify-start overflow-y-scroll">
+            <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3     relative">
+              <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
+              <Image
+                src={Info}
+                alt="informativo"
+                width={24}
+                height={24}
+                className="ml-4"
+              />
+              <p className="text-sm flex flex-col">
+                Ao conectar-se com o Google Agenda, serão salvos no teu
+                calendário, os eventos criados neste App.
               </p>
-              {schools &&
-                schools.map((school, index) => (
-                  <div key={index}>
-                    <label>{school.name}</label>
-                    <div className="flex flex-col lg:flex-row gap-3 mb-5 flex-wrap">
-                      {school.shift.map((shift, i) => (
-                        <div key={i} className="flex items-center gap-3">
-                          <input
-                            type="checkbox"
-                            className="inputcheckbox"
-                            value={shift}
-                            onChange={(e) =>
-                              handleCheckShift(
-                                e.target.checked,
-                                school.name,
-                                shift.toString()
-                              )
-                            }
-                            checked={selectedSchoolAndShifts.some(
-                              (item) =>
-                                item.schoolName === school.name &&
-                                item.shifts.includes(shift.toString())
-                            )}
-                          />
-                          <label>{shift}</label>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              {selectedSchoolAndShifts.length < 1 && hasNoSchoolsAndShifts && (
-                <p className="text-red-600 text-sm font-medium mt-[-1rem] mb-5">
-                  Selecione uma escola e turno
-                </p>
-              )}
+            </div>
 
-              <ShowMoreSchools />
-            </>
-          ) : (
-            selectedRole.length !== 0 &&
-            selectedRole === "COORDENADOR_A_GERAL" && (
-              <div className="w-full mb-5 flex flex-col items-start justify-start">
-                <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3   relative">
+            <div className="flex gap-3 items-center mb-3">
+              <input
+                type="checkbox"
+                checked={connect}
+                onChange={(e) => setConnect(e.target.checked)}
+              />
+              <label htmlFor="Connectar com o Google Agenda">
+                Conectar-se com o Google Agenda.
+              </label>
+            </div>
+
+            <Controller
+              control={control}
+              name="role"
+              render={({ field }) => (
+                <>
+                  <label className="font-bold text-lg mb-1 mx-auto">
+                    Selecionar papel
+                  </label>
+                  <select
+                    name="Papel"
+                    className="w-[100%] flex items-center justify-center py-2 mx-auto mb-5 rounded-md shadow-buttonShadow   dark:shadow-buttonShadowDark dark:bg-darkModeBgColor bg-primaryBlue px-2 cursor-pointer"
+                    onChange={(e) => {
+                      setSelectedSchoolAndShifts([]);
+                      setSelectedRole(e.target.value);
+                      field.onChange(e.target.value);
+                    }}
+                    value={field.value}
+                  >
+                    <option>Papel</option>
+                    {rolesArray.map((role, roleIndex) => (
+                      <option key={roleIndex}>{role}</option>
+                    ))}
+                  </select>
+                  {errors?.role && (
+                    <p className="text-red-600 text-sm font-medium mt-[-1rem] mb-5">
+                      {errors?.role.message}
+                    </p>
+                  )}
+                  {selectedRole === "Papel" && (
+                    <p className="text-red-600 text-sm font-medium mt-[-1rem] mb-5">
+                      Selecione um papel de atuação
+                    </p>
+                  )}
+                </>
+              )}
+            />
+
+            {(selectedRole.length !== 0 && selectedRole === "SECRETARIO_A") ||
+            (selectedRole.length !== 0 && selectedRole === "VOLUNTARIO_A") ? (
+              <>
+                <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md my-3     relative">
                   <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
                   <Image
                     src={Info}
@@ -364,129 +308,189 @@ function Profile() {
                     className="ml-4"
                   />
                   <p className="text-sm flex flex-col">
-                    Não encontrou uma escola específica? Contate o coordenador
-                    que trabalha nessa escola para registrar-se.
+                    Não encontrou uma escola específica? Contate o coordenador que
+                    trabalha nessa escola para registrar-se.
                   </p>
                 </div>
                 <p className="font-bold text-lg mt-3 mx-auto">
-                  Escolas de coordenação
+                  Escolas e turnos de Atuação
                 </p>
                 {schools &&
                   schools.map((school, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-3 items-center my-1 flex-wrap"
-                    >
-                      <input
-                        type="checkbox"
-                        value={school.shift.join(", ").split("")}
-                        onChange={(e) =>
-                          handleCheckGeneralCoordinatorSchools(
-                            e.target.checked,
-                            school.name,
-                            school.shift
-                          )
-                        }
-                        checked={selectedSchoolAndShifts.some(
-                          (item) =>
-                            item.schoolName === school.name &&
-                            item.shifts === school.shift
-                        )}
-                      />
+                    <div key={index}>
                       <label>{school.name}</label>
+                      <div className="flex flex-col lg:flex-row gap-3 mb-5 flex-wrap">
+                        {school.shift.map((shift, i) => (
+                          <div key={i} className="flex items-center gap-3">
+                            <input
+                              type="checkbox"
+                              className="inputcheckbox"
+                              value={shift}
+                              onChange={(e) =>
+                                handleCheckShift(
+                                  e.target.checked,
+                                  school.name,
+                                  shift.toString()
+                                )
+                              }
+                              checked={selectedSchoolAndShifts.some(
+                                (item) =>
+                                  item.schoolName === school.name &&
+                                  item.shifts.includes(shift.toString())
+                              )}
+                            />
+                            <label>{shift}</label>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   ))}
-                {selectedSchoolAndShifts.length < 1 &&
-                  hasNoSchoolsAndShifts && (
-                    <p className="text-red-600 text-sm font-medium mt-2 mb-5">
-                      Selecione uma escola de atuação
-                    </p>
-                  )}
+                {selectedSchoolAndShifts.length < 1 && hasNoSchoolsAndShifts && (
+                  <p className="text-red-600 text-sm font-medium mt-[-1rem] mb-5">
+                    Selecione uma escola e turno
+                  </p>
+                )}
 
                 <ShowMoreSchools />
-              </div>
-            )
-          )}
+              </>
+            ) : (
+              selectedRole.length !== 0 &&
+              selectedRole === "COORDENADOR_A_GERAL" && (
+                <div className="w-full mb-5 flex flex-col items-start justify-start">
+                  <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md  my-3   relative">
+                    <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
+                    <Image
+                      src={Info}
+                      alt="informativo"
+                      width={24}
+                      height={24}
+                      className="ml-4"
+                    />
+                    <p className="text-sm flex flex-col">
+                      Não encontrou uma escola específica? Contate o coordenador
+                      que trabalha nessa escola para registrar-se.
+                    </p>
+                  </div>
+                  <p className="font-bold text-lg mt-3 mx-auto">
+                    Escolas de coordenação
+                  </p>
+                  {schools &&
+                    schools.map((school, index) => (
+                      <div
+                        key={index}
+                        className="flex gap-3 items-center my-1 flex-wrap"
+                      >
+                        <input
+                          type="checkbox"
+                          value={school.shift.join(", ").split("")}
+                          onChange={(e) =>
+                            handleCheckGeneralCoordinatorSchools(
+                              e.target.checked,
+                              school.name,
+                              school.shift
+                            )
+                          }
+                          checked={selectedSchoolAndShifts.some(
+                            (item) =>
+                              item.schoolName === school.name &&
+                              item.shifts === school.shift
+                          )}
+                        />
+                        <label>{school.name}</label>
+                      </div>
+                    ))}
+                  {selectedSchoolAndShifts.length < 1 &&
+                    hasNoSchoolsAndShifts && (
+                      <p className="text-red-600 text-sm font-medium mt-2 mb-5">
+                        Selecione uma escola de atuação
+                      </p>
+                    )}
 
-          {selectedRole.length !== 0 && selectedRole === "COORDENADOR_A" && (
-            <div className="w-full">
-              <p className="font-bold text-lg mt-3 mx-auto">
-                Escolas de coordenação
-              </p>
-              <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mt-2 mb-3 relative">
-                <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
-                <Image
-                  src={Info}
-                  alt="informativo"
-                  width={24}
-                  height={24}
-                  className="ml-4"
-                />
-                <p className="text-sm flex flex-col">
-                  Escreva abaixo o nome da escola de atuação e à frente, o nome
-                  da cidade em que ela se localiza.
-                  <span className="text-infoTrackBlue">
-                    Ex.: Escola Municipal Alpes, Goiânia - GO.
-                  </span>
-                </p>
-              </div>
-              <CoordinatorAddSchool
-                control={control}
-                hasNoSchoolsAndShifts={hasNoSchoolsAndShifts}
-                handleCheckShift={handleCheckShift}
-                selectedSchoolAndShifts={selectedSchoolAndShifts}
-                coordinatorSchool={coordinatorSchool}
-                setCoordinatorSchool={setCoordinatorSchool}
-              />
-              <button
-                onClick={addSchool}
-                type="button"
-                className="flex items-center justify-center w-full gap-3 m-auto py-2 px-2 mt-5 shadow-md dark:bg-darkMode bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
-              >
-                <Image
-                  src={Plus}
-                  alt="Adicionar"
-                  width={25}
-                  height={25}
-                  priority={true}
-                />
-                Adicionar outra escola
-              </button>
-            </div>
-          )}
-
-          <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-cautionYellow rounded-md shadow-md my-3  relative">
-            <div className="h-[100%] w-[10px] bg-cautionTrackYellow absolute rounded-l-md" />
-            <Image
-              src={Alert}
-              alt="atenção"
-              width={24}
-              height={24}
-              className="ml-4"
-            />
-            <p className="text-sm flex flex-col">
-              Ao continuar, você concordará com o compartilhamento de teu
-              endereço de email para melhorar o contato com os coordenadores do
-              Catavento. Nenhum cookie de navegação será armazenado.
-            </p>
-          </div>
-
-          <button
-            type="submit"
-            onClick={() =>
-              setHasNoSchoolsAndShifts(
-                selectedSchoolAndShifts.every(
-                  (item) => item.schoolName === "" || item.shifts.length < 1
-                )
+                  <ShowMoreSchools />
+                </div>
               )
-            }
-            className="border dark:border-slate-700 border-black rounded-full w-[80%] md:w-[60%] flex py-2 px-2 mx-auto mt-5  hover:dark:bg-slate-600 hover:bg-slate-400 duration-300"
-          >
-            <span className="mx-auto my-auto">Adicionar Dados ao Perfil</span>
-          </button>
-        </section>
-      </form>
-    </div>
+            )}
+
+            {selectedRole.length !== 0 && selectedRole === "COORDENADOR_A" && (
+              <div className="w-full">
+                <p className="font-bold text-lg mt-3 mx-auto">
+                  Escolas de coordenação
+                </p>
+                <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-infoBlue rounded-md shadow-md mt-2   mb-3 relative">
+                  <div className="h-[100%] w-[10px] bg-infoTrackBlue absolute rounded-l-md" />
+                  <Image
+                    src={Info}
+                    alt="informativo"
+                    width={24}
+                    height={24}
+                    className="ml-4"
+                  />
+                  <p className="text-sm flex flex-col">
+                    Escreva abaixo o nome da escola de atuação e à frente, o nome
+                    da cidade em que ela se localiza.
+                    <span className="text-infoTrackBlue">
+                      Ex.: Escola Municipal Alpes, Goiânia - GO.
+                    </span>
+                  </p>
+                </div>
+                <CoordinatorAddSchool
+                  control={control}
+                  hasNoSchoolsAndShifts={hasNoSchoolsAndShifts}
+                  handleCheckShift={handleCheckShift}
+                  selectedSchoolAndShifts={selectedSchoolAndShifts}
+                  coordinatorSchool={coordinatorSchool}
+                  setCoordinatorSchool={setCoordinatorSchool}
+                />
+                <button
+                  onClick={addSchool}
+                  type="button"
+                  className="flex items-center justify-center w-full gap-3 m-auto py-2 px-2 mt-5 shadow-md dark:bg-darkMode   bg-primaryBlue rounded-md dark:hover:bg-darkModeBgColor hover:bg-secondaryBlue duration-300"
+                >
+                  <Image
+                    src={Plus}
+                    alt="Adicionar"
+                    width={25}
+                    height={25}
+                    priority={true}
+                  />
+                  Adicionar outra escola
+                </button>
+              </div>
+            )}
+
+            <div className="flex items-center gap-3 py-1 pr-2 dark:bg-darkModeBgColor bg-cautionYellow rounded-md shadow-md my-3    relative">
+              <div className="h-[100%] w-[10px] bg-cautionTrackYellow absolute rounded-l-md" />
+              <Image
+                src={Alert}
+                alt="atenção"
+                width={24}
+                height={24}
+                className="ml-4"
+              />
+              <p className="text-sm flex flex-col">
+                Ao continuar, você concordará com o compartilhamento de teu
+                endereço de email para melhorar o contato com os coordenadores do
+                Catavento. Nenhum cookie de navegação será armazenado.
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              onClick={() =>
+                setHasNoSchoolsAndShifts(
+                  selectedSchoolAndShifts.every(
+                    (item) => item.schoolName === "" || item.shifts.length < 1
+                  )
+                )
+              }
+              className="border dark:border-slate-700 border-black rounded-full w-[80%] md:w-[60%] flex py-2 px-2 mx-auto mt-5    hover:dark:bg-slate-600 hover:bg-slate-400 duration-300"
+            >
+              <span className="mx-auto my-auto">Adicionar Dados ao Perfil</span>
+            </button>
+          </section>
+        </form>
+      </div>
+    </>
   );
 }
 
