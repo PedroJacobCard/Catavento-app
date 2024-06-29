@@ -13,24 +13,27 @@ function StartProfile() {
         showPopup ? "block" : "hidden"
       }`}
     >
-      <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[55vw] lg:w-[35vw] h-[20vh] md:h-[27vh] mx-2 lg:mx-[20rem] rounded-md mt-5 p-5 relative">
+      <div className="flex-col justify-center items-center dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[75vw] lg:w-[55vw] h-[20vh] md:h-[27vh] mx-2 lg:mx-[20rem] rounded-md mt-5 p-5 relative">
         <p className="text-lg">
           Oi voluntário! Você já concluiu o cadastro de perfil?
         </p>
 
+<div className="absolute bottom-5 w-full p-2 flex justify-between items-center">
+
+</div>
         <button
           type="button"
-          className="absolute bottom-5 right-5 flex justify-between items-center px-5 py-2 gap-3 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+          className="flex justify-between items-center px-5 py-2 gap-3 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           onClick={() => setShowPopup(!showPopup)}
         >
           <span>Não, sou novo por aqui.</span>
         </button>
         <button
           type="button"
-          className="absolute bottom-5 right-5 flex justify-between items-center px-5 py-2 gap-3 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+          className="flex justify-between items-center px-5 py-2 gap-3 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
           onClick={() => router.replace('/')}
         >
-          <span>sim, já concluí o cadastro do perfil.</span>
+          <span>sim, já concluí.</span>
         </button>
       </div>
     </div>
