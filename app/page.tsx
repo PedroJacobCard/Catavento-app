@@ -55,19 +55,19 @@ export default function Home() {
   const router = useRouter();
   
   //verifica o status da seção
-  //if (status === "loading") {
-  //  return <Loading />;
-  //}
-//
-  //if (!session) {
-  //  router.replace('/sign-in');
-  //  return null;
-  //}
-  //
-  //if (session && !user) {
-  //  router.replace("/profile");
-  //  return null;
-  //}
+  if (status === "loading") {
+    return <Loading />;
+  }
+
+  if (!session) {
+    router.replace('/sign-in');
+    return null;
+  }
+  
+  if (session && !user) {
+    router.replace("/profile");
+    return null;
+  }
 
   return (
     <>
