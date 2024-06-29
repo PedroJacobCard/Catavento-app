@@ -13,28 +13,28 @@ function StartProfile() {
         showPopup ? "block" : "hidden"
       }`}
     >
-      <div className="flex-col justify-center items-center dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[75vw] lg:w-[55vw] h-[20vh] md:h-[27vh] mx-2 lg:mx-[20rem] rounded-md mt-5 p-5 relative">
-        <p className="text-lg">
-          Oi voluntário! Você já concluiu o cadastro de perfil?
-        </p>
-
-<div className="absolute bottom-5 w-full p-2 flex justify-between items-center">
-
-</div>
-        <button
-          type="button"
-          className="flex justify-between items-center px-5 py-2 gap-3 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
-          onClick={() => setShowPopup(!showPopup)}
-        >
-          <span>Não, sou novo por aqui.</span>
-        </button>
-        <button
-          type="button"
-          className="flex justify-between items-center px-5 py-2 gap-3 rounded-md shadow-buttonShadow dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
-          onClick={() => router.replace('/')}
-        >
-          <span>sim, já concluí.</span>
-        </button>
+      <div className="dark:bg-darkMode bg-primaryBlue w-[95vw] md:w-[65vw] h-[30vh] md:h-[27vh] mx-2 lg:mx-[20rem] rounded-md mt-5 px-5 py-10">
+        <div className="flex-col justify-center items-center">
+          <p className="text-lg text-center">
+            Oi voluntário! Você já concluiu o cadastro de perfil?
+          </p>
+          <div className="mt-5 flex justify-center items-center gap-3">
+            <button
+              type="button"
+              className="flex justify-between items-center px-5 py-2 gap-3 rounded-md shadow-buttonShadow     dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+              onClick={() => setShowPopup(!showPopup)}
+            >
+              <span>Não, sou novo por aqui.</span>
+            </button>
+            <button
+              type="button"
+              className="flex justify-between items-center px-5 py-2 gap-3 rounded-md shadow-buttonShadow     dark:shadow-buttonShadowDark hover:dark:bg-[rgb(30,30,30)] hover:bg-secondaryBlue duration-300"
+              onClick={() => router.replace("/")}
+            >
+              <span>sim, já concluí.</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
