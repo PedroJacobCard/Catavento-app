@@ -6,7 +6,6 @@ import { ChildrenPropsType, SchoolType } from "@/utils/Types";
 
 //import costume hooks
 import useUser from "../hooks/useUser";
-import { useSession } from "next-auth/react";
 
 const initState: SchoolType[] = [];
 
@@ -103,7 +102,6 @@ function SchoolProvider({ children }: ChildrenPropsType ) {
       } 
     }, [user, userSchools]);
 
-  
   return (
     <SchoolsContext.Provider value={{
       schools, 

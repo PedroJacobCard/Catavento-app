@@ -9,6 +9,7 @@ import Plane from "@/public/Plane.svg";
 import Marker from '@/public/Marker.svg';
 import Plus from '@/public/Plus.svg';
 import Form from "@/public/Form.svg";
+import Popup from "@/public/Popup.svg";
 
 //import components
 import Navbar from "@/app/components/Navbar";
@@ -98,6 +99,14 @@ function Vespertino() {
         )
     )
   );
+console.log(userSchools)
+
+//clicar para mostrar os tmas da escola selecionada
+const [showSchoolBlock, setShowSchoolBlock] = useState<boolean>(false);
+
+const handleSchoolBlockClick = () => {
+  setShowSchoolBlock(!showSchoolBlock);
+}
 
   //verifica o status da seção
   if (status === "loading") {
@@ -141,12 +150,13 @@ function Vespertino() {
         </ShowShadow>
 
         {filteredSchools.map((school, schoolIndex) => (
-          <div key={schoolIndex}>
-            <div
-              className={`${
-                schoolIndex === 0 ? "mt-[8rem] md:mt-[5rem]" : "mt-8"
-              } flex flex-col items-start mx-2 md:ml-[2rem] gap-3 lg:flex-row lg:justify-between lg:items-top`}
-            >
+          <div
+            key={schoolIndex}
+            className={`shadow-md mx-2 py-2 ${
+              schoolIndex === 0 ? "mt-[8rem] md:mt-[5rem]" : "mt-8"
+            } rounded-md`}
+          >
+            <div className="flex flex-col items-center justify-between mx-2 md:ml-[2rem] gap-3 lg:flex-row lg:justify-between lg:items-top">
               <h1 className="font-bold text-xl">{school.name}</h1>
             </div>
             {themeArray?.map((theme, themeIndex) => (
@@ -154,7 +164,7 @@ function Vespertino() {
                 key={themeIndex}
                 className={`${
                   themeIndex === 0 ? "mt-2" : "mt-5"
-                } dark:bg-darkMode bg-primaryBlue mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md relative`}
+                } ${showSchoolBlock ? 'block' : 'hidden'} dark:bg-darkMode bg-primaryBlue mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md relative`}
               >
                 <div className="flex items-start justify-between mx-5 mb-5 flex-row lg:items-top">
                   <h1 className="max-w-[300px] md:max-w-[350px] font-bold text-xl">
@@ -365,10 +375,11 @@ function Vespertino() {
                 />
               </section>
             ))}
+            <Image src={Popup} alt="Mostrar temas" width={20} height={20} className={`mx-auto my-3 cursor-pointer ${showSchoolBlock ? 'rotate-180' : 'rotate-0'}`} onClick={() => handleSchoolBlockClick()} />
           </div>
         ))}
 
-        <section className="overflow-x-scroll mt-7 mx-2 md:mx-[2rem] shadow-md px-5">
+        <section className="overflow-x-scroll mt-7 mx-2 shadow-md rounded-md px-5">
           <TableOfQualityData shift="VESPERTINO" />
         </section>
 
