@@ -102,10 +102,10 @@ function Vespertino() {
 console.log(userSchools)
 
 //clicar para mostrar os tmas da escola selecionada
-const [showSchoolBlock, setShowSchoolBlock] = useState<boolean[]>([]);
+const [showSchoolBlock, setShowSchoolBlock] = useState<number[]>(filteredSchools.map((_s,i) => i));
 
 const handleSchoolBlockClick = (index: number) => {
-  setShowSchoolBlock(prev => [!prev[index]]);
+  setShowSchoolBlock(prev => [prev[index]]);
 }
 
   //verifica o status da seção
