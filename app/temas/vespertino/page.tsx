@@ -102,10 +102,10 @@ function Vespertino() {
 console.log(userSchools)
 
 //clicar para mostrar os tmas da escola selecionada
-const [showSchoolBlock, setShowSchoolBlock] = useState<number[]>(filteredSchools.map((_s,i) => i));
+const [showSchoolBlock, setShowSchoolBlock] = useState<number[]>([]);
 
 const handleSchoolBlockClick = (index: number) => {
-  setShowSchoolBlock(prev => [prev[index]]);
+  setShowSchoolBlock([index]);
 }
 
   //verifica o status da seção
@@ -164,7 +164,7 @@ const handleSchoolBlockClick = (index: number) => {
                 key={themeIndex}
                 className={`${
                   themeIndex === 0 ? "mt-2" : "mt-5"
-                } ${showSchoolBlock[schoolIndex] ? 'block' : 'hidden'} dark:bg-darkMode bg-primaryBlue mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md relative`}
+                } ${showSchoolBlock.includes(schoolIndex) ? 'block' : 'hidden'} dark:bg-darkMode bg-primaryBlue mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md relative`}
               >
                 <div className="flex items-start justify-between mx-5 mb-5 flex-row lg:items-top">
                   <h1 className="max-w-[300px] md:max-w-[350px] font-bold text-xl">
@@ -375,7 +375,7 @@ const handleSchoolBlockClick = (index: number) => {
                 />
               </section>
             ))}
-            <Image src={Popup} alt="Mostrar temas" width={20} height={20} className={`mx-auto my-3 cursor-pointer ${showSchoolBlock ? 'rotate-180' : 'rotate-0'}`} onClick={() => handleSchoolBlockClick(schoolIndex)} />
+            <Image src={Popup} alt="Mostrar temas" width={20} height={20} className={`mx-auto my-3 cursor-pointer ${showSchoolBlock.includes(schoolIndex) ? 'rotate-180' : 'rotate-0'}`} onClick={() => handleSchoolBlockClick(schoolIndex)} />
           </div>
         ))}
 
