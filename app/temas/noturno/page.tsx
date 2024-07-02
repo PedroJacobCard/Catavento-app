@@ -100,10 +100,18 @@ function Noturno() {
   );
 
   //clicar para mostrar os tmas da escola selecionada
-  const [showSchoolBlock, setShowSchoolBlock] = useState<boolean[]>([false]);
+  type ShowSchoolBlockTypes = {
+    [index: number]: boolean;
+  };
+
+  const [showSchoolBlock, setShowSchoolBlock] = useState<ShowSchoolBlockTypes>({
+    0: false,
+  });
 
   const handleSchoolBlockClick = (index: number) => {
-    setShowSchoolBlock(prev => [!prev[index]]);
+    setShowSchoolBlock((prev) => {
+      return { ...prev, [index]: !prev[index] };
+    });
   };
 
   //verifica o status da seção
