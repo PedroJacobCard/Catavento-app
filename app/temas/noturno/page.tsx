@@ -387,7 +387,7 @@ function Noturno() {
               width={20}
               height={20}
               className={`mx-auto my-3 cursor-pointer ${
-                showSchoolBlock ? "rotate-180" : "rotate-0"
+                showSchoolBlock[schoolIndex] ? "rotate-180" : "rotate-0"
               }`}
               onClick={() => handleSchoolBlockClick(schoolIndex)}
             />
