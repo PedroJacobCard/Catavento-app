@@ -102,10 +102,10 @@ function Vespertino() {
 console.log(userSchools)
 
 //clicar para mostrar os tmas da escola selecionada
-const [showSchoolBlock, setShowSchoolBlock] = useState<boolean>(false);
+const [showSchoolBlock, setShowSchoolBlock] = useState<boolean[]>([false]);
 
-const handleSchoolBlockClick = () => {
-  setShowSchoolBlock(!showSchoolBlock);
+const handleSchoolBlockClick = (index: number) => {
+  setShowSchoolBlock(prev => [!prev[index]]);
 }
 
   //verifica o status da seção
@@ -375,7 +375,7 @@ const handleSchoolBlockClick = () => {
                 />
               </section>
             ))}
-            <Image src={Popup} alt="Mostrar temas" width={20} height={20} className={`mx-auto my-3 cursor-pointer ${showSchoolBlock ? 'rotate-180' : 'rotate-0'}`} onClick={() => handleSchoolBlockClick()} />
+            <Image src={Popup} alt="Mostrar temas" width={20} height={20} className={`mx-auto my-3 cursor-pointer ${showSchoolBlock ? 'rotate-180' : 'rotate-0'}`} onClick={() => handleSchoolBlockClick(schoolIndex)} />
           </div>
         ))}
 

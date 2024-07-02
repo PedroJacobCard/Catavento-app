@@ -101,10 +101,10 @@ function Matutino() {
   );
 
   //clicar para mostrar os tmas da escola selecionada
-  const [showSchoolBlock, setShowSchoolBlock] = useState<boolean>(false);
+  const [showSchoolBlock, setShowSchoolBlock] = useState<boolean[]>([false]);
 
-  const handleSchoolBlockClick = () => {
-    setShowSchoolBlock(!showSchoolBlock);
+  const handleSchoolBlockClick = (index: number) => {
+    setShowSchoolBlock(prev => [!prev[index]]);
   };
 
   //verifica o status da seção
@@ -381,7 +381,7 @@ function Matutino() {
               className={`mx-auto my-3 cursor-pointer ${
                 showSchoolBlock ? "rotate-180" : "rotate-0"
               }`}
-              onClick={() => handleSchoolBlockClick()}
+              onClick={() => handleSchoolBlockClick(schoolIndex)}
             />
           </div>
         ))}
