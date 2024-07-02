@@ -161,7 +161,7 @@ function Noturno() {
               <section
                 key={themeIndex}
                 className={`${themeIndex === 0 ? "mt-2" : "mt-5"} ${
-                  showSchoolBlock ? "block" : "hidden"
+                  showSchoolBlock[schoolIndex] ? "block" : "hidden"
                 } dark:bg-darkMode bg-primaryBlue mx-2 md:mx-[2rem] rounded-md overflow-hidden py-5 shadow-md relative`}
               >
                 <div className="flex items-start justify-between mx-5 mb-5 flex-row lg:items-top">
