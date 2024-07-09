@@ -1,9 +1,11 @@
-"use client";
+"use client"
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+
+//import costume hooks
+import useUser from "../hooks/useUser";
 
 function StartProfile() {
-  const [showPopup, setShowPopup] = useState<boolean>(true);
+  const { showPopup, setShowPopup} = useUser();
 
   const router = useRouter();
 

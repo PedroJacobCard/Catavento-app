@@ -15,7 +15,9 @@ const initContextState: UseUserContextType = {
   user: null,
   setFetchProfile: () => {},
   setUserUpdated: () => {},
-  setUser: () => {}
+  setUser: () => {},
+  showPopup: true,
+  setShowPopup: () => {}
 };
 
 export const UserContext = createContext<UseUserContextType>(initContextState);
@@ -25,6 +27,9 @@ function UserProvider({ children }: ChildrenPropsType) {
   const [fetchProfile, setFetchProfile] = useState<boolean>(false);
   const [userUpdated, setUserUpdated] = useState<ProfileType | null>(initState);
   const [user, setUser] = useState<ProfileType | null>(initState);
+
+  //start profile
+  const [showPopup, setShowPopup] = useState<boolean>(true);
 
   //router
   const router = useRouter();
@@ -97,7 +102,7 @@ function UserProvider({ children }: ChildrenPropsType) {
 
   
   return ( 
-    <UserContext.Provider value={{ user, setUser, setFetchProfile, setUserUpdated }}>
+    <UserContext.Provider value={{ user, setUser, setFetchProfile, setUserUpdated, showPopup, setShowPopup }}>
       {
         children
       }

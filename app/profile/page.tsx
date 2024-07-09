@@ -43,6 +43,9 @@ function Profile() {
   //session
   const {data: session } = useSession();
 
+  //set popup
+  const { setShowPopup } = useUser();
+
   if (!session) {
     redirect('/sign-in');
   }
@@ -187,6 +190,7 @@ function Profile() {
       if (response.ok) {
         toast.success("Perfil criado com successo!");
         setFetchProfile(true);
+        setShowPopup(true);
       } else {
         toast.error(
           "hum... Parece que os dados enviados já existem... Tente uma escola diferente."

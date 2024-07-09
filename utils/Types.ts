@@ -159,6 +159,8 @@ export type UseUserContextType = {
   setFetchProfile: Dispatch<SetStateAction<boolean>>;
   setUserUpdated: Dispatch<SetStateAction<ProfileType | null>>;
   setUser: Dispatch<SetStateAction<ProfileType | null>>;
+  setShowPopup: Dispatch<SetStateAction<boolean>>;
+  showPopup: boolean;
 };
 
 export type UseUsersContextType = {
