@@ -176,6 +176,8 @@ function Profile() {
       school: selectedSchoolAndShifts,
       schoolCreated: selectedRole === "COORDENADOR_A" ? selectedSchoolAndShifts : {}
     };
+
+    console.log(formData)
     
     try {
       const response = await fetch("/api/profile", {
