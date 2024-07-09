@@ -12,7 +12,7 @@ type CreateSchoolByCoordinatorPropsType = {
   control: Control<
     {
       role: string;
-      connectedToCalender: boolean;
+      connectedToCalendar: boolean;
       schoolCreated?:
         | {
             schoolName: string;

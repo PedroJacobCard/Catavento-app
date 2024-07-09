@@ -1,7 +1,7 @@
 import * as z from 'zod';
 
 export const schema = z.object({
-  connectedToCalender: z.boolean().default(false),
+  connectedToCalendar: z.boolean().default(false),
   role: z.string().min(1, 'Selecionne um papel.'),
   schoolCreated: z.object({
     schoolName: z.string(),

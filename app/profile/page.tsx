@@ -150,7 +150,7 @@ function Profile() {
   } = useForm<FieldValuesRegister>({
     resolver: zodResolver(schema),
     defaultValues: {
-      connectedToCalender: connect,
+      connectedToCalendar: connect,
       role: "",
       schoolCreated: {
         schoolName: "",
@@ -172,12 +172,10 @@ function Profile() {
 
     const formData = {
       ...data,
-      connectedToCalender: connect,
+      connectedToCalendar: connect,
       school: selectedSchoolAndShifts,
       schoolCreated: selectedRole === "COORDENADOR_A" ? selectedSchoolAndShifts : {}
     };
-
-    console.log(formData)
     
     try {
       const response = await fetch("/api/profile", {
