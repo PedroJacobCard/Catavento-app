@@ -29,7 +29,7 @@ function PrivacyPolicy() {
         <p>Você pode solicitar a exclusão dos seus dados entrando em contato conosco. Também pode revogar o acesso do app à sua conta Google a qualquer momento.</p>
 
         <h2>7. Contato</h2>
-        <p>Para dúvidas sobre esta política, entre em contato conosco via e-mail: <a href="mailto:pedrojacob05cardoso@gmail.com">contato@catavento.org.br</a>.</p>
+        <p>Para dúvidas sobre esta política, entre em contato conosco via e-mail: <a href="mailto:pedrojacob05cardoso@gmail.com">pedrojacob05cardoso@gmail.com</a>.</p>
       </div>
     </div>
   );
