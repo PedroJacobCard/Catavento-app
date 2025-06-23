@@ -17,7 +17,7 @@ export const authOptions: AuthOptions = {
           access_type: 'offline',
           response_type: 'code',
           scope: 'openid email profile https://www.googleapis.com/auth/calendar',
-          include_granted_scopes= 'true'
+          include_granted_scopes: 'true'
         }
       }
     })
